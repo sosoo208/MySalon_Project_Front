@@ -78,8 +78,6 @@ const AdminMyPage = () => {
           {activeTab === "sales" && <div>매출 페이지 준비중…</div>}
         </main>
       </div>
-    </div>
+    </>
   );
-};
-
-export default AdminMyPage;
+}

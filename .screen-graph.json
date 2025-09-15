@@ -51,6 +51,13 @@
       ]
     },
     {
+      "id": "src/pages/user/FavoriteList.jsx",
+      "label": "FavoriteList",
+      "routes": [
+        "/mypage/favorites"
+      ]
+    },
+    {
       "id": "src/pages/shop/OuterPage.jsx",
       "label": "OuterPage",
       "routes": [
