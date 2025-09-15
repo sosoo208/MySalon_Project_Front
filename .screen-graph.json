@@ -513,15 +513,15 @@
       }
     },
     {
-      "id": "src\\pages\\auth\\LoginPage.jsx:180:24-to-src\\pages\\auth\\SignupPage.jsx",
+      "id": "src\\pages\\auth\\LoginPage.jsx:181:24-to-src\\pages\\auth\\SignupPage.jsx",
       "source": "src\\pages\\auth\\LoginPage.jsx",
       "target": "src\\pages\\auth\\SignupPage.jsx",
       "data": {
         "viaRoute": "/signup",
         "trigger": {
           "element": "navigate('/signup')",
-          "line": 180,
-          "endLine": 180,
+          "line": 181,
+          "endLine": 181,
           "column": 24,
           "endColumn": 43,
           "sourceFile": "src\\pages\\auth\\LoginPage.jsx"

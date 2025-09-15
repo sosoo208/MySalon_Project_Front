@@ -27,11 +27,12 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (response.ok) {
-                const token = await response.text();
-                setToken(token);
-                localStorage.setItem('token', token);
+                const data = await response.json();
+                setToken(data.token);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role); // 역할 정보 저장
                 return { success: true };
-            } else {
+            } else {    
                 const errorData = await response.json();
                 return { success: false, message: errorData.message || '로그인에 실패했습니다.' };
             }
@@ -43,9 +44,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setToken(null);
-        setUser(null);
         localStorage.removeItem('token');
-    
+        localStorage.removeItem('role'); // 역할 정보 삭제
     };
 
     const authFetch = async (url, options = {}) => {
