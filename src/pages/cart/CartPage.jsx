@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { orderApi } from "../../api/orders/orderApi";
+import { orderApi } from "../../api/order/orderApi";
 import { SubHeader } from "../../components/SubHeader"; // 상단 헤더(뒤로가기+로고)
 
 export default function CartPage() {

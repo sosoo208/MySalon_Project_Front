@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { communityApi } from "../../api/community/communityApi.js";
+import { communityApi } from "../../api/post_/postApi.js";
 
 // 외부 컴포넌트들을 이 파일 내부에 직접 정의합니다.
 // 이렇게 하면 import 오류를 해결할 수 있습니다.
