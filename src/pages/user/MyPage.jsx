@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { SubHeader } from "../../components/SubHeader"; // 상단 헤더
+import { SubHeader } from "../../components/SubHeader"; 
+import { Link } from "react-router-dom";
 
 export default function MyPage() {
-  const [activeTab, setActiveTab] = useState("posts"); // posts | comments
+  const [activeTab, setActiveTab] = useState("posts");
 
   return (
     <>
@@ -35,9 +36,8 @@ export default function MyPage() {
                 가입일 2025.09.07 <br /> 최근 접속일 2025.09.07 <br />
                 180cm / 70kg
               </div>
-              {/* ✅ 수정된 부분: 버튼 → 링크 */}
-              <a
-                href="/mypage/edit"
+              <Link
+                to="/mypage/edit"
                 style={{
                   display: "inline-block",
                   border: "1px solid #777",
@@ -52,7 +52,7 @@ export default function MyPage() {
                 }}
               >
                 프로필 수정
-              </a>
+              </Link>
             </div>
 
             <nav
@@ -63,10 +63,10 @@ export default function MyPage() {
                 fontWeight: "bold",
               }}
             >
-              <a href="/mypage/orders">내 주문 내역</a>
-              <a href="/mypage/wishlist">찜한 상품</a>
-              <a href="/cart">장바구니</a>
-              <a href="/mypage/reviews">나의 리뷰</a>
+              <Link to="/mypage/orders">내 주문 내역</Link>
+              <Link to="/mypage/favorites">찜한 상품</Link> {/* ✅ 경로 수정 */}
+              <Link to="/cart">장바구니</Link>
+              <Link to="/mypage/reviews">나의 리뷰</Link>
             </nav>
           </div>
 
@@ -81,14 +81,12 @@ export default function MyPage() {
               marginBottom: "60px",
             }}
           >
-            {/* 활동내역 제목 */}
             <h2 style={{ fontSize: "22px", marginBottom: "25px", textAlign: "left" }}>
               활동내역
             </h2>
 
             <div style={{ marginBottom: "25px", fontWeight: "500" }}>홍길동님의 활동</div>
 
-            {/* 4칸 활동 박스 */}
             <div
               style={{
                 display: "grid",
@@ -97,7 +95,7 @@ export default function MyPage() {
                 marginBottom: "40px",
               }}
             >
-              {[
+              {[ 
                 { count: 10, label: "주문내역" },
                 { count: 5, label: "찜한 상품" },
                 { count: 12, label: "내가 쓴 리뷰" },
@@ -130,7 +128,6 @@ export default function MyPage() {
               ))}
             </div>
 
-            {/* 탭 */}
             <div
               style={{
                 display: "flex",
@@ -170,7 +167,6 @@ export default function MyPage() {
               </button>
             </div>
 
-            {/* 탭 내용 */}
             {activeTab === "posts" ? (
               <div style={{ textAlign: "left" }}>📌 내가 올린 게시물 리스트</div>
             ) : (

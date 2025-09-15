@@ -13,19 +13,20 @@ import PantsPage from "./pages/shop/PantsPage";
 import DressPage from "./pages/shop/DressPage";
 import CartPage from "./pages/cart/CartPage";
 
-// ===== 사용자 페이지 =====
+// ===== 사용자(구매자) 페이지 =====
 import MyPage from "./pages/user/MyPage";
 import ProfileEdit from "./pages/user/ProfileEdit";
 import OrderList from "./pages/user/OrderList";
+import FavoriteList from "./pages/user/FavoriteList";
 
-// ===== 관리자/판매자 페이지 =====
+// ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
 import ProductList from "./pages/admin/ProductList";
 import ProductDetail from "./pages/admin/ProductDetail";
-import SalesList from "./pages/admin/SalesList";   
+import SalesList from "./pages/admin/SalesList";
 import OrderShipping from "./pages/admin/OrderShipping";
-import Sales from "./pages/admin/Sales";   // ✅ 매출 페이지 import
+import Sales from "./pages/admin/Sales";
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
@@ -33,7 +34,7 @@ import CommunityPage from "./pages/community/CommunityPage";
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
 
-// ✅ 역할 가져오기 (안전하게 처리)
+// ✅ 역할 가져오기
 const getRole = () => {
   const role = localStorage.getItem("role");
   return role ? role.toUpperCase() : null; // "BUYER" | "SELLER" | null
@@ -47,7 +48,7 @@ function RoleElement({ buyer, seller, fallback = null }) {
   return fallback;
 }
 
-// ✅ 접근 차단용
+// ✅ 접근 차단
 function BlockRole({ denied = [], children, redirectTo }) {
   const role = getRole();
   if (role && denied.includes(role)) {
@@ -80,6 +81,7 @@ function AppContent() {
       />
       <Route path="/mypage/edit" element={<ProfileEdit />} />
       <Route path="/mypage/orders" element={<OrderList />} />
+      <Route path="/mypage/favorites" element={<FavoriteList />} /> {/* ✅ 찜 목록 */}
 
       {/* ===== 판매자 전용 ===== */}
       <Route
@@ -123,7 +125,7 @@ function AppContent() {
         }
       />
       <Route
-        path="/admin/products/sales"   // ✅ 매출 라우트 추가
+        path="/admin/products/sales"
         element={
           <BlockRole denied={["BUYER"]} redirectTo="/mypage">
             <Sales />
