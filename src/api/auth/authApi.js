@@ -6,7 +6,13 @@ export const authApi = {
   login: async (id, password) => {
     try {
       const response = await apiClient.post('/users/login', { id, password });
-      return response.data;
+      const data = response.data;
+
+      // ✅ 토큰과 역할을 로컬스토리지에 저장
+      if (data.token) localStorage.setItem("token", data.token);
+      if (data.role) localStorage.setItem("role", data.role.toUpperCase()); // SELLER or BUYER
+
+      return data;
     } catch (error) {
       console.error('로그인 실패:', error);
       throw error;
@@ -28,6 +34,9 @@ export const authApi = {
   logout: async () => {
     try {
       const response = await apiClient.post('/users/logout');
+      // ✅ 로그아웃 시 로컬스토리지도 정리
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
       return response.data;
     } catch (error) {
       console.error('로그아웃 실패:', error);
