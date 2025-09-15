@@ -18,8 +18,9 @@ import MyPage from "./pages/user/MyPage";
 import ProfileEdit from "./pages/user/ProfileEdit"; // ✅ 프로필 수정 페이지
 import OrderList from "./pages/user/OrderList";     // ✅ 주문 내역 페이지
 
-// ===== 관리자 페이지 =====
+// ===== 관리자/판매자 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
+import ProductRegister from "./pages/admin/ProductRegister"; // ✅ 상품 등록 페이지
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
@@ -33,13 +34,14 @@ import { ScrollContainer } from "./components/ScrollContainer";
 const getRole = () => localStorage.getItem("role"); // "BUYER" | "SELLER" | null
 
 function RoleElement({ buyer, seller, fallback = null }) {
-  const role = getRole();
+  const role = (getRole() || "").toUpperCase();
   if (role === "SELLER") return seller ?? fallback;
-  return buyer ?? fallback; // 기본은 구매자
+  if (role === "BUYER") return buyer ?? fallback;
+  return fallback;
 }
 
 function BlockRole({ denied = [], children, redirectTo }) {
-  const role = getRole();
+  const role = (getRole() || "").toUpperCase();
   if (role && denied.includes(role)) {
     return (
       <Navigate
@@ -68,17 +70,24 @@ function AppContent() {
         path="/mypage"
         element={<RoleElement buyer={<MyPage />} seller={<AdminMyPage />} />}
       />
-      {/* ✅ 프로필 수정 라우트 */}
-      <Route path="/mypage/edit" element={<ProfileEdit />} />
-      {/* ✅ 주문 내역 라우트 */}
-      <Route path="/mypage/orders" element={<OrderList />} />
+      <Route path="/mypage/edit" element={<ProfileEdit />} />   {/* 프로필 수정 */}
+      <Route path="/mypage/orders" element={<OrderList />} />   {/* 주문 내역 */}
 
-      {/* 판매자 전용 마이페이지: 구매자 차단 */}
+      {/* 판매자 전용 마이페이지 */}
       <Route
         path="/admin-mypage"
         element={
           <BlockRole denied={["BUYER"]} redirectTo="/mypage">
             <AdminMyPage />
+          </BlockRole>
+        }
+      />
+      {/* 상품 등록 페이지 */}
+      <Route
+        path="/admin/products/register"
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <ProductRegister />
           </BlockRole>
         }
       />
