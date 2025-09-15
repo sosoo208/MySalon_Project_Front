@@ -1,4 +1,4 @@
-import { apiClient } from './config';
+import { apiClient } from '../config';
 
 // 찜 추가
 export const addFavorite = (data) => apiClient.post('/favorites', data);

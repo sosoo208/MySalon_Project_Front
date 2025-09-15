@@ -1,5 +1,5 @@
 // API 설정 파일
-export const API_BASE_URL = 'http://localhost:8080';  // "/api" 제거
+export const API_BASE_URL = 'http://localhost:8080/api';  // "/api" 제거
 
 // Axios 인스턴스 생성
 import axios from 'axios';
