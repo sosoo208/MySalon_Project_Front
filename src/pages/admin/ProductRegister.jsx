@@ -1,47 +1,21 @@
 import React, { useState } from "react";
 import { SubHeader } from "../../components/SubHeader";
 
-// 카테고리 맵
+// 상위/하위 카테고리 맵
 const categoryMap = {
-  전체: null,
-  상의: "TOP",
-  바지: "BOTTOM",
-  아우터: "OUTERWEAR",
-  "원피스/스커트": "DRESS_SKIRT",
-  "ACC/BAG": "ACC_BAG",
-  "홈웨어/속옷": "LOUNGEWEAR_UNDERWEAR",
-  키즈: "KIDS",
-};
-
-const categoryLowMap = {
-  전체: null,
-  반소매: "SHORT_SLEEVE",
-  긴소매: "LONG_SLEEVE",
-  "셔츠/블라우스": "SHIRT_BLOUSE",
-  "니트/스웨터": "KNIT_SWEATER",
-  "맨투맨/후드": "SWEATSHIRT_HOODIE",
-  기타: "OTHER",
-  자켓: "JACKET",
-  코트: "COAT",
-  가디건: "CARDIGAN",
-  반바지: "SHORTS",
-  청바지: "JEANS",
-  슬랙스: "SLACKS",
-  미니: "MINI",
-  미디: "MIDI",
-  롱: "LONG",
-  가방: "BAG",
-  악세사리: "ACCESSORY",
-  모자: "HAT",
-  잠옷: "PAJAMAS",
-  속옷: "UNDERWEAR",
-  상의: "TOPS",
-  하의: "BOTTOMS",
+  전체: ["전체"],
+  상의: ["반소매", "긴소매", "셔츠/블라우스", "니트/스웨터", "맨투맨/후드"],
+  바지: ["반바지", "청바지", "슬랙스"],
+  아우터: ["자켓", "코트", "가디건"],
+  "원피스/스커트": ["미니", "미디", "롱"],
+  "ACC/BAG": ["가방", "악세사리", "모자"],
+  "홈웨어/속옷": ["잠옷", "속옷"],
+  키즈: ["상의", "하의"],
 };
 
 export default function ProductRegister() {
   const [image, setImage] = useState(null);
-  const [category, setCategory] = useState("상의");
+  const [category, setCategory] = useState("전체");
   const [subCategory, setSubCategory] = useState("");
   const [form, setForm] = useState({
     name: "",
@@ -50,10 +24,8 @@ export default function ProductRegister() {
     shippingFee: "",
   });
 
-  const [colors, setColors] = useState([]);
-  const [sizes, setSizes] = useState([]);
-  const [quantities, setQuantities] = useState([]);
-
+  // 옵션 세트 (색상+사이즈+수량)
+  const [options, setOptions] = useState([]);
   const [tempColor, setTempColor] = useState("");
   const [tempSize, setTempSize] = useState("");
   const [tempQty, setTempQty] = useState("");
@@ -70,24 +42,21 @@ export default function ProductRegister() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 추가 기능
-  const addColor = () => {
-    if (tempColor) {
-      setColors([...colors, tempColor]);
-      setTempColor("");
+  // 옵션 추가
+  const addOption = () => {
+    if (!tempColor || !tempSize || !tempQty) {
+      alert("색상, 사이즈, 수량을 모두 입력해주세요.");
+      return;
     }
+    setOptions((prev) => [...prev, { color: tempColor, size: tempSize, qty: tempQty }]);
+    setTempColor("");
+    setTempSize("");
+    setTempQty("");
   };
-  const addSize = () => {
-    if (tempSize) {
-      setSizes([...sizes, tempSize]);
-      setTempSize("");
-    }
-  };
-  const addQty = () => {
-    if (tempQty) {
-      setQuantities([...quantities, tempQty]);
-      setTempQty("");
-    }
+
+  // 옵션 삭제
+  const removeOption = (index) => {
+    setOptions((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e) => {
@@ -97,9 +66,7 @@ export default function ProductRegister() {
       category,
       subCategory,
       ...form,
-      colors,
-      sizes,
-      quantities,
+      options,
     });
     alert("상품이 등록되었습니다. (추후 API 연동)");
   };
@@ -108,36 +75,46 @@ export default function ProductRegister() {
     <>
       <SubHeader />
 
-      <div style={{ background: "#E3E3E3", minHeight: "100vh", padding: "40px 0" }}>
+      <div style={{ background: "#fff", minHeight: "100vh", padding: "40px 0" }}>
         <div
           style={{
-            maxWidth: "1000px",
+            maxWidth: "1100px",
             margin: "0 auto",
             background: "#fff",
-            borderRadius: "12px",
-            padding: "40px 50px",
+            padding: "20px 40px",
           }}
         >
-          <h2 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "30px" }}>
+          <h2
+            style={{
+              fontSize: "22px",
+              fontWeight: "bold",
+              marginBottom: "30px",
+              borderBottom: "1px solid #ddd",
+              paddingBottom: "10px",
+            }}
+          >
             상품 등록
           </h2>
 
           <form
             onSubmit={handleSubmit}
-            style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}
+            style={{ display: "flex", gap: "40px", alignItems: "center" }}
           >
             {/* 사진 첨부 */}
-            <div style={{ flex: "0 0 250px", textAlign: "center" }}>
-              <div
+            <div style={{ flex: "0 0 300px", textAlign: "center" }}>
+              <label
+                htmlFor="imageUpload"
                 style={{
+                  display: "block",
                   width: "100%",
-                  height: "300px",
+                  height: "500px",
                   background: "#eee",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "10px",
-                  border: "1px solid #ccc",
                 }}
               >
                 {image ? (
@@ -149,150 +126,155 @@ export default function ProductRegister() {
                 ) : (
                   "사진첨부"
                 )}
-              </div>
+              </label>
               <input
+                id="imageUpload"
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                style={{ display: "block", margin: "0 auto" }}
+                style={{ display: "none" }}
               />
             </div>
 
             {/* 상품 입력 폼 */}
             <div style={{ flex: 1 }}>
-              <div style={{ marginBottom: "12px" }}>
-                카테고리
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  style={inputStyle}
-                >
-                  {Object.keys(categoryMap).map((key) => (
-                    <option key={key} value={key}>
-                      {key}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <label style={labelStyle}>카테고리</label>
+              <select
+                value={category}
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                  setSubCategory("");
+                }}
+                style={inputStyle}
+              >
+                {Object.keys(categoryMap).map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
 
-              <div style={{ marginBottom: "12px" }}>
-                세부 카테고리
-                <select
-                  value={subCategory}
-                  onChange={(e) => setSubCategory(e.target.value)}
-                  style={inputStyle}
-                >
-                  <option value="">선택 없음</option>
-                  {Object.keys(categoryLowMap).map((key) => (
-                    <option key={key} value={key}>
-                      {key}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <label style={labelStyle}>세부 카테고리</label>
+              <select
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                style={inputStyle}
+              >
+                <option value="">선택 없음</option>
+                {categoryMap[category]?.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
 
-              <label>
-                상품이름
+              <label style={labelStyle}>상품이름</label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                style={inputStyle}
+              />
+
+              <label style={labelStyle}>상품설명</label>
+              <input
+                name="desc"
+                value={form.desc}
+                onChange={handleChange}
+                style={inputStyle}
+              />
+
+              <label style={labelStyle}>가격</label>
+              <input
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                style={inputStyle}
+              />
+
+              <label style={labelStyle}>배송비</label>
+              <input
+                type="number"
+                name="shippingFee"
+                value={form.shippingFee}
+                onChange={handleChange}
+                style={inputStyle}
+              />
+
+              {/* 옵션 입력 */}
+              <label style={labelStyle}>색상 / 사이즈 / 최대수량</label>
+              <div style={{ display: "flex", gap: "8px" }}>
                 <input
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
+                  value={tempColor}
+                  onChange={(e) => setTempColor(e.target.value)}
                   style={inputStyle}
+                  placeholder="색상 예: Black"
                 />
-              </label>
-              <label>
-                상품설명
-                <textarea
-                  name="desc"
-                  value={form.desc}
-                  onChange={handleChange}
-                  style={{ ...inputStyle, height: "80px" }}
+                <input
+                  value={tempSize}
+                  onChange={(e) => setTempSize(e.target.value)}
+                  style={inputStyle}
+                  placeholder="사이즈 예: M"
                 />
-              </label>
-              <label>
-                가격
                 <input
                   type="number"
-                  name="price"
-                  value={form.price}
-                  onChange={handleChange}
+                  value={tempQty}
+                  onChange={(e) => setTempQty(e.target.value)}
                   style={inputStyle}
+                  placeholder="수량 예: 10"
                 />
-              </label>
-              <label>
-                배송비
-                <input
-                  type="number"
-                  name="shippingFee"
-                  value={form.shippingFee}
-                  onChange={handleChange}
-                  style={inputStyle}
-                />
-              </label>
-
-              {/* 색상 추가 */}
-              <div style={{ marginTop: "10px" }}>
-                색상
-                <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-                  <input
-                    value={tempColor}
-                    onChange={(e) => setTempColor(e.target.value)}
-                    style={inputStyle}
-                  />
-                  <button type="button" onClick={addColor} style={smallBtn}>
-                    추가
-                  </button>
-                </div>
-                {colors.length > 0 && (
-                  <div style={{ fontSize: "12px", color: "#555", marginTop: "4px" }}>
-                    추가된 색상: {colors.join(", ")}
-                  </div>
-                )}
+                <button type="button" onClick={addOption} style={smallBtn}>
+                  +
+                </button>
               </div>
 
-              {/* 사이즈 추가 */}
-              <div style={{ marginTop: "10px" }}>
-                사이즈
-                <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-                  <input
-                    value={tempSize}
-                    onChange={(e) => setTempSize(e.target.value)}
-                    style={inputStyle}
-                  />
-                  <button type="button" onClick={addSize} style={smallBtn}>
-                    추가
-                  </button>
+              {/* 추가된 옵션 리스트 */}
+              {options.length > 0 && (
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "8px",
+                  }}
+                >
+                  {options.map((opt, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        border: "1px solid #ccc",
+                        borderRadius: "6px",
+                        padding: "4px 8px",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <span>
+                        {opt.color} / {opt.size} / {opt.qty}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeOption(idx)}
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          color: "#A40303",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                {sizes.length > 0 && (
-                  <div style={{ fontSize: "12px", color: "#555", marginTop: "4px" }}>
-                    추가된 사이즈: {sizes.join(", ")}
-                  </div>
-                )}
-              </div>
-
-              {/* 최대수량 추가 */}
-              <div style={{ marginTop: "10px" }}>
-                최대수량
-                <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-                  <input
-                    type="number"
-                    value={tempQty}
-                    onChange={(e) => setTempQty(e.target.value)}
-                    style={inputStyle}
-                  />
-                  <button type="button" onClick={addQty} style={smallBtn}>
-                    추가
-                  </button>
-                </div>
-                {quantities.length > 0 && (
-                  <div style={{ fontSize: "12px", color: "#555", marginTop: "4px" }}>
-                    추가된 수량: {quantities.join(", ")}
-                  </div>
-                )}
-              </div>
+              )}
 
               {/* 등록 버튼 */}
-              <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <div style={{ textAlign: "right", marginTop: "20px" }}>
                 <button type="submit" style={submitBtn}>
                   등록하기
                 </button>
@@ -305,26 +287,37 @@ export default function ProductRegister() {
   );
 }
 
+const labelStyle = {
+  display: "block",
+  marginTop: "12px",
+  marginBottom: "4px",
+  fontSize: "14px",
+  fontWeight: "bold",
+};
+
 const inputStyle = {
   display: "block",
   width: "100%",
-  marginTop: "4px",
-  padding: "6px",
+  padding: "8px",
   border: "1px solid #ccc",
   borderRadius: "4px",
   fontSize: "14px",
+  marginBottom: "12px",
+  height: "36px",
 };
 
 const smallBtn = {
   padding: "6px 12px",
-  background: "#f5f5f5",
-  border: "1px solid #ccc",
+  background: "#535050",
+  color: "#fff",
+  border: "none",
   borderRadius: "4px",
   cursor: "pointer",
+  height: "36px",
 };
 
 const submitBtn = {
-  padding: "12px 30px",
+  padding: "10px 30px",
   background: "#535050",
   border: "none",
   borderRadius: "6px",
