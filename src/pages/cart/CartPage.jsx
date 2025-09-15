@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { orderApi } from "../../api/order/orderApi";
+import { orderApi } from "../../api/order/orderApi.js";
 import { SubHeader } from "../../components/SubHeader"; // 상단 헤더(뒤로가기+로고)
 
 export default function CartPage() {
@@ -21,6 +21,7 @@ export default function CartPage() {
     [items]
   );
   const shippingFee = items.length > 0 ? 3000 : 0;
+
   const finalTotal = total + shippingFee;
 
   const setQty = (productId, qty) =>

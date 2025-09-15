@@ -1,16 +1,53 @@
 import { apiClient } from '../config';
 
-// 찜 추가
-export const addFavorite = (data) => apiClient.post('/favorites', data);
+export const favoriteApi = {
+  addFavorite: async (data) => {
+    try {
+      const response = await apiClient.post('/favorites', data);
+      return response.data;
+    } catch (error) {
+      console.error('찜 추가 실패:', error);
+      throw error;
+    }
+  },
 
-// 찜 삭제
-export const removeFavorite = (data) => apiClient.delete('/favorites', { data });
+  removeFavorite: async (data) => {
+    try {
+      const response = await apiClient.delete('/favorites', { data });
+      return response.data;
+    } catch (error) {
+      console.error('찜 삭제 실패:', error);
+      throw error;
+    }
+  },
 
-// 유저별 찜 목록 조회
-export const getUserFavorites = (userNum) => apiClient.get(`/favorites/${userNum}`);
+  getUserFavorites: async (userNum) => {
+    try {
+      const response = await apiClient.get(`/favorites/${userNum}`);
+      return response.data;
+    } catch (error) {
+      console.error('유저 찜 목록 조회 실패:', error);
+      throw error;
+    }
+  },
 
-// 유저 찜 개수
-export const getUserFavoriteCount = (userNum) => apiClient.get(`/favorites/user/${userNum}/count`);
+  getUserFavoriteCount: async (userNum) => {
+    try {
+      const response = await apiClient.get(`/favorites/user/${userNum}/count`);
+      return response.data;
+    } catch (error) {
+      console.error('유저 찜 개수 조회 실패:', error);
+      throw error;
+    }
+  },
 
-// 특정 상품 찜 개수
-export const getProductFavoriteCount = (productNum) => apiClient.get(`/favorites/product/${productNum}/count`);
+  getProductFavoriteCount: async (productNum) => {
+    try {
+      const response = await apiClient.get(`/favorites/product/${productNum}/count`);
+      return response.data;
+    } catch (error) {
+      console.error('상품 찜 개수 조회 실패:', error);
+      throw error;
+    }
+  },
+};
