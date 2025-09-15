@@ -73,7 +73,7 @@ export const productApi = {
 
   getAllProductsByUser: async (userId) => {
     try {
-      const response = await apiClient.get(`/products/${userId}`);
+      const response = await apiClient.get(`/products/my-products`);
       return response.data;
     } catch (error) {
       console.error('유저별 상품 조회 실패:', error);

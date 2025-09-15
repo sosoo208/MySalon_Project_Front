@@ -1,33 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import AdminNav from "./AdminNav";
+import { productApi } from "../../api/product/productApi";
 
 /** ================================
  *  판매자 마이페이지
  *  ================================ */
 const AdminMyPage = () => {
   const [activeTab, setActiveTab] = useState("product-list");
+  const [products, setProducts] = useState([]);
 
-  // 샘플 상품
-  const products = [
-    {
-      id: "123456",
-      name: "여름 원피스",
-      description: "시원한 원피스 설명",
-      price: "50,000 원",
-      image: "https://via.placeholder.com/120x160",
-      qty: 2,
-    },
-    {
-      id: "654321",
-      name: "블라우스",
-      description: "가벼운 블라우스 설명",
-      price: "42,000 원",
-      image: "https://via.placeholder.com/120x160",
-      qty: 5,
-    },
-  ];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await productApi.getAllProductsByUser();
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("상품을 불러오는 중 오류가 발생했습니다.", error);
+      }
+    };
+
+    if (activeTab === "product-list") {
+      fetchProducts();
+    }
+  }, [activeTab]);
 
   return (
     <div className="bg-white min-h-screen w-full">
@@ -49,17 +46,20 @@ const AdminMyPage = () => {
                 {products.map((p) => (
                   <Card key={p.id} className="border p-4">
                     <CardContent className="flex gap-6">
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        className="w-[120px] h-[160px] object-cover"
-                      />
+                      
+
+                    <img src={p.mainImage ? `http://localhost:8080/products/images/${p.mainImage}` : "https://via.placeholder.com/120x160"}
+                    alt={p.productName}
+    className="w-[120px] h-[160px] object-cover"
+/>
+
+
                       <div className="flex-1">
                         <div className="text-sm text-gray-500">{p.id}</div>
                         <h3 className="text-lg font-bold">{p.name}</h3>
                         <p className="text-gray-700">{p.description}</p>
                         <div className="mt-2 text-lg font-semibold">
-                          {p.price}
+                          {p.price.toLocaleString()} 원
                         </div>
                       </div>
                       <div className="flex flex-col gap-2">
