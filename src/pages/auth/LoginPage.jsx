@@ -43,7 +43,7 @@ const LoginPage = () => {
     const result = await login(loginData.id, loginData.password);
 
     if (result.success) {
-      console.log("로그인 성공, 유저 정보:", result.user); // 여기서 유저 정보 출력
+      
       alert('로그인 성공!');
       navigate('/mypage');
     } else {

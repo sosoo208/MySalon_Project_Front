@@ -11,6 +11,12 @@ import ShopPage from "./pages/shop/ShopPage";
 import OuterPage from "./pages/shop/OuterPage";
 import PantsPage from "./pages/shop/PantsPage";
 import DressPage from "./pages/shop/DressPage";
+import TopPage from "./pages/shop/TopPage";
+import KidsPage from "./pages/shop/KidsPage";
+import MalePage from "./pages/shop/MalePage";
+import FemalePage from "./pages/shop/FemalePage";
+
+// ===== 장바구니 페이지 =====
 import CartPage from "./pages/cart/CartPage";   // ✅ 장바구니 페이지
 
 // ===== 사용자 페이지 =====
@@ -138,9 +144,17 @@ function AppContent() {
       />
 
       {/* ===== 카테고리 ===== */}
-      <Route path="/category/아우터" element={<OuterPage />} />
       <Route path="/category/바지" element={<PantsPage />} />
-      <Route path="/category/원피스" element={<DressPage />} />
+      <Route path="/category/상의" element={<TopPage />} />
+      <Route path="/category/남성" element={<MalePage />} />
+      <Route path="/category/여성" element={<FemalePage />} />
+      <Route path="/category/키즈" element={<KidsPage />} />
+
+      <Route path="/category/아우터" element={<OuterPage />} />
+      <Route path="/category/원피스/스커트" element={<DressPage />} />
+
+
+      
 
       {/* 커뮤니티 */}
       <Route path="/community" element={<CommunityPage />} />
