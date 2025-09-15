@@ -77,6 +77,7 @@ const CommunityPage = () => {
   const [activeTab, setActiveTab] = useState("today");
   const [outfits, setOutfits] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     setActiveTab(location.pathname.startsWith("/board") ? "board" : "today");
@@ -86,7 +87,7 @@ const CommunityPage = () => {
   useEffect(() => {
     const fetchOutfits = async () => {
       try {
-        const data = await postApi.getPosts();
+        const data = await postApi.getHotCoordiPost();
         setOutfits(data);
       } catch (error) {
         console.error("Failed to fetch outfits:", error);
@@ -122,8 +123,22 @@ const CommunityPage = () => {
     avatar: item.userImage,
     username: item.writer,
     likes: item.likeCount,
-    
   }));
+
+  const itemsPerPage = 3;
+  const totalPages = featuredOutfits.length > 0 ? Math.ceil(featuredOutfits.length / itemsPerPage) : 1;
+
+  const handleNext = () => {
+    setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
+  };
+
+  const startIndex = currentPage * itemsPerPage;
+  const displayedOutfits = featuredOutfits.slice(startIndex, startIndex + itemsPerPage);
+
 
   const gridOutfits = outfits.slice(3, 7).map((item) => ({
     id: item.postNum,
@@ -196,37 +211,41 @@ const CommunityPage = () => {
         {/* 추천 카드 캐러셀 */}
         <section className="absolute w-[577px] h-[347px] top-96 left-1/2 -translate-x-1/2">
           <Button variant="outline" size="icon"
+                  onClick={handlePrev}
                   className="absolute w-10 h-10 top-[172px] -left-[129px] rounded-[20px] border border-black bg-white hover:bg-gray-50">
             <ChevronLeftIcon className="w-3.5 h-[15px]" />
           </Button>
           <Button variant="outline" size="icon"
+                  onClick={handleNext}
                   className="absolute w-10 h-10 top-[172px] -right-[129px] rounded-[20px] border border-black bg-white hover:bg-gray-50">
             <ChevronRightIcon className="w-3.5 h-[15px]" />
           </Button>
 
           <div className="flex gap-[1px] relative">
-            {featuredOutfits.map((outfit, index) => (
+            {displayedOutfits.map((outfit, index) => {
+              const isCenter = index === 1;
+              return (
               <Card
                 key={outfit.id}
-                className={`${outfit.isCenter ? "w-[217px] h-[311px] rounded-[10px] border border-black" : "w-[218px] h-[312px] bg-gray-100 border-none"} ${index === 0 || index === 2 ? "mt-9" : ""}`}
+                className={`${isCenter ? "w-[217px] h-[311px] rounded-[10px] border border-black" : "w-[218px] h-[312px] bg-gray-100 border-none"} ${index === 0 || index === 2 ? "mt-9" : ""}`}
               >
                 <CardContent className="p-0 relative h-full">
                   <img
-                    className={`${outfit.isCenter ? "w-[169px] h-[150px] top-4 left-[22px]" : "w-[169px] h-[150px] top-[57px] left-[22px]"} absolute object-cover`}
+                    className={`${isCenter ? "w-[169px] h-[150px] top-4 left-[22px]" : "w-[169px] h-[150px] top-[57px] left-[22px]"} absolute object-cover`}
                     alt="Outfit"
                     src={outfit.image}
                   />
 
-                  <div className={`absolute ${outfit.isCenter ? "w-[126px] h-[35px] top-[179px] left-6" : "top-[217px] left-[22px]"}`}>
-                    <h3 className={`${outfit.isCenter ? "absolute top-0 left-0" : ""} font-bold text-lg leading-[25.2px] whitespace-nowrap`}>
+                  <div className={`absolute ${isCenter ? "w-[126px] h-[35px] top-[179px] left-6" : "top-[217px] left-[22px]"}`}>
+                    <h3 className={`${isCenter ? "absolute top-0 left-0" : ""} font-bold text-lg leading-[25.2px] whitespace-nowrap`}>
                       {outfit.title}
                     </h3>
-                    <p className={`${outfit.isCenter ? "absolute top-[21px] left-0.5" : "mt-1"} text-[10px] leading-[14px] whitespace-nowrap`}>
+                    <p className={`${isCenter ? "absolute top-[21px] left-0.5" : "mt-1"} text-[10px] leading-[14px] whitespace-nowrap`}>
                       {outfit.category}
                     </p>
                   </div>
 
-                  <div className={`absolute ${outfit.isCenter ? "top-[220px] left-[22px]" : "top-[261px] left-[22px]"} w-16 h-[31px] flex items-center gap-2`}>
+                  <div className={`absolute ${isCenter ? "top-[220px] left-[22px]" : "top-[261px] left-[22px]"} w-16 h-[31px] flex items-center gap-2`}>
                     <Avatar className="w-[26px] h-[31px]">
                       <AvatarImage src={outfit.avatar} alt="User" />
                       <AvatarFallback>홍</AvatarFallback>
@@ -234,13 +253,13 @@ const CommunityPage = () => {
                     <span className="text-[10px] leading-[14px] whitespace-nowrap">{outfit.username}</span>
                   </div>
 
-                  <div className={`absolute ${outfit.isCenter ? "top-[264px] left-[139px]" : "top-[305px] right-[27px]"} w-[51px] h-[21px] flex items-center gap-1`}>
+                  <div className={`absolute ${isCenter ? "top-[264px] left-[139px]" : "top-[305px] right-[27px]"} w-[51px] h-[21px] flex items-center gap-1`}>
                     <HeartIcon className="w-5 h-5 fill-red-500 text-red-500" />
                     <span className="font-bold text-[15px] leading-[21px]">{outfit.likes}</span>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )})}
           </div>
         </section>
 
