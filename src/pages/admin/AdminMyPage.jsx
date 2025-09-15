@@ -1,85 +1,89 @@
-import React, { useState } from "react";
-import { Button } from "../../components/ui/button";
-import { Card, CardContent } from "../../components/ui/card";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { SubHeader } from "../../components/SubHeader";
 import AdminNav from "./AdminNav";
+import { Button } from "../../components/ui/button";
 
-/** ================================
- *  판매자 마이페이지
- *  ================================ */
-const AdminMyPage = () => {
-  const [activeTab, setActiveTab] = useState("product-list");
+export default function ProductList() {
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
-  // 샘플 상품
-  const products = [
-    {
-      id: "123456",
-      name: "여름 원피스",
-      description: "시원한 원피스 설명",
-      price: "50,000 원",
-      image: "https://via.placeholder.com/120x160",
-      qty: 2,
-    },
-    {
-      id: "654321",
-      name: "블라우스",
-      description: "가벼운 블라우스 설명",
-      price: "42,000 원",
-      image: "https://via.placeholder.com/120x160",
-      qty: 5,
-    },
-  ];
+  // 📌 더미 데이터 (화면 확인용)
+  useEffect(() => {
+    const dummy = [
+      {
+        id: "123456",
+        name: "여름 원피스",
+        description: "시원한 원피스 설명",
+        price: "50,000 원",
+        shippingFee: "3,500원",
+        colors: ["Black", "White", "Red"],
+        sizes: ["S", "M", "L"],
+        image: "https://picsum.photos/120/160?random=1",
+      },
+      {
+        id: "654321",
+        name: "블라우스",
+        description: "가벼운 블라우스 설명",
+        price: "42,000 원",
+        shippingFee: "3,000원",
+        colors: ["Blue", "White"],
+        sizes: ["M", "L"],
+        image: "https://picsum.photos/120/160?random=2",
+      },
+    ];
+    setProducts(dummy);
+  }, []);
+
+  // 삭제 (state만 수정)
+  const handleDelete = (id) => {
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+  };
 
   return (
-    <div className="bg-white min-h-screen w-full">
-      <div className="max-w-[1440px] mx-auto bg-white">
-        {/* 상단 헤더 */}
-        <header className="bg-[#d9d9d9] h-[120px] flex items-center justify-center text-2xl font-bold">
-          판매자 마이페이지
-        </header>
+    <>
+      <SubHeader />
+      <AdminNav activeTab="product-list" />
 
-        {/* 공통 네비게이션 */}
-        <AdminNav activeTab={activeTab} />
+      <div className="max-w-[1100px] mx-auto bg-white p-10">
+        <h2 className="text-xl font-bold mb-6 border-b pb-2">상품 목록</h2>
 
-        {/* 탭 내용 */}
-        <main className="px-20">
-          {activeTab === "product-list" && (
-            <>
-              <h1 className="mb-8 font-bold text-2xl">상품 목록</h1>
-              <div className="space-y-6">
-                {products.map((p) => (
-                  <Card key={p.id} className="border p-4">
-                    <CardContent className="flex gap-6">
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        className="w-[120px] h-[160px] object-cover"
-                      />
-                      <div className="flex-1">
-                        <div className="text-sm text-gray-500">{p.id}</div>
-                        <h3 className="text-lg font-bold">{p.name}</h3>
-                        <p className="text-gray-700">{p.description}</p>
-                        <div className="mt-2 text-lg font-semibold">
-                          {p.price}
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Button variant="outline">상품페이지</Button>
-                        <Button className="bg-[#828282] text-white">삭제</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+        <div className="space-y-6">
+          {products.map((p) => (
+            <div
+              key={p.id}
+              className="flex items-start gap-6 border-b pb-6 last:border-0"
+            >
+              <img
+                src={p.image}
+                alt={p.name}
+                className="w-[120px] h-[160px] object-cover"
+              />
+              <div className="flex-1">
+                <div className="text-sm text-gray-500">{p.id}</div>
+                <h3 className="text-lg font-bold mb-1">{p.name}</h3>
+                <p className="text-gray-700 mb-2">{p.description}</p>
+                <div className="text-lg font-semibold">{p.price}</div>
               </div>
-            </>
-          )}
-
-          {activeTab === "sales-list" && <div>판매 목록 페이지 준비중…</div>}
-          {activeTab === "order-shipping" && <div>주문/발송 페이지 준비중…</div>}
-          {activeTab === "sales" && <div>매출 페이지 준비중…</div>}
-        </main>
+              <div className="flex flex-col gap-2 mt-6">
+                <Button
+                  variant="outline"
+                  className="w-[100px] h-[36px]"
+                  onClick={() => navigate(`/admin/products/${p.id}`, { state: p })}
+                >
+                  상품페이지
+                </Button>
+                <Button
+                  className="w-[100px] h-[36px] bg-gray-700 text-white"
+                  onClick={() => handleDelete(p.id)}
+                >
+                  삭제
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
-};
-
-export default AdminMyPage;
+}
