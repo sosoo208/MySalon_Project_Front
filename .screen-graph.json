@@ -657,15 +657,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:102:34-to-src\\pages\\auth\\LoginPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:107:34-to-src\\pages\\auth\\LoginPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\auth\\LoginPage.jsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
           "element": "navigate(\"/login\")",
-          "line": 102,
-          "endLine": 102,
+          "line": 107,
+          "endLine": 107,
           "column": 34,
           "endColumn": 52,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
@@ -673,15 +673,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:103:35-to-src\\pages\\auth\\SignupPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:108:35-to-src\\pages\\auth\\SignupPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\auth\\SignupPage.jsx",
       "data": {
         "viaRoute": "/signup",
         "trigger": {
           "element": "navigate(\"/signup\")",
-          "line": 103,
-          "endLine": 103,
+          "line": 108,
+          "endLine": 108,
           "column": 35,
           "endColumn": 54,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
@@ -689,15 +689,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:104:35-to-src\\pages\\cart\\CartPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:109:35-to-src\\pages\\cart\\CartPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\cart\\CartPage.jsx",
       "data": {
         "viaRoute": "/cart",
         "trigger": {
           "element": "navigate(\"/cart\")",
-          "line": 104,
-          "endLine": 104,
+          "line": 109,
+          "endLine": 109,
           "column": 35,
           "endColumn": 52,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
@@ -705,15 +705,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:106:35-to-src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:111:35-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
       "data": {
         "viaRoute": "/community",
         "trigger": {
           "element": "navigate(\"/community\")",
-          "line": 106,
-          "endLine": 106,
+          "line": 111,
+          "endLine": 111,
           "column": 35,
           "endColumn": 57,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
@@ -721,15 +721,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:195:12-to-src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:189:12-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
       "data": {
         "viaRoute": "/community",
         "trigger": {
           "element": "<Link to=\"/community\">\n              <h2 className={`text-2xl ${activeTab === \"today\" ? \"font-bold text-[#a40303]\" : \"text-black\"}`}>\n                오늘의 코디\n              </h2>\n            </Link>",
-          "line": 195,
-          "endLine": 199,
+          "line": 189,
+          "endLine": 193,
           "column": 12,
           "endColumn": 19,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"

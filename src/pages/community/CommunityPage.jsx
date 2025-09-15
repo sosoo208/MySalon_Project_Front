@@ -76,6 +76,7 @@ const CommunityPage = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("today");
   const [outfits, setOutfits] = useState([]);
+  const [gridOutfits, setGridOutfits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -87,8 +88,12 @@ const CommunityPage = () => {
   useEffect(() => {
     const fetchOutfits = async () => {
       try {
-        const data = await postApi.getHotCoordiPost();
-        setOutfits(data);
+        const [hotData, allData] = await Promise.all([
+          postApi.getHotCoordiPost(),
+          postApi.getAllCoordiPost(),
+        ]);
+        setOutfits(hotData);
+        setGridOutfits(allData);
       } catch (error) {
         console.error("Failed to fetch outfits:", error);
       } finally {
@@ -139,20 +144,9 @@ const CommunityPage = () => {
   const startIndex = currentPage * itemsPerPage;
   const displayedOutfits = featuredOutfits.slice(startIndex, startIndex + itemsPerPage);
 
-
-  const gridOutfits = outfits.slice(3, 7).map((item) => ({
-    id: item.postNum,
-    title: item.title,
-    category: "휴양지룩", // API에 없는 데이터이므로 임의 지정
-    image: item.coordiImage,
-    avatar: item.userImage,
-    username: item.writer,
-    likes: item.likeCount,
-  }));
-
   return (
     <div className="bg-white min-h-screen w-full">
-      <div className="max-w-[1440px] mx-auto bg-white overflow-hidden min-h-[1080px] relative">
+      <div className="max-w-[1440px] mx-auto bg-white min-h-[1080px] relative">
         {/* 상단 네비 */}
         <nav className="absolute top-[33px] right-[37px]">
           <div className="flex gap-4 text-[15px]">
