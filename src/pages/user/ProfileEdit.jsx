@@ -5,20 +5,22 @@ import { userApi } from "../../api/user/userApi";
 
 export default function ProfileEdit() {
   const [role, setRole] = useState("buyer");
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null); // 미리보기 URL
   const [form, setForm] = useState({
     id: "",
     password: "",
     passwordCheck: "",
-    name: "",
-    height: "",
+    secondPassword: "",
+    userName: "",
+    tall: "",
     weight: "",
     storeName: "",
     gender: "",
+    profileImage: null, // Base64 문자열
   });
+
   const [loading, setLoading] = useState(true);
 
-  // 1️⃣ 페이지 로드 시 로그인 유저 정보 가져오기
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -27,11 +29,13 @@ export default function ProfileEdit() {
           id: user.id || "",
           password: "",
           passwordCheck: "",
-          name: user.userName || "",
-          height: user.tall || "",
+          secondPassword: "",
+          userName: user.userName || "",
+          tall: user.tall || "",
           weight: user.weight || "",
           storeName: user.storeName || "",
           gender: user.gender || "",
+          profileImage: user.profileImage || null,
         });
         setRole(user.type?.toLowerCase() || "buyer");
         setProfileImage(user.profileImage || null);
@@ -42,59 +46,64 @@ export default function ProfileEdit() {
         setLoading(false);
       }
     };
-
     fetchUserInfo();
   }, []);
 
-  // 이미지 업로드
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfileImage(URL.createObjectURL(file));
-    }
-  };
-
-  // 이미지 삭제
-  const handleImageRemove = () => {
-    setProfileImage(null);
-    document.getElementById("profile-upload").value = "";
-  };
-
-  // 입력 값 변경
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 제출
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+        setForm((prev) => ({ ...prev, profileImage: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageRemove = () => {
+    setProfileImage(null);
+    setForm((prev) => ({ ...prev, profileImage: null }));
+    document.getElementById("profile-upload").value = "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.id || !form.password || !form.passwordCheck || !form.name) {
+
+    if (!form.id || !form.password || !form.passwordCheck || !form.userName) {
       alert("필수 정보를 입력해 주세요.");
       return;
     }
+
     if (form.password !== form.passwordCheck) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
 
+    // DTO 필드명에 맞춘 명시적 payload
     const payload = {
       id: form.id,
       password: form.password,
-      userName: form.name,
-      tall: form.height,
-      weight: form.weight,
-      storeName: form.storeName,
-      gender: form.gender,
+      secondPassword: form.secondPassword,
+      userName: form.userName,
+      tall: form.tall ? Number(form.tall) : 0,
+      weight: form.weight ? Number(form.weight) : 0,
+      gender: form.gender || null,
       type: role.toUpperCase(),
-      profileImage,
+      storeName: form.storeName || "",
+      profileImage: form.profileImage || null,
     };
 
     try {
       await userApi.editUser(payload);
       alert("프로필이 수정되었습니다 ✅");
     } catch (err) {
-      console.error(err);
+      console.error("회원 수정 실패:", err);
       alert("프로필 수정 실패 ❌");
     }
   };
@@ -105,40 +114,15 @@ export default function ProfileEdit() {
     <>
       <SubHeader bgColor="#fff" />
       <div style={{ background: "#fff", minHeight: "100vh", padding: "40px 0" }}>
-        <div
-          style={{
-            maxWidth: "800px",
-            margin: "0 auto",
-            background: "#fff",
-            borderRadius: "12px",
-            padding: "40px 60px",
-          }}
-        >
-          <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "30px" }}>
-            프로필 수정하기
-          </h2>
+        <div style={{ maxWidth: "800px", margin: "0 auto", background: "#fff", borderRadius: "12px", padding: "40px 60px" }}>
+          <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "30px" }}>프로필 수정하기</h2>
 
-          {/* 구매자 / 판매자 선택 */}
           <div style={{ marginBottom: "20px" }}>
             <label style={{ marginRight: "20px" }}>
-              <input
-                type="radio"
-                name="role"
-                value="buyer"
-                checked={role === "buyer"}
-                onChange={(e) => setRole(e.target.value)}
-              />{" "}
-              구매자
+              <input type="radio" name="role" value="buyer" checked={role === "buyer"} onChange={(e) => setRole(e.target.value)} /> 구매자
             </label>
             <label>
-              <input
-                type="radio"
-                name="role"
-                value="seller"
-                checked={role === "seller"}
-                onChange={(e) => setRole(e.target.value)}
-              />{" "}
-              판매자
+              <input type="radio" name="role" value="seller" checked={role === "seller"} onChange={(e) => setRole(e.target.value)} /> 판매자
             </label>
           </div>
 
@@ -156,24 +140,24 @@ export default function ProfileEdit() {
               <input type="password" name="passwordCheck" value={form.passwordCheck} onChange={handleChange} style={inputStyle} />
             </label>
             <label>
+              2차 비밀번호
+              <input type="password" name="secondPassword" value={form.secondPassword} onChange={handleChange} style={inputStyle} placeholder="6자리 숫자" maxLength={6} />
+            </label>
+            <label>
               이름
-              <input type="text" name="name" value={form.name} onChange={handleChange} style={inputStyle} />
+              <input type="text" name="userName" value={form.userName} onChange={handleChange} style={inputStyle} />
             </label>
 
-            {/* 프로필 사진 */}
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
               <span>프로필 사진</span>
               <label htmlFor="profile-upload" style={uploadLabelStyle}>
-                <img src={profileIcon} alt="프로필 업로드" style={{ width: "18px", height: "18px" }} />
-                사진 업로드
+                <img src={profileIcon} alt="프로필 업로드" style={{ width: "18px", height: "18px" }} /> 사진 업로드
               </label>
               <input id="profile-upload" type="file" accept="image/*" style={{ display: "none" }} onChange={handleImageChange} />
               {profileImage && (
                 <>
                   <img src={profileImage} alt="미리보기" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
-                  <button type="button" onClick={handleImageRemove} style={removeBtnStyle}>
-                    삭제
-                  </button>
+                  <button type="button" onClick={handleImageRemove} style={removeBtnStyle}>삭제</button>
                 </>
               )}
             </div>
@@ -193,7 +177,7 @@ export default function ProfileEdit() {
             <div style={{ display: "flex", gap: "10px" }}>
               <label style={{ flex: 1 }}>
                 키
-                <input type="number" name="height" value={form.height} onChange={handleChange} style={inputStyle} placeholder="cm" />
+                <input type="number" name="tall" value={form.tall} onChange={handleChange} style={inputStyle} placeholder="cm" />
               </label>
               <label style={{ flex: 1 }}>
                 몸무게
