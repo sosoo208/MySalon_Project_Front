@@ -727,7 +727,7 @@
       "data": {
         "viaRoute": "/community",
         "trigger": {
-          "element": "<Link to=\"/community\">\n              <h2 className={`text-2xl ${activeTab === \"today\" ? \"font-bold text-[#a40303]\" : \"text-black\"}`}>\n                오늘의 코디\n              </h2>\n            </Link>",
+          "element": "<Link to=\"/community\">\r\n              <h2 className={`text-2xl ${activeTab === \"today\" ? \"font-bold text-[#a40303]\" : \"text-black\"}`}>\r\n                오늘의 코디\r\n              </h2>\r\n            </Link>",
           "line": 189,
           "endLine": 193,
           "column": 12,
