@@ -1,22 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
+import AdminNav from "./AdminNav";
 
 /** ================================
  *  판매자 마이페이지
  *  ================================ */
 const AdminMyPage = () => {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("product-list");
-
-  const navigationItems = [
-    { id: "product-list", label: "상품 목록" },
-    { id: "product-register", label: "상품 등록" }, // 👉 이건 navigate로 처리
-    { id: "sales-list", label: "판매 목록" },
-    { id: "order-shipping", label: "주문/발송" },
-    { id: "sales", label: "매출" },
-  ];
 
   // 샘플 상품
   const products = [
@@ -46,31 +37,8 @@ const AdminMyPage = () => {
           판매자 마이페이지
         </header>
 
-        {/* 탭 메뉴 */}
-        <nav className="mt-10 mb-16">
-          <div className="flex justify-center gap-16">
-            {navigationItems.map((item) => (
-              <Button
-                key={item.id}
-                variant="ghost"
-                onClick={() => {
-                  if (item.id === "product-register") {
-                    navigate("/admin/products/register"); // 👉 상품 등록 페이지로 이동
-                  } else {
-                    setActiveTab(item.id);
-                  }
-                }}
-                className={`h-auto p-0 text-xl ${
-                  activeTab === item.id
-                    ? "font-bold text-[#a40303]"
-                    : "text-black hover:text-[#a40303]"
-                }`}
-              >
-                {item.label}
-              </Button>
-            ))}
-          </div>
-        </nav>
+        {/* 공통 네비게이션 */}
+        <AdminNav activeTab={activeTab} />
 
         {/* 탭 내용 */}
         <main className="px-20">
