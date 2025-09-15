@@ -5,7 +5,7 @@ export const communityApi = {
   // 게시글 목록 조회
   getPosts: async (params = {}) => {
     try {
-      const response = await apiClient.get('/community/posts', { params });
+      const response = await apiClient.get('/posts/hot-coordi', { params });
       return response.data;
     } catch (error) {
       console.error('게시글 목록 조회 실패:', error);

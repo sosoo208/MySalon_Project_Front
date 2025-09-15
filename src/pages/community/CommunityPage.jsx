@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { communityApi } from "../../api/community/communityApi.js";
 
 // 외부 컴포넌트들을 이 파일 내부에 직접 정의합니다.
 // 이렇게 하면 import 오류를 해결할 수 있습니다.
@@ -85,16 +86,7 @@ const CommunityPage = () => {
   useEffect(() => {
     const fetchOutfits = async () => {
       try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await fetch("http://localhost:8080/api/posts/coordi", {
-          headers: {
-            Authorization: `Bearer ${token}`, // 인증 헤더 추가
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await communityApi.getPosts();
         setOutfits(data);
       } catch (error) {
         console.error("Failed to fetch outfits:", error);
