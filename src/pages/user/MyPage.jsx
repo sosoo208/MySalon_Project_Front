@@ -12,9 +12,9 @@ export default function MyPage() {
         <div
           style={{
             display: "flex",
-            maxWidth: "1200px", // ✅ 카드 박스 더 넓게
+            maxWidth: "1250px",
             margin: "0 auto",
-            gap: "40px",
+            gap: "50px",
             alignItems: "flex-start",
           }}
         >
@@ -31,23 +31,28 @@ export default function MyPage() {
                 }}
               />
               <div style={{ fontWeight: "bold", marginBottom: "6px" }}>HONG1234</div>
-              <div style={{ fontSize: "12px", color: "#555", marginBottom: "10px" }}>
+              <div style={{ fontSize: "12px", color: "#555", marginBottom: "12px" }}>
                 가입일 2025.09.07 <br /> 최근 접속일 2025.09.07 <br />
                 180cm / 70kg
               </div>
-              <button
+              {/* ✅ 수정된 부분: 버튼 → 링크 */}
+              <a
+                href="/mypage/edit"
                 style={{
+                  display: "inline-block",
                   border: "1px solid #777",
-                  borderRadius: "8px", // ✅ 각진 버튼
-                  padding: "8px 16px", // ✅ 조금 더 큼
+                  borderRadius: "8px",
+                  padding: "8px 16px",
                   fontSize: "13px",
                   background: "#fff",
                   cursor: "pointer",
                   fontWeight: "bold",
+                  textDecoration: "none",
+                  color: "#000",
                 }}
               >
                 프로필 수정
-              </button>
+              </a>
             </div>
 
             <nav
@@ -71,19 +76,17 @@ export default function MyPage() {
               flex: 1,
               background: "#fff",
               borderRadius: "12px",
-              padding: "40px", // ✅ 더 크게
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              marginBottom: "50px",
+              padding: "50px",
+              boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+              marginBottom: "60px",
             }}
           >
-            {/* 활동내역 제목 왼쪽 상단 */}
+            {/* 활동내역 제목 */}
             <h2 style={{ fontSize: "22px", marginBottom: "25px", textAlign: "left" }}>
               활동내역
             </h2>
 
-            <div style={{ marginBottom: "25px", fontWeight: "500" }}>
-              홍길동님의 활동
-            </div>
+            <div style={{ marginBottom: "25px", fontWeight: "500" }}>홍길동님의 활동</div>
 
             {/* 4칸 활동 박스 */}
             <div
@@ -91,7 +94,7 @@ export default function MyPage() {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gap: "24px",
-                marginBottom: "35px",
+                marginBottom: "40px",
               }}
             >
               {[
@@ -105,24 +108,24 @@ export default function MyPage() {
                   style={{
                     border: "1px solid #ccc",
                     borderRadius: "10px",
-                    padding: "24px",
+                    padding: "28px",
                     textAlign: "center",
-                    transition: "all 0.2s",
+                    transition: "all 0.25s",
                     cursor: "pointer",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.border = "1px solid #A40303";
-                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+                    e.currentTarget.style.boxShadow = "0 6px 14px rgba(0,0,0,0.12)";
+                    e.currentTarget.style.transform = "translateY(-3px)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.border = "1px solid #ccc";
                     e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.transform = "none";
                   }}
                 >
-                  <div style={{ fontSize: "22px", fontWeight: "bold" }}>
-                    {item.count}
-                  </div>
-                  <div style={{ fontSize: "15px", marginTop: "6px" }}>{item.label}</div>
+                  <div style={{ fontSize: "22px", fontWeight: "bold" }}>{item.count}</div>
+                  <div style={{ fontSize: "15px", marginTop: "8px" }}>{item.label}</div>
                 </div>
               ))}
             </div>
@@ -131,7 +134,7 @@ export default function MyPage() {
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-start", // ✅ 왼쪽 정렬
+                justifyContent: "flex-start",
                 gap: "40px",
                 borderBottom: "1px solid #ccc",
                 marginBottom: "20px",

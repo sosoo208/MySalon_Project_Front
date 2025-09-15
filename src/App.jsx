@@ -15,6 +15,7 @@ import CartPage from "./pages/cart/CartPage";   // ✅ 장바구니 추가
 
 // ===== 사용자 페이지 =====
 import MyPage from "./pages/user/MyPage";
+import ProfileEdit from "./pages/user/ProfileEdit"; // ✅ 프로필 수정 페이지 추가
 
 // ===== 관리자 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
@@ -30,14 +31,12 @@ import { ScrollContainer } from "./components/ScrollContainer";
 ----------------------------*/
 const getRole = () => localStorage.getItem("role"); // "BUYER" | "SELLER" | null
 
-// 역할에 따라 서로 다른 element 렌더
 function RoleElement({ buyer, seller, fallback = null }) {
   const role = getRole();
   if (role === "SELLER") return seller ?? fallback;
   return buyer ?? fallback; // 기본은 구매자
 }
 
-// 특정 역할 차단 (예: 구매자 구역에서 SELLER 차단)
 function BlockRole({ denied = [], children, redirectTo }) {
   const role = getRole();
   if (role && denied.includes(role)) {
@@ -57,17 +56,19 @@ function AppContent() {
       {/* 랜딩/공용 */}
       <Route path="/" element={<ScrollContainer />} />
       <Route path="/shop" element={<ShopPage />} />
-      <Route path="/cart" element={<CartPage />} />   {/* ✅ 장바구니 라우트 등록 */}
+      <Route path="/cart" element={<CartPage />} />
 
       {/* 인증 */}
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
 
-      {/* 마이페이지: 역할 분기 (BUYER -> MyPage / SELLER -> AdminMyPage) */}
+      {/* 마이페이지 */}
       <Route
         path="/mypage"
         element={<RoleElement buyer={<MyPage />} seller={<AdminMyPage />} />}
       />
+      {/* ✅ 프로필 수정 라우트 추가 */}
+      <Route path="/mypage/edit" element={<ProfileEdit />} />
 
       {/* 판매자 전용 마이페이지: 구매자 차단 */}
       <Route
@@ -87,7 +88,7 @@ function AppContent() {
       {/* 커뮤니티 */}
       <Route path="/community" element={<CommunityPage />} />
 
-      {/* 존재하지 않는 경로는 역할 홈으로 */}
+      {/* 존재하지 않는 경로 */}
       <Route
         path="*"
         element={
