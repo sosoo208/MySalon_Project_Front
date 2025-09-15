@@ -30,7 +30,10 @@ import Sales from "./pages/admin/Sales";
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
-import CoordiWritePage from "./pages/community/CoordiWritePage"; // ✅ 코디 등록 페이지 추가
+import CoordiWritePage from "./pages/community/CoordiWritePage";
+import BoardPage from "./pages/community/BoardPage";
+import BoardDetailPage from "./pages/community/BoardDetailPage";
+import BoardWritePage from "./pages/community/BoardWritePage"; // ✅ 글쓰기 추가
 
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
@@ -38,7 +41,7 @@ import { ScrollContainer } from "./components/ScrollContainer";
 // ✅ 역할 가져오기
 const getRole = () => {
   const role = localStorage.getItem("role");
-  return role ? role.toUpperCase() : null; // "BUYER" | "SELLER" | null
+  return role ? role.toUpperCase() : null;
 };
 
 // ✅ 역할별 렌더링
@@ -75,7 +78,7 @@ function AppContent() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
 
-      {/* ===== 마이페이지 (구매자/판매자 공용) ===== */}
+      {/* ===== 마이페이지 ===== */}
       <Route
         path="/mypage"
         element={<RoleElement buyer={<MyPage />} seller={<AdminMyPage />} />}
@@ -149,7 +152,10 @@ function AppContent() {
 
       {/* ===== 커뮤니티 ===== */}
       <Route path="/community" element={<CommunityPage />} />
-      <Route path="/coordi/write" element={<CoordiWritePage />} /> {/* ✅ 코디 등록 라우트 */}
+      <Route path="/coordi/write" element={<CoordiWritePage />} />
+      <Route path="/board" element={<BoardPage />} />
+      <Route path="/board/:id" element={<BoardDetailPage />} />
+      <Route path="/board/write" element={<BoardWritePage />} /> {/* ✅ 글쓰기 라우트 */}
 
       {/* ===== 없는 경로 ===== */}
       <Route

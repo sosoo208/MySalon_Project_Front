@@ -7,7 +7,7 @@ export function SubHeader() {
   const navigate = useNavigate();
 
   return (
-    <header style={{ background: "#E3E3E3", borderBottom: "1px solid #ccc" }}>
+    <header style={{ background: "#E3E3E3" }}>
       {/* 상단 메뉴바 + 뒤로가기 버튼 */}
       <div
         style={{
