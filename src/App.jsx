@@ -11,11 +11,12 @@ import ShopPage from "./pages/shop/ShopPage";
 import OuterPage from "./pages/shop/OuterPage";
 import PantsPage from "./pages/shop/PantsPage";
 import DressPage from "./pages/shop/DressPage";
-import CartPage from "./pages/cart/CartPage";   // ✅ 장바구니 추가
+import CartPage from "./pages/cart/CartPage";   // ✅ 장바구니 페이지
 
 // ===== 사용자 페이지 =====
 import MyPage from "./pages/user/MyPage";
-import ProfileEdit from "./pages/user/ProfileEdit"; // ✅ 프로필 수정 페이지 추가
+import ProfileEdit from "./pages/user/ProfileEdit"; // ✅ 프로필 수정 페이지
+import OrderList from "./pages/user/OrderList";     // ✅ 주문 내역 페이지
 
 // ===== 관리자 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
@@ -67,8 +68,10 @@ function AppContent() {
         path="/mypage"
         element={<RoleElement buyer={<MyPage />} seller={<AdminMyPage />} />}
       />
-      {/* ✅ 프로필 수정 라우트 추가 */}
+      {/* ✅ 프로필 수정 라우트 */}
       <Route path="/mypage/edit" element={<ProfileEdit />} />
+      {/* ✅ 주문 내역 라우트 */}
+      <Route path="/mypage/orders" element={<OrderList />} />
 
       {/* 판매자 전용 마이페이지: 구매자 차단 */}
       <Route
