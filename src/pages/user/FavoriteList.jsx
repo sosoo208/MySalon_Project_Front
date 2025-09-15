@@ -9,7 +9,7 @@ export default function FavoriteList() {
   useEffect(() => {
     async function fetchFavorites() {
       try {
-        // TODO: 실제 API 연결
+        // TODO: 실제 API 연동
         setFavorites([
           {
             id: 1,
@@ -32,6 +32,14 @@ export default function FavoriteList() {
     }
     fetchFavorites();
   }, []);
+
+  // ✅ 찜 해제 함수
+  const handleUnfavorite = (id) => {
+    // 추후 API 연동 시:
+    // await favoriteApi.toggleWishlist(id);
+
+    setFavorites((prev) => prev.filter((item) => item.id !== id));
+  };
 
   return (
     <>
@@ -99,11 +107,22 @@ export default function FavoriteList() {
                       {item.price.toLocaleString()}원
                     </p>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <img
-                        src={redHeartIcon}
-                        alt="찜"
-                        style={{ width: "16px", height: "16px" }}
-                      />
+                      {/* ✅ 하트 클릭 시 찜 해제 */}
+                      <button
+                        onClick={() => handleUnfavorite(item.id)}
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                      >
+                        <img
+                          src={redHeartIcon}
+                          alt="찜 해제"
+                          style={{ width: "16px", height: "16px" }}
+                        />
+                      </button>
                       <span style={{ fontSize: "14px", color: "#555" }}>
                         ★ {item.rating}
                       </span>
