@@ -2,290 +2,169 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   HeartIcon,
-  SearchIcon,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { SubHeader } from "../../components/SubHeader";
 
-// 외부 컴포넌트들을 이 파일 내부에 직접 정의합니다.
-// 이렇게 하면 import 오류를 해결할 수 있습니다.
-const Button = ({ asChild, variant, size, className, children, onClick }) => {
-  const Comp = asChild ? Link : 'button';
-  return (
-    <Comp
-      className={`
-        inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium
-        transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-        focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
-        ${variant === 'ghost' ? 'hover:bg-accent hover:text-accent-foreground' : ''}
-        ${variant === 'outline' ? 'border border-input bg-background hover:bg-accent hover:text-accent-foreground' : ''}
-        ${className || ''}
-      `}
-      onClick={onClick}
-      to={asChild ? children.props.to : null}
-    >
-      {asChild ? children.props.children : children}
-    </Comp>
-  );
-};
-
-const Card = ({ className, children }) => (
-  <div className={`rounded-xl border bg-card text-card-foreground shadow ${className || ''}`}>
-    {children}
-  </div>
-);
-
-const CardContent = ({ className, children }) => (
-  <div className={`p-6 pt-0 ${className || ''}`}>
-    {children}
-  </div>
-);
-
-const Input = ({ className, ...props }) => (
-  <input
-    className={`
-      flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background
-      file:border-0 file:bg-transparent file:text-sm file:font-medium
-      placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-      focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
-      ${className || ''}
-    `}
-    {...props}
-  />
-);
-
-const Avatar = ({ className, children }) => (
-  <div className={`relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full ${className || ''}`}>
-    {children}
-  </div>
-);
-
-const AvatarImage = ({ className, src, ...props }) => (
-  <img className={`aspect-square h-full w-full ${className || ''}`} src={src} {...props} />
-);
-
-const AvatarFallback = ({ className, children }) => (
-  <div className={`flex h-full w-full items-center justify-center rounded-full bg-muted ${className || ''}`}>
+const Card = ({ children, className }) => (
+  <div className={`rounded-lg border bg-white shadow ${className || ""}`}>
     {children}
   </div>
 );
 
 const CommunityPage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [activeTab, setActiveTab] = useState("today");
   const [outfits, setOutfits] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // 더미 데이터 (API 연동 예정)
   useEffect(() => {
-    setActiveTab(location.pathname.startsWith("/board") ? "board" : "today");
-  }, [location.pathname]);
-
-  // API에서 데이터를 불러오는 useEffect 훅
-  useEffect(() => {
-    const fetchOutfits = async () => {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await fetch("http://localhost:8080/api/posts/coordi", {
-          headers: {
-            Authorization: `Bearer ${token}`, // 인증 헤더 추가
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setOutfits(data);
-      } catch (error) {
-        console.error("Failed to fetch outfits:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOutfits();
+    setOutfits([
+      {
+        id: 1,
+        title: "여름 원피스 코디",
+        category: "휴양지룩",
+        image: "https://via.placeholder.com/250x300",
+        username: "홍길동",
+        likes: 35,
+      },
+      {
+        id: 2,
+        title: "화이트 셔츠 코디",
+        category: "데이트룩",
+        image: "https://via.placeholder.com/250x300",
+        username: "유저A",
+        likes: 50,
+      },
+      {
+        id: 3,
+        title: "린넨 팬츠 코디",
+        category: "출근룩",
+        image: "https://via.placeholder.com/250x300",
+        username: "김철수",
+        likes: 40,
+      },
+    ]);
   }, []);
 
-  const topNavItems = [
-    { name: "로그인", onClick: () => navigate("/login") },
-    { name: "회원가입", onClick: () => navigate("/signup") },
-    { name: "장바구니", onClick: () => navigate("/cart") },
-    { name: "마이페이지", onClick: () => navigate("/mypage") },
-    { name: "커뮤니티", onClick: () => navigate("/community") },
-  ];
+  // 좋아요 순으로 정렬
+  const sorted = [...outfits].sort((a, b) => b.likes - a.likes);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-lg">
-        로딩 중...
-      </div>
+  // 현재 보여줄 카드 3개 (캐러셀 구조)
+  const getDisplayCards = () => {
+    if (sorted.length < 3) return sorted;
+    const prevIndex = (currentIndex - 1 + sorted.length) % sorted.length;
+    const nextIndex = (currentIndex + 1) % sorted.length;
+    return [sorted[prevIndex], sorted[currentIndex], sorted[nextIndex]];
+  };
+
+  const displayCards = getDisplayCards();
+
+  const prev = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? sorted.length - 1 : prev - 1
     );
-  }
+  };
 
-  // API에서 받아온 데이터로 캐러셀과 그리드용 배열 생성
-  const featuredOutfits = outfits.map((item, index) => ({
-    id: item.postNum,
-    title: item.title,
-    category: "휴양지룩", // API에 없는 데이터이므로 임의 지정
-    image: item.coordiImage,
-    avatar: item.userImage,
-    username: item.writer,
-    likes: item.likeCount,
-    
-  }));
-
-  const gridOutfits = outfits.slice(3, 7).map((item) => ({
-    id: item.postNum,
-    title: item.title,
-    category: "휴양지룩", // API에 없는 데이터이므로 임의 지정
-    image: item.coordiImage,
-    avatar: item.userImage,
-    username: item.writer,
-    likes: item.likeCount,
-  }));
+  const next = () => {
+    setCurrentIndex((prev) =>
+      prev === sorted.length - 1 ? 0 : prev + 1
+    );
+  };
 
   return (
-    <div className="bg-white min-h-screen w-full">
-      <div className="max-w-[1440px] mx-auto bg-white overflow-hidden min-h-[1080px] relative">
-        {/* 상단 네비 */}
-        <nav className="absolute top-[33px] right-[37px]">
-          <div className="flex gap-4 text-[15px]">
-            {topNavItems.map((item, idx) => (
-              <Button key={idx} variant="ghost" className="h-auto p-0" onClick={item.onClick}>
-                {item.name}
-              </Button>
-            ))}
-          </div>
-        </nav>
+    <div className="bg-[#fff] min-h-screen w-full">
+      <SubHeader />
 
-        {/* 로고 */}
-        <header className="absolute w-[146px] h-[118px] top-[55px] left-1/2 -translate-x-1/2">
-          <div className="relative w-[142px] h-[118px]">
-            <h1 className="absolute w-[142px] top-3 left-0 text-[25.5px] text-center">MY SALON</h1>
-            <p className="absolute w-[87px] top-0 left-7 text-[9.5px] text-center">당신만을 위한 옷장</p>
-            <img className="absolute w-[66px] h-[66px] top-[52px] left-[37px]" alt="Main icon"
-                 src="https://c.animaapp.com/mfezbbicpZVDGC/img/main-icon-1.png" />
-          </div>
-        </header>
-
-        {/* 검색 */}
-        <div className="absolute w-[296px] h-16 top-[67px] right-[37px]">
-          <div className="flex w-[296px] h-16 items-center rounded-[100px]">
-            <div className="flex items-center p-[11px] flex-1 bg-[#78788029] rounded-[100px]">
-              <div className="flex items-center gap-2 flex-1">
-                <SearchIcon className="w-4 h-4 text-[#999]" />
-                <Input
-                  placeholder="Search"
-                  className="border-none bg-transparent text-[#999] text-[17px] placeholder:text-[#999] focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
-                />
-              </div>
-            </div>
-          </div>
+      <div className="max-w-[1200px] mx-auto py-10">
+        {/* ===== 탭 ===== */}
+        <div className="flex justify-center gap-10 mb-10 border-b pb-3">
+          <h2 className="text-2xl font-bold text-[#a40303]">오늘의 코디</h2>
+          <Link to="/board" className="text-2xl text-black">
+            게시판
+          </Link>
         </div>
 
-        {/* 탭 */}
-        <div className="absolute w-[388px] h-[21px] top-[239px] left-1/2 -translate-x-1/2">
-          <Button asChild variant="ghost" className="absolute w-[123px] top-0 left-0 h-auto p-0">
-            <Link to="/community">
-              <h2 className={`text-2xl ${activeTab === "today" ? "font-bold text-[#a40303]" : "text-black"}`}>
-                오늘의 코디
-              </h2>
-            </Link>
-          </Button>
+        {/* ===== Top 3 캐러셀 (중앙 강조 + 버튼) ===== */}
+        <div className="relative flex justify-center items-end mb-16">
+          {/* 왼쪽 버튼 */}
+          <button
+            onClick={prev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full border bg-white shadow hover:bg-gray-50"
+          >
+            <ChevronLeftIcon className="w-6 h-6" />
+          </button>
 
-          <Button asChild variant="ghost" className="absolute w-[67px] top-0 right-0 h-auto p-0">
-            <Link to="/board">
-              <h2 className={`text-2xl ${activeTab === "board" ? "font-bold text-[#a40303]" : "text-black"}`}>
-                게시판
-              </h2>
-            </Link>
-          </Button>
-        </div>
-
-        {/* 추천 카드 캐러셀 */}
-        <section className="absolute w-[577px] h-[347px] top-96 left-1/2 -translate-x-1/2">
-          <Button variant="outline" size="icon"
-                  className="absolute w-10 h-10 top-[172px] -left-[129px] rounded-[20px] border border-black bg-white hover:bg-gray-50">
-            <ChevronLeftIcon className="w-3.5 h-[15px]" />
-          </Button>
-          <Button variant="outline" size="icon"
-                  className="absolute w-10 h-10 top-[172px] -right-[129px] rounded-[20px] border border-black bg-white hover:bg-gray-50">
-            <ChevronRightIcon className="w-3.5 h-[15px]" />
-          </Button>
-
-          <div className="flex gap-[1px] relative">
-            {featuredOutfits.map((outfit, index) => (
+          {/* 카드 3개 */}
+          <div className="flex gap-6">
+            {displayCards.map((outfit, index) => (
               <Card
                 key={outfit.id}
-                className={`${outfit.isCenter ? "w-[217px] h-[311px] rounded-[10px] border border-black" : "w-[218px] h-[312px] bg-gray-100 border-none"} ${index === 0 || index === 2 ? "mt-9" : ""}`}
+                className={`transition-all duration-300 ${
+                  index === 1
+                    ? "w-[260px] h-[340px] border-2 border-black scale-105 z-20"
+                    : "w-[220px] h-[300px] border -mx-8 opacity-90 z-10"
+                }`}
               >
-                <CardContent className="p-0 relative h-full">
+                <div className="p-4 text-left">
                   <img
-                    className={`${outfit.isCenter ? "w-[169px] h-[150px] top-4 left-[22px]" : "w-[169px] h-[150px] top-[57px] left-[22px]"} absolute object-cover`}
-                    alt="Outfit"
                     src={outfit.image}
+                    alt={outfit.title}
+                    className={`object-cover mb-3 ${
+                      index === 1
+                        ? "w-full h-[200px]"
+                        : "w-full h-[160px]"
+                    }`}
                   />
-
-                  <div className={`absolute ${outfit.isCenter ? "w-[126px] h-[35px] top-[179px] left-6" : "top-[217px] left-[22px]"}`}>
-                    <h3 className={`${outfit.isCenter ? "absolute top-0 left-0" : ""} font-bold text-lg leading-[25.2px] whitespace-nowrap`}>
-                      {outfit.title}
-                    </h3>
-                    <p className={`${outfit.isCenter ? "absolute top-[21px] left-0.5" : "mt-1"} text-[10px] leading-[14px] whitespace-nowrap`}>
-                      {outfit.category}
-                    </p>
+                  <h3 className="font-bold text-lg">{outfit.title}</h3>
+                  <p className="text-xs text-gray-600">{outfit.category}</p>
+                  <p className="text-xs text-gray-700 mt-2">{outfit.username}</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <HeartIcon className="w-4 h-4 fill-red-500 text-red-500" />
+                    <span className="text-sm font-bold">{outfit.likes}</span>
                   </div>
-
-                  <div className={`absolute ${outfit.isCenter ? "top-[220px] left-[22px]" : "top-[261px] left-[22px]"} w-16 h-[31px] flex items-center gap-2`}>
-                    <Avatar className="w-[26px] h-[31px]">
-                      <AvatarImage src={outfit.avatar} alt="User" />
-                      <AvatarFallback>홍</AvatarFallback>
-                    </Avatar>
-                    <span className="text-[10px] leading-[14px] whitespace-nowrap">{outfit.username}</span>
-                  </div>
-
-                  <div className={`absolute ${outfit.isCenter ? "top-[264px] left-[139px]" : "top-[305px] right-[27px]"} w-[51px] h-[21px] flex items-center gap-1`}>
-                    <HeartIcon className="w-5 h-5 fill-red-500 text-red-500" />
-                    <span className="font-bold text-[15px] leading-[21px]">{outfit.likes}</span>
-                  </div>
-                </CardContent>
+                </div>
               </Card>
             ))}
           </div>
-        </section>
 
-        {/* 나의 코디 등록하기 → /write-post */}
-        <Button asChild variant="outline"
-                className="absolute w-[111px] h-[34px] top-[766px] left-1/2 -translate-x-1/2 bg-white rounded-[3.12px] border border-black hover:bg-gray-50 h-auto">
-          <Link to="/write-post">
-            <span className="text-[9.3px] leading-[13.1px] whitespace-nowrap">나의 코디 등록하기</span>
+          {/* 오른쪽 버튼 */}
+          <button
+            onClick={next}
+            className="absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full border bg-white shadow hover:bg-gray-50"
+          >
+            <ChevronRightIcon className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* ===== 나의 코디 등록하기 버튼 ===== */}
+        <div className="flex justify-center mb-10">
+          <Link
+            to="/coordi/write"
+            className="px-6 py-2 border border-black bg-white hover:bg-gray-50"
+          >
+            나의 코디 등록하기
           </Link>
-        </Button>
+        </div>
 
-        {/* 하단 그리드 */}
-        <section className="absolute top-[834px] left-1/2 -translate-x-1/2 w-[1154px]">
-          <div className="grid grid-cols-4 gap-[67px]">
-            {gridOutfits.map((outfit) => (
-              <Card key={outfit.id} className="w-[233px] h-[311px] rounded-[10px] border border-black">
-                <CardContent className="p-0 relative h-full">
-                  <img className="w-[178px] h-[150px] absolute top-4 left-6 object-cover" alt="Outfit" src={outfit.image} />
-                  <div className="absolute w-[133px] h-[35px] top-[179px] left-[25px]">
-                    <h3 className="absolute top-0 left-0 font-bold text-lg leading-[25.2px]">{outfit.title}</h3>
-                    <p className="absolute top-[21px] left-0.5 text-[10px] leading-[14px]">{outfit.category}</p>
-                  </div>
-                  <div className="absolute w-[66px] h-8 top-[220px] left-[25px] flex items-center gap-2">
-                    <Avatar className="w-[27px] h-6">
-                      <AvatarImage src={outfit.avatar} alt="User" />
-                      <AvatarFallback>홍</AvatarFallback>
-                    </Avatar>
-                    <span className="w-[29px] text-[10px] leading-[14px] whitespace-nowrap">{outfit.username}</span>
-                  </div>
-                  <div className="absolute w-[54px] h-[21px] top-[264px] left-[147px] flex items-center gap-2">
-                    <HeartIcon className="w-[21px] h-[21px] fill-red-500 text-red-500" />
-                    <span className="w-[22px] font-bold text-[15px] leading-[21px]">{outfit.likes}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        {/* ===== 전체 목록 ===== */}
+        <section className="grid grid-cols-4 gap-6">
+          {sorted.map((outfit) => (
+            <Card key={outfit.id} className="p-4">
+              <img
+                src={outfit.image}
+                alt={outfit.title}
+                className="w-full h-[160px] object-cover mb-3"
+              />
+              <h3 className="font-bold text-lg">{outfit.title}</h3>
+              <p className="text-xs text-gray-600">{outfit.category}</p>
+              <p className="text-xs text-gray-700 mt-2">{outfit.username}</p>
+              <div className="flex items-center gap-1 mt-2">
+                <HeartIcon className="w-4 h-4 fill-red-500 text-red-500" />
+                <span className="text-sm font-bold">{outfit.likes}</span>
+              </div>
+            </Card>
+          ))}
         </section>
       </div>
     </div>

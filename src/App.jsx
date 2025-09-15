@@ -30,6 +30,7 @@ import Sales from "./pages/admin/Sales";
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
+import CoordiWritePage from "./pages/community/CoordiWritePage"; // ✅ 코디 등록 페이지 추가
 
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
@@ -81,7 +82,7 @@ function AppContent() {
       />
       <Route path="/mypage/edit" element={<ProfileEdit />} />
       <Route path="/mypage/orders" element={<OrderList />} />
-      <Route path="/mypage/favorites" element={<FavoriteList />} /> {/* ✅ 찜 목록 */}
+      <Route path="/mypage/favorites" element={<FavoriteList />} />
 
       {/* ===== 판매자 전용 ===== */}
       <Route
@@ -148,6 +149,7 @@ function AppContent() {
 
       {/* ===== 커뮤니티 ===== */}
       <Route path="/community" element={<CommunityPage />} />
+      <Route path="/coordi/write" element={<CoordiWritePage />} /> {/* ✅ 코디 등록 라우트 */}
 
       {/* ===== 없는 경로 ===== */}
       <Route
