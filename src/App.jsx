@@ -23,6 +23,7 @@ import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
 import ProductList from "./pages/admin/ProductList";
 import ProductDetail from "./pages/admin/ProductDetail";
+import SalesList from "./pages/admin/SalesList";   // ✅ 판매 목록 페이지 import
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
@@ -100,6 +101,14 @@ function AppContent() {
         element={
           <BlockRole denied={["BUYER"]} redirectTo="/mypage">
             <ProductList />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/sales-list"         // ✅ 판매 목록 라우트 추가
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <SalesList />
           </BlockRole>
         }
       />
