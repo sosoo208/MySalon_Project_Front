@@ -23,7 +23,9 @@ import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
 import ProductList from "./pages/admin/ProductList";
 import ProductDetail from "./pages/admin/ProductDetail";
-import SalesList from "./pages/admin/SalesList";   // ✅ 판매 목록 페이지 import
+import SalesList from "./pages/admin/SalesList";   
+import OrderShipping from "./pages/admin/OrderShipping";
+import Sales from "./pages/admin/Sales";   // ✅ 매출 페이지 import
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
@@ -105,10 +107,26 @@ function AppContent() {
         }
       />
       <Route
-        path="/admin/products/sales-list"         // ✅ 판매 목록 라우트 추가
+        path="/admin/products/sales-list"
         element={
           <BlockRole denied={["BUYER"]} redirectTo="/mypage">
             <SalesList />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/order-shipping"
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <OrderShipping />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/sales"   // ✅ 매출 라우트 추가
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <Sales />
           </BlockRole>
         }
       />
