@@ -18,6 +18,9 @@ import MyPage from "./pages/user/MyPage";
 import ProfileEdit from "./pages/user/ProfileEdit";
 import OrderList from "./pages/user/OrderList";
 import FavoriteList from "./pages/user/FavoriteList";
+import MyReviewPage from "./pages/user/MyReviewPage";
+import ReviewWritePage from "./pages/user/ReviewWritePage"; // ✅ 리뷰 작성
+import ReviewEditPage from "./pages/user/ReviewEditPage";   // ✅ 리뷰 수정
 
 // ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
@@ -33,7 +36,7 @@ import CommunityPage from "./pages/community/CommunityPage";
 import CoordiWritePage from "./pages/community/CoordiWritePage";
 import BoardPage from "./pages/community/BoardPage";
 import BoardDetailPage from "./pages/community/BoardDetailPage";
-import BoardWritePage from "./pages/community/BoardWritePage"; // ✅ 글쓰기 추가
+import BoardWritePage from "./pages/community/BoardWritePage";
 
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
@@ -86,6 +89,9 @@ function AppContent() {
       <Route path="/mypage/edit" element={<ProfileEdit />} />
       <Route path="/mypage/orders" element={<OrderList />} />
       <Route path="/mypage/favorites" element={<FavoriteList />} />
+      <Route path="/mypage/reviews" element={<MyReviewPage />} />
+      <Route path="/mypage/reviews/write/:productId" element={<ReviewWritePage />} /> {/* ✅ 리뷰 작성 */}
+      <Route path="/mypage/reviews/edit/:reviewId" element={<ReviewEditPage />} />   {/* ✅ 리뷰 수정 */}
 
       {/* ===== 판매자 전용 ===== */}
       <Route
@@ -155,7 +161,7 @@ function AppContent() {
       <Route path="/coordi/write" element={<CoordiWritePage />} />
       <Route path="/board" element={<BoardPage />} />
       <Route path="/board/:id" element={<BoardDetailPage />} />
-      <Route path="/board/write" element={<BoardWritePage />} /> {/* ✅ 글쓰기 라우트 */}
+      <Route path="/board/write" element={<BoardWritePage />} />
 
       {/* ===== 없는 경로 ===== */}
       <Route
