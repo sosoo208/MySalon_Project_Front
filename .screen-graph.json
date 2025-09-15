@@ -7,7 +7,441 @@
         "/"
       ],
       "isRoot": true
+    },
+    {
+      "id": "src/pages/shop/ShopPage.jsx",
+      "label": "ShopPage",
+      "routes": [
+        "/shop"
+      ]
+    },
+    {
+      "id": "src/pages/auth/SignupPage.jsx",
+      "label": "SignupPage",
+      "routes": [
+        "/signup"
+      ]
+    },
+    {
+      "id": "src/pages/auth/LoginPage.jsx",
+      "label": "LoginPage",
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "src/pages/shop/OuterPage.jsx",
+      "label": "OuterPage",
+      "routes": [
+        "/category/아우터"
+      ]
+    },
+    {
+      "id": "src/pages/shop/PantsPage.jsx",
+      "label": "PantsPage",
+      "routes": [
+        "/category/바지"
+      ]
+    },
+    {
+      "id": "src/pages/shop/DressPage.jsx",
+      "label": "DressPage",
+      "routes": [
+        "/category/원피스"
+      ]
+    },
+    {
+      "id": "src/pages/community/CommunityPage.jsx",
+      "label": "CommunityPage",
+      "routes": [
+        "/community"
+      ]
     }
   ],
-  "edges": []
+  "edges": [
+    {
+      "id": "src\\screens\\Screen\\Screen.jsx:34:20-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate('/login')",
+          "line": 34,
+          "endLine": 34,
+          "column": 20,
+          "endColumn": 38,
+          "sourceFile": "src\\screens\\Screen\\Screen.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\screens\\Screen\\Screen.jsx:36:20-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate('/signup')",
+          "line": 36,
+          "endLine": 36,
+          "column": 20,
+          "endColumn": 39,
+          "sourceFile": "src\\screens\\Screen\\Screen.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\screens\\Screen\\Screen.jsx:42:20-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "navigate('/community')",
+          "line": 42,
+          "endLine": 42,
+          "column": 20,
+          "endColumn": 42,
+          "sourceFile": "src\\screens\\Screen\\Screen.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\screens\\Screen\\Screen.jsx:98:27-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "navigate('/community')",
+          "line": 98,
+          "endLine": 98,
+          "column": 27,
+          "endColumn": 49,
+          "sourceFile": "src\\screens\\Screen\\Screen.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SharedHeader.jsx:53:38-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 53,
+          "endLine": 53,
+          "column": 38,
+          "endColumn": 56,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SharedHeader.jsx:54:44-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate(\"/signup\")",
+          "line": 54,
+          "endLine": 54,
+          "column": 44,
+          "endColumn": 63,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SharedHeader.jsx:57:44-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "navigate(\"/community\")",
+          "line": 57,
+          "endLine": 57,
+          "column": 44,
+          "endColumn": 66,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SharedHeader.jsx:53:38-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 53,
+          "endLine": 53,
+          "column": 38,
+          "endColumn": 56,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SharedHeader.jsx:54:44-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate(\"/signup\")",
+          "line": 54,
+          "endLine": 54,
+          "column": 44,
+          "endColumn": 63,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SharedHeader.jsx:57:44-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "navigate(\"/community\")",
+          "line": 57,
+          "endLine": 57,
+          "column": 44,
+          "endColumn": 66,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\SignupPage.jsx:105:6-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\auth\\SignupPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 105,
+          "endLine": 105,
+          "column": 6,
+          "endColumn": 24,
+          "sourceFile": "src\\pages\\auth\\SignupPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\SignupPage.jsx:113:34-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\auth\\SignupPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 113,
+          "endLine": 113,
+          "column": 34,
+          "endColumn": 52,
+          "sourceFile": "src\\pages\\auth\\SignupPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\SignupPage.jsx:114:35-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\auth\\SignupPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate(\"/signup\")",
+          "line": 114,
+          "endLine": 114,
+          "column": 35,
+          "endColumn": 54,
+          "sourceFile": "src\\pages\\auth\\SignupPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\SignupPage.jsx:115:35-to-src\\components\\ScrollContainer.jsx",
+      "source": "src\\pages\\auth\\SignupPage.jsx",
+      "target": "src\\components\\ScrollContainer.jsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate(\"/\")",
+          "line": 115,
+          "endLine": 115,
+          "column": 35,
+          "endColumn": 48,
+          "sourceFile": "src\\pages\\auth\\SignupPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\SignupPage.jsx:116:36-to-src\\components\\ScrollContainer.jsx",
+      "source": "src\\pages\\auth\\SignupPage.jsx",
+      "target": "src\\components\\ScrollContainer.jsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate(\"/\")",
+          "line": 116,
+          "endLine": 116,
+          "column": 36,
+          "endColumn": 49,
+          "sourceFile": "src\\pages\\auth\\SignupPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\SignupPage.jsx:117:35-to-src\\components\\ScrollContainer.jsx",
+      "source": "src\\pages\\auth\\SignupPage.jsx",
+      "target": "src\\components\\ScrollContainer.jsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate(\"/\")",
+          "line": 117,
+          "endLine": 117,
+          "column": 35,
+          "endColumn": 48,
+          "sourceFile": "src\\pages\\auth\\SignupPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\LoginPage.jsx:23:34-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\auth\\LoginPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate('/login')",
+          "line": 23,
+          "endLine": 23,
+          "column": 34,
+          "endColumn": 52,
+          "sourceFile": "src\\pages\\auth\\LoginPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\LoginPage.jsx:24:35-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\auth\\LoginPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate('/signup')",
+          "line": 24,
+          "endLine": 24,
+          "column": 35,
+          "endColumn": 54,
+          "sourceFile": "src\\pages\\auth\\LoginPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\LoginPage.jsx:27:35-to-src\\components\\ScrollContainer.jsx",
+      "source": "src\\pages\\auth\\LoginPage.jsx",
+      "target": "src\\components\\ScrollContainer.jsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 27,
+          "endLine": 27,
+          "column": 35,
+          "endColumn": 48,
+          "sourceFile": "src\\pages\\auth\\LoginPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\auth\\LoginPage.jsx:180:24-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\auth\\LoginPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate('/signup')",
+          "line": 180,
+          "endLine": 180,
+          "column": 24,
+          "endColumn": 43,
+          "sourceFile": "src\\pages\\auth\\LoginPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CommunityPage.jsx:109:34-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate(\"/login\")",
+          "line": 109,
+          "endLine": 109,
+          "column": 34,
+          "endColumn": 52,
+          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CommunityPage.jsx:110:35-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "navigate(\"/signup\")",
+          "line": 110,
+          "endLine": 110,
+          "column": 35,
+          "endColumn": 54,
+          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CommunityPage.jsx:113:35-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "navigate(\"/community\")",
+          "line": 113,
+          "endLine": 113,
+          "column": 35,
+          "endColumn": 57,
+          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CommunityPage.jsx:188:12-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">\r\n              <h2 className={`text-2xl ${activeTab === \"today\" ? \"font-bold text-[#a40303]\" : \"text-black\"}`}>\r\n                오늘의 코디\r\n              </h2>\r\n            </Link>",
+          "line": 188,
+          "endLine": 192,
+          "column": 12,
+          "endColumn": 19,
+          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+        }
+      }
+    }
+  ]
 }

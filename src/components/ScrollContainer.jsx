@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Screen as MainScreen } from "../screens/Screen/Screen";
-import { Screen as ShopScreen } from "../routes/Screen/screens/Screen";
+import ShopScreen from "../pages/shop/ShopPage";
 
 const Footer = () => (
   <footer className="text-center py-8 bg-[#e3e2e2]">

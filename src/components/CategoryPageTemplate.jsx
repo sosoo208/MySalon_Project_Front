@@ -1,20 +1,20 @@
 import { MenuIcon, SearchIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Badge } from "../routes/Screen39/components/ui/badge";
-import { Button } from "../routes/Screen39/components/ui/button";
-import { Card, CardContent } from "../routes/Screen39/components/ui/card";
-import { Input } from "../routes/Screen39/components/ui/input";
-import { Label } from "../routes/Screen39/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "../routes/Screen39/components/ui/radio-group";
+import { productApi } from "../api";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../routes/Screen39/components/ui/select";
+} from "./ui/select";
 
 // 한글 → Enum 매핑
 const categoryMap = {
@@ -71,18 +71,12 @@ export const CategoryPageTemplate = ({ categoryName, categoryTabs }) => {
 
   const fetchProducts = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:8080/api/products", {
-        params: {
-          category: categoryMap[categoryName] || null,
-          categoryLow: categoryLowMap[activeTab] || null,
-          gender: genderMap[selectedGender] || null,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await productApi.getProducts({
+        category: categoryMap[categoryName] || null,
+        categoryLow: categoryLowMap[activeTab] || null,
+        gender: genderMap[selectedGender] || null,
       });
-      const productsWithLiked = response.data.map(p => ({ ...p, liked: false }));
+      const productsWithLiked = response.map(p => ({ ...p, liked: false }));
       setProducts(productsWithLiked);
     } catch (error) {
       console.error("제품 불러오기 실패:", error);
