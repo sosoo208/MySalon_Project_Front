@@ -664,6 +664,70 @@
       }
     },
     {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
       "id": "src\\pages\\community\\CommunityPage.jsx:107:34-to-src\\pages\\auth\\LoginPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\auth\\LoginPage.jsx",
