@@ -8,7 +8,7 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const product = location.state;
 
-  // 수정 가능하도록 state로 관리
+  // state 관리
   const [productData, setProductData] = useState({
     ...product,
     price: product?.price || "",
@@ -29,13 +29,25 @@ export default function ProductDetail() {
   const currentOptions = productOptions[selectedColor] || { sizes: [], qty: 0 };
 
   const [reviews, setReviews] = useState([
-    { id: 1, user: "user1", rating: 5, text: "옷이 너무 예쁘고 편해요!", avatar: "https://picsum.photos/60/60?random=1" },
-    { id: 2, user: "user2", rating: 4, text: "핏이 좋아요. 다만 배송이 조금 느렸습니다.", avatar: "https://picsum.photos/60/60?random=2" },
+    {
+      id: 1,
+      user: "user1",
+      rating: 5,
+      text: "옷이 너무 예쁘고 편해요!",
+      avatar: "https://picsum.photos/60/60?random=1",
+    },
+    {
+      id: 2,
+      user: "user2",
+      rating: 4,
+      text: "핏이 좋아요. 다만 배송이 조금 느렸습니다.",
+      avatar: "https://picsum.photos/60/60?random=2",
+    },
   ]);
 
   if (!productData) return <div>상품 정보를 불러올 수 없습니다.</div>;
 
-  // 평균 별점 계산
+  // 평균 별점
   const avgRating = useMemo(() => {
     if (reviews.length === 0) return 0;
     const total = reviews.reduce((sum, r) => sum + r.rating, 0);
@@ -70,38 +82,53 @@ export default function ProductDetail() {
 
         {/* 상품 상세 */}
         <div className="detail-main">
-          <img src={productData.image} alt={productData.name} className="detail-image" />
+          <img
+            src={productData.image}
+            alt={productData.name}
+            className="detail-image"
+          />
 
           <div className="detail-info">
             <h2 className="detail-title">{productData.name}</h2>
 
-            {/* 상품 설명 (수정 가능 input) */}
+            {/* 상품 설명 */}
             <textarea
               className="detail-desc"
               value={productData.description}
-              onChange={(e) => setProductData({ ...productData, description: e.target.value })}
+              onChange={(e) =>
+                setProductData({ ...productData, description: e.target.value })
+              }
             />
 
+            {/* 가격 */}
             <div className="detail-row">
               <span className="label">가격</span>
               <input
                 type="text"
                 className="text-input"
                 value={productData.price}
-                onChange={(e) => setProductData({ ...productData, price: e.target.value })}
+                onChange={(e) =>
+                  setProductData({ ...productData, price: e.target.value })
+                }
+                onFocus={(e) => e.target.select()} // ✅ focus 시 전체 선택
               />
             </div>
 
+            {/* 배송비 */}
             <div className="detail-row">
               <span className="label">배송비</span>
               <input
                 type="text"
                 className="text-input"
                 value={productData.shippingFee}
-                onChange={(e) => setProductData({ ...productData, shippingFee: e.target.value })}
+                onChange={(e) =>
+                  setProductData({ ...productData, shippingFee: e.target.value })
+                }
+                onFocus={(e) => e.target.select()} // ✅ focus 시 전체 선택
               />
             </div>
 
+            {/* 색상 */}
             <div className="detail-row">
               <span className="label">색상</span>
               <div className="color-options">
@@ -113,7 +140,9 @@ export default function ProductDetail() {
                       setSelectedSize("");
                       setCount(1);
                     }}
-                    className={`color-btn ${selectedColor === c ? "active" : ""}`}
+                    className={`color-btn ${
+                      selectedColor === c ? "active" : ""
+                    }`}
                   >
                     {c}
                   </button>
@@ -121,6 +150,7 @@ export default function ProductDetail() {
               </div>
             </div>
 
+            {/* 사이즈 */}
             <div className="detail-row">
               <span className="label">사이즈</span>
               <select
@@ -135,17 +165,21 @@ export default function ProductDetail() {
               </select>
             </div>
 
-            {/* 수량 밑에 구분선 */}
+            {/* 수량 */}
             <div className="detail-row">
               <span className="label">수량</span>
               <div className="qty-box">
-                <button onClick={() => setCount((prev) => Math.max(1, prev - 1))}>-</button>
+                <button
+                  onClick={() => setCount((prev) => Math.max(1, prev - 1))}
+                >
+                  -
+                </button>
                 <span>{count}</span>
-                {/* ✅ 재고 무제한 증가 */}
                 <button onClick={() => setCount((prev) => prev + 1)}>+</button>
               </div>
               <span className="stock">재고: {currentOptions.qty}개</span>
             </div>
+
             <div className="qty-divider"></div>
 
             <button className="edit-btn" onClick={handleEdit}>
@@ -159,13 +193,23 @@ export default function ProductDetail() {
           <h3 className="review-title">REVIEW</h3>
 
           <div className="review-filter">
-            <label><input type="radio" name="sort" defaultChecked /> 최신순</label>
-            <label><input type="radio" name="sort" /> 별점순</label>
+            <label>
+              <input type="radio" name="sort" defaultChecked /> 최신순
+            </label>
+            <label>
+              <input type="radio" name="sort" /> 별점순
+            </label>
             <select>
-              <option>키</option><option>150cm</option><option>160cm</option><option>170cm</option>
+              <option>키</option>
+              <option>150cm</option>
+              <option>160cm</option>
+              <option>170cm</option>
             </select>
             <select>
-              <option>몸무게</option><option>50kg</option><option>60kg</option><option>70kg</option>
+              <option>몸무게</option>
+              <option>50kg</option>
+              <option>60kg</option>
+              <option>70kg</option>
             </select>
           </div>
 
@@ -173,7 +217,9 @@ export default function ProductDetail() {
             <div className="review-summary">
               <div className="big-star">★</div>
               <div className="score">{avgRating}</div>
-              <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
+              <p className="summary-text">
+                {reviews.length}개의 리뷰가 작성되었습니다.
+              </p>
               <button className="write-btn">리뷰 작성하기</button>
             </div>
 
@@ -192,7 +238,10 @@ export default function ProductDetail() {
                     </div>
                     <p className="review-text">{r.text}</p>
                   </div>
-                  <button className="delete-btn" onClick={() => handleDeleteReview(r.id)}>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteReview(r.id)}
+                  >
                     삭제
                   </button>
                 </div>

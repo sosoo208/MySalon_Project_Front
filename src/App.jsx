@@ -20,7 +20,12 @@ import OrderList from "./pages/user/OrderList";     // ✅ 주문 내역 페이�
 
 // ===== 관리자/판매자 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
-import ProductRegister from "./pages/admin/ProductRegister"; // ✅ 상품 등록 페이지
+import ProductRegister from "./pages/admin/ProductRegister";
+import ProductList from "./pages/admin/ProductList";
+import ProductDetail from "./pages/admin/ProductDetail";
+import SalesList from "./pages/admin/SalesList";   
+import OrderShipping from "./pages/admin/OrderShipping";
+import Sales from "./pages/admin/Sales";   // ✅ 매출 페이지 import
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
@@ -91,8 +96,48 @@ function AppContent() {
           </BlockRole>
         }
       />
+      <Route
+        path="/admin/products/list"
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <ProductList />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/sales-list"
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <SalesList />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/order-shipping"
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <OrderShipping />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/sales"   // ✅ 매출 라우트 추가
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <Sales />
+          </BlockRole>
+        }
+      />
+      <Route
+        path="/admin/products/:id"
+        element={
+          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
+            <ProductDetail />
+          </BlockRole>
+        }
+      />
 
-      {/* 카테고리 페이지 */}
+      {/* ===== 카테고리 ===== */}
       <Route path="/category/아우터" element={<OuterPage />} />
       <Route path="/category/바지" element={<PantsPage />} />
       <Route path="/category/원피스" element={<DressPage />} />
