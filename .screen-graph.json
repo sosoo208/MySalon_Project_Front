@@ -16,6 +16,13 @@
       ]
     },
     {
+      "id": "src/pages/cart/CartPage.jsx",
+      "label": "CartPage",
+      "routes": [
+        "/cart"
+      ]
+    },
+    {
       "id": "src/pages/auth/SignupPage.jsx",
       "label": "SignupPage",
       "routes": [
@@ -92,6 +99,22 @@
       }
     },
     {
+      "id": "src\\screens\\Screen\\Screen.jsx:40:20-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "navigate('/cart')",
+          "line": 40,
+          "endLine": 40,
+          "column": 20,
+          "endColumn": 37,
+          "sourceFile": "src\\screens\\Screen\\Screen.jsx"
+        }
+      }
+    },
+    {
       "id": "src\\screens\\Screen\\Screen.jsx:42:20-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\components\\ScrollContainer.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
@@ -156,6 +179,22 @@
       }
     },
     {
+      "id": "src\\components\\SharedHeader.jsx:56:44-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "navigate(\"/cart\")",
+          "line": 56,
+          "endLine": 56,
+          "column": 44,
+          "endColumn": 61,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
       "id": "src\\components\\SharedHeader.jsx:57:44-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\components\\ScrollContainer.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
@@ -204,6 +243,22 @@
       }
     },
     {
+      "id": "src\\components\\SharedHeader.jsx:56:44-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\components\\ScrollContainer.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "navigate(\"/cart\")",
+          "line": 56,
+          "endLine": 56,
+          "column": 44,
+          "endColumn": 61,
+          "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
       "id": "src\\components\\SharedHeader.jsx:57:44-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\components\\ScrollContainer.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
@@ -216,6 +271,70 @@
           "column": 44,
           "endColumn": 66,
           "sourceFile": "src\\components\\SharedHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
         }
       }
     },
@@ -348,6 +467,22 @@
       }
     },
     {
+      "id": "src\\pages\\auth\\LoginPage.jsx:25:35-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\auth\\LoginPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "navigate('/cart')",
+          "line": 25,
+          "endLine": 25,
+          "column": 35,
+          "endColumn": 52,
+          "sourceFile": "src\\pages\\auth\\LoginPage.jsx"
+        }
+      }
+    },
+    {
       "id": "src\\pages\\auth\\LoginPage.jsx:27:35-to-src\\components\\ScrollContainer.jsx",
       "source": "src\\pages\\auth\\LoginPage.jsx",
       "target": "src\\components\\ScrollContainer.jsx",
@@ -407,6 +542,22 @@
           "endLine": 110,
           "column": 35,
           "endColumn": 54,
+          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CommunityPage.jsx:111:35-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "navigate(\"/cart\")",
+          "line": 111,
+          "endLine": 111,
+          "column": 35,
+          "endColumn": 52,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
         }
       }
