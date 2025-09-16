@@ -172,9 +172,9 @@ const ShopPage = () => {
             {products.map((product) => (
               <Card
 
-                key={product.id}
+                key={product.productNum}
                 className="bg-transparent border-none shadow-none cursor-pointer"
-                onClick={() => navigate(`/shop/${product.id}`)} // ✅ 상세 페이지로 이동
+                onClick={() => navigate(`/shop/${product.productNum}`)} // ✅ 상세 페이지로 이동
                 
               >
                 <CardContent className="p-0">
