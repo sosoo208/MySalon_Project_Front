@@ -2,6 +2,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   HeartIcon,
+  SearchIcon,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -35,19 +36,50 @@ const Card = ({ className, children }) => (
   </div>
 );
 
-const Card = ({ children, className }) => (
-  <div className={`rounded-lg border bg-white shadow ${className || ""}`}>
+const CardContent = ({ className, children }) => (
+  <div className={`p-6 pt-0 ${className || ''}`}>
+    {children}
+  </div>
+);
+
+const Input = ({ className, ...props }) => (
+  <input
+    className={`
+      flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background
+      file:border-0 file:bg-transparent file:text-sm file:font-medium
+      placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+      focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+      ${className || ''}
+    `}
+    {...props}
+  />
+);
+
+const Avatar = ({ className, children }) => (
+  <div className={`relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full ${className || ''}`}>
+    {children}
+  </div>
+);
+
+const AvatarImage = ({ className, src, ...props }) => (
+  <img className={`aspect-square h-full w-full ${className || ''}`} src={src} {...props} />
+);
+
+const AvatarFallback = ({ className, children }) => (
+  <div className={`flex h-full w-full items-center justify-center rounded-full bg-muted ${className || ''}`}>
     {children}
   </div>
 );
 
 const CommunityPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("today");
   const [outfits, setOutfits] = useState([]);
   const [gridOutfits, setGridOutfits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
 
-  // 더미 데이터 (API 연동 예정)
   useEffect(() => {
     setActiveTab(location.pathname.startsWith("/board") ? "board" : "today");
   }, [location.pathname]);
@@ -223,44 +255,42 @@ const CommunityPage = () => {
               </Card>
             )})}
           </div>
+        </section>
 
-          {/* 오른쪽 버튼 */}
-          <button
-            onClick={next}
-            className="absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full border bg-white shadow hover:bg-gray-50"
-          >
-            <ChevronRightIcon className="w-6 h-6" />
-          </button>
-        </div>
-
-        {/* ===== 나의 코디 등록하기 버튼 ===== */}
-        <div className="flex justify-center mb-10">
-          <Link
-            to="/coordi/write"
-            className="px-6 py-2 border border-black bg-white hover:bg-gray-50"
-          >
-            나의 코디 등록하기
+        {/* 나의 코디 등록하기 → /write-post */}
+        <Button asChild variant="outline"
+                className="absolute w-[111px] h-[34px] top-[766px] left-1/2 -translate-x-1/2 bg-white rounded-[3.12px] border border-black hover:bg-gray-50 h-auto">
+          <Link to="/write-post">
+            <span className="text-[9.3px] leading-[13.1px] whitespace-nowrap">나의 코디 등록하기</span>
           </Link>
-        </div>
+        </Button>
 
-        {/* ===== 전체 목록 ===== */}
-        <section className="grid grid-cols-4 gap-6">
-          {sorted.map((outfit) => (
-            <Card key={outfit.id} className="p-4">
-              <img
-                src={outfit.image}
-                alt={outfit.title}
-                className="w-full h-[160px] object-cover mb-3"
-              />
-              <h3 className="font-bold text-lg">{outfit.title}</h3>
-              <p className="text-xs text-gray-600">{outfit.category}</p>
-              <p className="text-xs text-gray-700 mt-2">{outfit.username}</p>
-              <div className="flex items-center gap-1 mt-2">
-                <HeartIcon className="w-4 h-4 fill-red-500 text-red-500" />
-                <span className="text-sm font-bold">{outfit.likes}</span>
-              </div>
-            </Card>
-          ))}
+        {/* 하단 그리드 */}
+        <section className="absolute top-[834px] left-1/2 -translate-x-1/2 w-[1154px]">
+          <div className="grid grid-cols-4 gap-[67px]">
+            {gridOutfits.map((outfit) => (
+              <Card key={outfit.id} className="w-[233px] h-[311px] rounded-[10px] border border-black">
+                <CardContent className="p-0 relative h-full">
+                  <img className="w-[178px] h-[150px] absolute top-4 left-6 object-cover" alt="Outfit" src={outfit.image} />
+                  <div className="absolute w-[133px] h-[35px] top-[179px] left-[25px]">
+                    <h3 className="absolute top-0 left-0 font-bold text-lg leading-[25.2px]">{outfit.title}</h3>
+                    <p className="absolute top-[21px] left-0.5 text-[10px] leading-[14px]">{outfit.category}</p>
+                  </div>
+                  <div className="absolute w-[66px] h-8 top-[220px] left-[25px] flex items-center gap-2">
+                    <Avatar className="w-[27px] h-6">
+                      <AvatarImage src={outfit.avatar} alt="User" />
+                      <AvatarFallback>홍</AvatarFallback>
+                    </Avatar>
+                    <span className="w-[29px] text-[10px] leading-[14px] whitespace-nowrap">{outfit.username}</span>
+                  </div>
+                  <div className="absolute w-[54px] h-[21px] top-[264px] left-[147px] flex items-center gap-2">
+                    <HeartIcon className="w-[21px] h-[21px] fill-red-500 text-red-500" />
+                    <span className="w-[22px] font-bold text-[15px] leading-[21px]">{outfit.likes}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </section>
       </div>
     </div>
