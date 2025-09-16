@@ -1,5 +1,6 @@
 import React from "react";
 import { CategoryPageTemplate } from "../../components/CategoryPageTemplate";
+import NavHeader from "../../components/NavHeader"; // ✅ NavHeader import
 
 const TopPage = () => {
   const categoryTabs = [
@@ -12,7 +13,15 @@ const TopPage = () => {
     { name: "기타", active: false },
   ];
 
-  return <CategoryPageTemplate categoryName="상의" categoryTabs={categoryTabs} />;
+  return (
+    <div className="bg-[#e3e2e2] min-h-screen flex flex-col">
+      {/* ✅ NavHeader */}
+      <NavHeader />
+
+      {/* ✅ CategoryPageTemplate 자체가 레이아웃 처리 */}
+      <CategoryPageTemplate categoryName="상의" categoryTabs={categoryTabs} />
+    </div>
+  );
 };
 
 export default TopPage;
