@@ -100,7 +100,7 @@ const ShopPage = () => {
               <Card
                 key={product.id}
                 className="bg-transparent border-none shadow-none cursor-pointer"
-                onClick={() => navigate("/screen126", { state: { product } })}
+                onClick={() => navigate(`/shop/${product.id}`)} // ✅ 상세 페이지로 이동
               >
                 <CardContent className="p-0">
                   <div className="relative mb-6">

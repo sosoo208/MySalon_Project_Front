@@ -12,6 +12,7 @@ import OuterPage from "./pages/shop/OuterPage";
 import PantsPage from "./pages/shop/PantsPage";
 import DressPage from "./pages/shop/DressPage";
 import CartPage from "./pages/cart/CartPage";
+import ProductDetail from "./pages/shop/ProductDetail"; // ✅ 구매자용 상품 상세
 
 // ===== 사용자(구매자) 페이지 =====
 import MyPage from "./pages/user/MyPage";
@@ -19,14 +20,14 @@ import ProfileEdit from "./pages/user/ProfileEdit";
 import OrderList from "./pages/user/OrderList";
 import FavoriteList from "./pages/user/FavoriteList";
 import MyReviewPage from "./pages/user/MyReviewPage";
-import ReviewWritePage from "./pages/user/ReviewWritePage"; // ✅ 리뷰 작성
-import ReviewEditPage from "./pages/user/ReviewEditPage";   // ✅ 리뷰 수정
+import ReviewWritePage from "./pages/user/ReviewWritePage"; 
+import ReviewEditPage from "./pages/user/ReviewEditPage";   
 
 // ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
 import ProductList from "./pages/admin/ProductList";
-import ProductDetail from "./pages/admin/ProductDetail";
+import AdminProductDetail from "./pages/admin/AdminProductDetail"; // ✅ 관리자 상품 상세
 import SalesList from "./pages/admin/SalesList";
 import OrderShipping from "./pages/admin/OrderShipping";
 import Sales from "./pages/admin/Sales";
@@ -44,7 +45,7 @@ import { ScrollContainer } from "./components/ScrollContainer";
 // ✅ 역할 가져오기
 const getRole = () => {
   const role = localStorage.getItem("role");
-  return role ? role.toUpperCase() : null;
+  return role ? role.toUpperCase() : null; // 필요시 toUpperCase() 제거 가능
 };
 
 // ✅ 역할별 렌더링
@@ -75,6 +76,7 @@ function AppContent() {
       {/* ===== 랜딩/공용 ===== */}
       <Route path="/" element={<ScrollContainer />} />
       <Route path="/shop" element={<ShopPage />} />
+      <Route path="/shop/:id" element={<ProductDetail />} /> {/* ✅ 구매자 상품 상세 */}
       <Route path="/cart" element={<CartPage />} />
 
       {/* ===== 인증 ===== */}
@@ -90,8 +92,8 @@ function AppContent() {
       <Route path="/mypage/orders" element={<OrderList />} />
       <Route path="/mypage/favorites" element={<FavoriteList />} />
       <Route path="/mypage/reviews" element={<MyReviewPage />} />
-      <Route path="/mypage/reviews/write/:productId" element={<ReviewWritePage />} /> {/* ✅ 리뷰 작성 */}
-      <Route path="/mypage/reviews/edit/:reviewId" element={<ReviewEditPage />} />   {/* ✅ 리뷰 수정 */}
+      <Route path="/mypage/reviews/write/:productId" element={<ReviewWritePage />} />
+      <Route path="/mypage/reviews/edit/:reviewId" element={<ReviewEditPage />} />
 
       {/* ===== 판매자 전용 ===== */}
       <Route
@@ -146,7 +148,7 @@ function AppContent() {
         path="/admin/products/:id"
         element={
           <BlockRole denied={["BUYER"]} redirectTo="/mypage">
-            <ProductDetail />
+            <AdminProductDetail />
           </BlockRole>
         }
       />
