@@ -5,7 +5,7 @@ import { userApi } from "../../api/user/userApi";
 import { reviewApi } from '../../api/review_/reviewApi';
 import { favoriteApi } from '../../api/favorite/favoriteApi';
 import { postApi } from '../../api/post_/postApi';
-
+import { Link } from "react-router-dom";
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("posts"); // posts | comments
