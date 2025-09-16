@@ -1,36 +1,44 @@
-import { MicIcon, SearchIcon, Heart, Star } from "lucide-react"; // ⭐ 별 아이콘 추가
+import { MicIcon, SearchIcon, Heart, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
-import { SharedHeader } from "../../components/SharedHeader";
-import { productApi } from '../../api/product/productApi';
+import NavHeader from "../../components/NavHeader";
+import Footer from "../../components/Footer"; // ✅ Footer
+import { productApi } from "../../api/product/productApi";
 import { favoriteApi } from "../../api/favorite/favoriteApi";
 import { userApi } from "../../api/user/userApi";
-import { reviewApi } from "../../api/review_/reviewApi"; // ⭐ 리뷰 API 추가
+import { reviewApi } from "../../api/review_/reviewApi";
+
+// ✅ 아이콘 이미지 불러오기
+import upIcon from "../../assets/images/up.png";
+import downIcon from "../../assets/images/down.png";
+import manIcon from "../../assets/images/man.png";
+import womanIcon from "../../assets/images/woman.png";
+import kidsIcon from "../../assets/images/kids.png";
 
 const ShopPage = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [likedProducts, setLikedProducts] = useState({});
   const [userNum, setUserNum] = useState(null);
-  const [productScores, setProductScores] = useState({}); // ⭐ 평균 별점 저장
-  const [reviewCounts, setReviewCounts] = useState({});   // ⭐ 리뷰 개수 저장
+  const [productScores, setProductScores] = useState({});
+  const [reviewCounts, setReviewCounts] = useState({});
   const [searchKeyword, setSearchKeyword] = useState("");
 
+  // ✅ 카테고리 아이콘 적용
   const categoryItems = [
-    { name: "상의", path: "/category/상의" },
-    { name: "바지", path: "/category/바지" },
-    { name: "남성", path: "/category/남성" },
-    { name: "여성", path: "/category/여성" },
-    { name: "키즈", path: "/category/키즈" },
+    { name: "상의", path: "/category/상의", icon: upIcon },
+    { name: "바지", path: "/category/바지", icon: downIcon },
+    { name: "남성", path: "/category/남성", icon: manIcon },
+    { name: "여성", path: "/category/여성", icon: womanIcon },
+    { name: "키즈", path: "/category/키즈", icon: kidsIcon },
   ];
 
   const handleSearch = async () => {
     try {
-      // name만 넣고 나머지는 null
       const data = await productApi.searchProducts({
         name: searchKeyword,
         category: null,
@@ -40,7 +48,6 @@ const ShopPage = () => {
       });
       setProducts(data);
 
-      // ⭐ 검색 후 찜 상태 갱신
       if (userNum) {
         const favorites = await favoriteApi.getUserFavorites(userNum);
         const likedMap = {};
@@ -53,7 +60,7 @@ const ShopPage = () => {
       console.error("상품 검색 실패:", error);
     }
   };
-  // ✅ 유저 정보 불러오기
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -66,7 +73,6 @@ const ShopPage = () => {
     fetchUser();
   }, []);
 
-  // ✅ 상품 + 찜 + 리뷰/별점 불러오기
   useEffect(() => {
     if (!userNum) return;
 
@@ -82,7 +88,6 @@ const ShopPage = () => {
         });
         setLikedProducts(likedMap);
 
-        // ⭐ 각 상품별 리뷰 개수 & 평균 점수 불러오기
         const scores = {};
         const counts = {};
         for (const product of data) {
@@ -105,7 +110,6 @@ const ShopPage = () => {
     fetchData();
   }, [userNum]);
 
-  // ✅ 찜 토글 함수
   const toggleLike = async (productNum) => {
     try {
       await favoriteApi.addFavorite({ userNum, productNum });
@@ -119,22 +123,22 @@ const ShopPage = () => {
   };
 
   return (
-    <div className="bg-[#e3e2e2] min-h-screen w-full">
-      <div className="max-w-[1440px] mx-auto bg-[#e3e2e2] relative">
-        <SharedHeader />
+    <div className="bg-[#e3e2e2] min-h-screen w-full flex flex-col">
+      {/* ✅ NavHeader */}
+      <NavHeader />
 
+      {/* 메인 콘텐츠 */}
+      <main className="flex-1 max-w-[1440px] mx-auto px-6">
         {/* Search Bar */}
-        <div className="flex justify-center my-8">
+        <div className="flex justify-center mt-10 mb-14">
           <div className="relative w-[400px]">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#999999]" />
             <Input
               placeholder="Search"
-              value={searchKeyword}               // 검색어 바인딩
-              onChange={(e) => setSearchKeyword(e.target.value)}  // 입력 시 state 갱신
-              onKeyDown={(e) => {                // 엔터 키로 검색
-                if (e.key === "Enter") handleSearch();
-              }}
-              className="w-full h-[50px] pl-12 pr-12 bg-[#78788029] border-none rounded-full text-[17px] [font-family:'SF_Pro-Regular',Helvetica] placeholder:text-[#999999]"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              className="w-full h-[50px] pl-12 pr-12 bg-[#f5f5f5] border rounded-full text-[17px] placeholder:text-[#999999]"
             />
             <MicIcon className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#999999]" />
           </div>
@@ -142,10 +146,7 @@ const ShopPage = () => {
 
         {/* Shop By My Salon */}
         <section className="text-center">
-          <h2 className="[font-family:'SF_Pro-Regular',Helvetica] font-normal text-black text-xl tracking-[-0.08px] leading-[22px] mb-[77px]">
-            SHOP BY MY SALON
-          </h2>
-
+          <h2 className="text-black text-xl mb-[77px]">SHOP BY MY SALON</h2>
           <div className="flex justify-center items-center gap-[73px] mb-[91px]">
             {categoryItems.map((category, index) => (
               <div
@@ -153,10 +154,15 @@ const ShopPage = () => {
                 className="text-center cursor-pointer"
                 onClick={() => navigate(category.path)}
               >
-                <div className="w-[78px] h-[71px] bg-[#bdbdbd] rounded-full mb-4 mx-auto" />
-                <div className="[font-family:'SF_Pro-Regular',Helvetica] font-normal text-black text-xl tracking-[-0.08px] leading-[22px]">
-                  {category.name}
+                {/* ✅ 카테고리 아이콘 */}
+                <div className="w-[78px] h-[78px] rounded-full mb-4 mx-auto flex items-center justify-center bg-white shadow">
+                  <img
+                    src={category.icon}
+                    alt={category.name}
+                    className="w-[50px] h-[50px] object-contain"
+                  />
                 </div>
+                <div className="text-xl text-black">{category.name}</div>
               </div>
             ))}
           </div>
@@ -164,11 +170,9 @@ const ShopPage = () => {
 
         {/* Recommended Products */}
         <section className="text-center mb-[103px]">
-          <h2 className="[font-family:'SF_Pro-Regular',Helvetica] font-normal text-black text-xl tracking-[-0.08px] leading-[22px] mb-[67px]">
-            당신을 위한 추천상품
-          </h2>
+          <h2 className="text-black text-xl mb-[67px]">당신을 위한 추천상품</h2>
 
-          <div className="grid grid-cols-4 gap-[91px] max-w-[1201px] mx-auto px-[134px] relative z-20">
+          <div className="grid grid-cols-4 gap-[60px] max-w-[1200px] mx-auto relative z-20">
             {products.map((product) => (
               <Card
 
@@ -177,8 +181,8 @@ const ShopPage = () => {
                 onClick={() => navigate(`/shop/${product.productNum}`)} // ✅ 상세 페이지로 이동
                 
               >
-                <CardContent className="p-0">
-                  <div className="relative mb-6">
+                <CardContent className="p-4">
+                  <div className="relative mb-4">
                     <img
                       src={
                         product.mainImage
@@ -186,70 +190,59 @@ const ShopPage = () => {
                           : "https://via.placeholder.com/232x348"
                       }
                       alt={product.productName}
-                      className="w-[232px] h-[348px] relative z-10 object-cover"
+                      className="w-full h-[280px] object-cover rounded-md"
                     />
 
-                    {/* ✅ 하트 버튼 */}
                     <div
-                      className="absolute top-2 right-2 z-30 cursor-pointer"
+                      className="absolute top-2 right-2 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleLike(product.productNum);
                       }}
                     >
                       <Heart
-                        className={`w-6 h-6 transition-colors ${likedProducts[product.productNum]
-                          ? "fill-red-500 text-red-500"
-                          : "text-gray-400"
-                          }`}
+                        className={`w-6 h-6 ${
+                          likedProducts[product.productNum]
+                            ? "fill-red-500 text-red-500"
+                            : "text-gray-400"
+                        }`}
                       />
                     </div>
                   </div>
 
                   <div className="text-left">
-                    {/* Gender + ⭐ 별점 + 리뷰 개수 */}
-                    <div className="flex items-center gap-4 mb-1">
-                      <Badge
-                        variant="secondary"
-                        className="text-[10px] [font-family:'Crimson_Text',Helvetica] text-[#828282] bg-transparent border-none p-0"
-                      >
+                    <div className="flex items-center gap-4 mb-2">
+                      <Badge variant="secondary" className="text-xs text-gray-500 bg-transparent border-none p-0">
                         {product.gender}
                       </Badge>
-
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
                         <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                        <span className="text-sm text-gray-700">
-                          {productScores[product.productNum]?.toFixed(1) || "0.0"}
-                        </span>
-                        <span className="text-sm text-gray-500">
+                        {productScores[product.productNum]?.toFixed(1) || "0.0"}
+                        <span className="text-gray-400">
                           ({reviewCounts[product.productNum] || 0})
                         </span>
                       </div>
                     </div>
-
-                    {/* 상품 이름 */}
-                    <h3 className="[font-family:'Galdeano',Helvetica] font-normal text-black text-[15px] tracking-[0] leading-[21px] mb-1">
+                    <h3 className="text-black text-base mb-1">
                       {product.productName}
                     </h3>
-
-                    {/* 가격 */}
-                    <p className="[font-family:'DM_Serif_Text',Helvetica] font-normal text-[15px] tracking-[0] leading-[21px] text-black">
+                    <p className="text-black font-medium">
                       {product.price?.toLocaleString()}원
                     </p>
-
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <Button className="mt-[53px] w-[88px] h-7 bg-[url(https://c.animaapp.com/mfdr5z0vfXP3sX/img/rectangle-28.svg)] bg-[100%_100%] border-none hover:opacity-80">
-            <span className="[font-family:'DM_Serif_Text',Helvetica] font-normal text-white text-[15px] tracking-[0] leading-[21px]">
-              더보기
-            </span>
+          <Button className="mt-[53px] w-[100px] h-9 bg-[#333] rounded-full hover:opacity-80 text-white">
+            더보기
           </Button>
         </section>
-      </div>
+      </main>
+
+      {/* ✅ Footer */}
+      <Footer />
     </div>
   );
 };

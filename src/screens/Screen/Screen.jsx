@@ -6,13 +6,13 @@ import { Input } from "../../components/ui/input";
 
 const navigationItems = [
   "로그인",
-  "회원가입", 
+  "회원가입",
   "장바구니",
   "마이페이지",
   "커뮤니티",
 ];
 
-export const Screen = () => {
+export default function Screen() {   // ✅ default export로 수정
   const navigate = useNavigate();
 
   return (
@@ -30,17 +30,11 @@ export const Screen = () => {
                 variant="ghost"
                 className="h-auto p-0 text-[15px] font-normal"
                 onClick={() => {
-                  if (item === "로그인") {
-                    navigate('/login');
-                  } else if (item === "회원가입") {
-                    navigate('/signup');
-                  } else if (item === "마이페이지") {
-                    navigate('/mypage');
-                  } else if (item === "장바구니") {
-                    navigate('/cart');
-                  } else if (item === "커뮤니티") {
-                    navigate('/community');
-                  }
+                  if (item === "로그인") navigate("/login");
+                  else if (item === "회원가입") navigate("/signup");
+                  else if (item === "마이페이지") navigate("/mypage");
+                  else if (item === "장바구니") navigate("/cart");
+                  else if (item === "커뮤니티") navigate("/community");
                 }}
               >
                 {item}
@@ -53,7 +47,8 @@ export const Screen = () => {
         <main className="absolute w-[1066px] h-[548px] top-[174px] left-[232px] bg-[url(https://c.animaapp.com/mfdmox6lmGwOkM/img/--.png)] bg-[100%_100%] translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
           <section className="relative w-[267px] h-[151px] left-[740px]">
             <p className="absolute top-[115px] left-[3px] [font-family:'Crimson_Text',Helvetica] font-normal text-black text-[13px] tracking-[0] leading-[18.2px]">
-              하나의 옷을 여러 가지로 입는 나만의 스타일링 팁<br />
+              하나의 옷을 여러 가지로 입는 나만의 스타일링 팁
+              <br />
               사람들과 공유해보세요.
             </p>
 
@@ -77,7 +72,6 @@ export const Screen = () => {
                 <div className="flex items-center gap-2 relative flex-1">
                   <SearchIcon className="w-4 h-4 text-[#999999]" />
                   <Input
-                    placeholder="Search"
                     className="border-0 bg-transparent text-[#999999] text-[17px] tracking-[-0.08px] leading-[22px] placeholder:text-[#999999] focus-visible:ring-0 h-auto p-0"
                   />
                 </div>
@@ -95,7 +89,7 @@ export const Screen = () => {
         <section className="absolute w-[242px] h-[72px] top-[870px] left-[590px] translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:600ms]">
           <Button
             className="w-[242px] h-[51px] bg-[#524f4f] rounded-[30px] hover:bg-[#524f4f]/90 transition-colors h-auto"
-            onClick={() => navigate('/community')}
+            onClick={() => navigate("/community")}
           >
             <span className="[font-family:'Crimson_Text',Helvetica] font-normal text-white text-[15px] tracking-[0] leading-[21px]">
               스타일 실험실로 입장하기
@@ -109,4 +103,4 @@ export const Screen = () => {
       </div>
     </div>
   );
-};
+}
