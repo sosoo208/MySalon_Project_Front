@@ -14,8 +14,7 @@ export default function ProductDetail() {
   const mockProduct = {
     id,
     name: "여름블루 롱 원피스",
-    description:
-      "상품 설명 줄입니다. 상품 설명 줄입니다. 상품 설명 줄입니다.",
+    description: "상품 설명 줄입니다. 상품 설명 줄입니다. 상품 설명 줄입니다.",
     price: 50000,
     shippingFee: 3500,
     image: "https://via.placeholder.com/400x500",
@@ -65,7 +64,7 @@ export default function ProductDetail() {
     if (sortOption === "rating") {
       list.sort((a, b) => b.rating - a.rating);
     } else {
-      list.sort((a, b) => b.id - a.id); // id 기준 최신순
+      list.sort((a, b) => b.id - a.id);
     }
     return list;
   }, [reviews, sortOption]);
@@ -104,10 +103,7 @@ export default function ProductDetail() {
       quantity: count,
     };
 
-    // 기존 장바구니 불러오기
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // 이미 같은 상품(색상+사이즈)이 있으면 수량만 증가
     const index = existingCart.findIndex(
       (item) =>
         item.id === cartItem.id &&
@@ -124,7 +120,22 @@ export default function ProductDetail() {
     localStorage.setItem("cart", JSON.stringify(existingCart));
 
     alert("장바구니에 상품이 담겼습니다!");
-    navigate("/cart"); // ✅ 담은 후 장바구니 페이지로 이동
+    navigate("/cart");
+  };
+
+  // 🛍 구매하기 → 주문 완료 페이지 이동
+  const handleBuy = () => {
+    if (!selectedSize) {
+      alert("사이즈를 선택해주세요!");
+      return;
+    }
+
+    navigate("/order/complete", {
+      state: {
+        product: { id: mockProduct.id, name: mockProduct.name },
+        buyer: "홍길동", // 로그인 사용자 이름을 넣어주세요
+      },
+    });
   };
 
   return (
@@ -138,20 +149,14 @@ export default function ProductDetail() {
 
         {/* 상품 상세 */}
         <div className="detail-main">
-          <img
-            src={mockProduct.image}
-            alt={mockProduct.name}
-            className="detail-image"
-          />
+          <img src={mockProduct.image} alt={mockProduct.name} className="detail-image" />
 
           <div className="detail-info">
             <h2 className="detail-title">{mockProduct.name}</h2>
             <hr className="divider" />
 
-            {/* 상품 설명 */}
             <p className="detail-desc">{mockProduct.description}</p>
 
-            {/* 가격/배송비 */}
             <div className="detail-row">
               <span className="label">가격</span>
               <span className="price">
@@ -162,7 +167,6 @@ export default function ProductDetail() {
               </span>
             </div>
 
-            {/* 색상 */}
             <div className="detail-row">
               <span className="label">색상</span>
               <div className="color-options">
@@ -174,9 +178,7 @@ export default function ProductDetail() {
                       setSelectedSize("");
                       setCount(1);
                     }}
-                    className={`color-btn ${
-                      selectedColor === c ? "active" : ""
-                    }`}
+                    className={`color-btn ${selectedColor === c ? "active" : ""}`}
                   >
                     {c}
                   </button>
@@ -184,7 +186,6 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* 사이즈 */}
             <div className="detail-row">
               <span className="label">사이즈</span>
               <select
@@ -199,15 +200,10 @@ export default function ProductDetail() {
               </select>
             </div>
 
-            {/* 수량 */}
             <div className="detail-row">
               <span className="label">수량</span>
               <div className="qty-box">
-                <button
-                  onClick={() => setCount((prev) => Math.max(1, prev - 1))}
-                >
-                  -
-                </button>
+                <button onClick={() => setCount((prev) => Math.max(1, prev - 1))}>-</button>
                 <span>{count}</span>
                 <button onClick={() => setCount((prev) => prev + 1)}>+</button>
               </div>
@@ -216,25 +212,19 @@ export default function ProductDetail() {
 
             <hr className="divider" />
 
-            {/* 총 가격 */}
             <div className="total-row">
               <span className="label">TOTAL</span>
               <span className="total-price">{totalPrice.toLocaleString()}원</span>
             </div>
 
-            {/* 액션 버튼 */}
             <div className="action-buttons">
               <button className="icon-btn" onClick={handleToggleWish}>
-                <img
-                  src={isWished ? redHeartIcon : heartIcon}
-                  alt="찜하기"
-                  className="icon"
-                />
+                <img src={isWished ? redHeartIcon : heartIcon} alt="찜하기" className="icon" />
               </button>
               <button className="icon-btn" onClick={handleAddToCart}>
                 <img src={orderIcon} alt="장바구니" className="icon" />
               </button>
-              <button className="buy-btn">구매하기</button>
+              <button className="buy-btn" onClick={handleBuy}>구매하기</button>
             </div>
           </div>
         </div>
@@ -245,17 +235,13 @@ export default function ProductDetail() {
             <h3 className="review-title">REVIEW</h3>
             <div className="review-filters">
               <button
-                className={`filter-btn ${
-                  sortOption === "latest" ? "active" : ""
-                }`}
+                className={`filter-btn ${sortOption === "latest" ? "active" : ""}`}
                 onClick={() => setSortOption("latest")}
               >
                 최신순
               </button>
               <button
-                className={`filter-btn ${
-                  sortOption === "rating" ? "active" : ""
-                }`}
+                className={`filter-btn ${sortOption === "rating" ? "active" : ""}`}
                 onClick={() => setSortOption("rating")}
               >
                 별점순
@@ -279,14 +265,10 @@ export default function ProductDetail() {
             <div className="review-summary">
               <div className="big-star">★</div>
               <div className="score">{avgRating}</div>
-              <p className="summary-text">
-                {reviews.length}개의 리뷰가 작성되었습니다.
-              </p>
+              <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
               <button
                 className="write-btn"
-                onClick={() =>
-                  navigate(`/mypage/reviews/write/${mockProduct.id}`)
-                }
+                onClick={() => navigate(`/mypage/reviews/write/${mockProduct.id}`)}
               >
                 리뷰 작성하기
               </button>

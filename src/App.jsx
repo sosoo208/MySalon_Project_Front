@@ -12,7 +12,8 @@ import OuterPage from "./pages/shop/OuterPage";
 import PantsPage from "./pages/shop/PantsPage";
 import DressPage from "./pages/shop/DressPage";
 import CartPage from "./pages/cart/CartPage";
-import ProductDetail from "./pages/shop/ProductDetail"; // ✅ 구매자용 상품 상세
+import ProductDetail from "./pages/shop/ProductDetail"; 
+import OrderComplete from "./pages/order/OrderComplete"; // ✅ 주문 완료 페이지
 
 // ===== 사용자(구매자) 페이지 =====
 import MyPage from "./pages/user/MyPage";
@@ -27,7 +28,7 @@ import ReviewEditPage from "./pages/user/ReviewEditPage";
 import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
 import ProductList from "./pages/admin/ProductList";
-import AdminProductDetail from "./pages/admin/AdminProductDetail"; // ✅ 관리자 상품 상세
+import AdminProductDetail from "./pages/admin/AdminProductDetail"; 
 import SalesList from "./pages/admin/SalesList";
 import OrderShipping from "./pages/admin/OrderShipping";
 import Sales from "./pages/admin/Sales";
@@ -45,21 +46,24 @@ import { ScrollContainer } from "./components/ScrollContainer";
 // ✅ 역할 가져오기
 const getRole = () => {
   const role = localStorage.getItem("role");
-  return role ? role.toUpperCase() : null; // 필요시 toUpperCase() 제거 가능
+  return role ? role.toUpperCase() : null;
 };
 
 // ✅ 역할별 렌더링
-function RoleElement({ buyer, seller, fallback = null }) {
+function RoleElement({ buyer, seller, fallback = <Navigate to="/login" replace /> }) {
   const role = getRole();
   if (role === "SELLER") return seller ?? fallback;
   if (role === "BUYER") return buyer ?? fallback;
-  return fallback;
+  return fallback; // 로그인 안 되어 있으면 fallback으로
 }
 
 // ✅ 접근 차단
 function BlockRole({ denied = [], children, redirectTo }) {
   const role = getRole();
-  if (role && denied.includes(role)) {
+  if (!role) {
+    return <Navigate to="/login" replace />;
+  }
+  if (denied.includes(role)) {
     return (
       <Navigate
         to={redirectTo ?? (role === "SELLER" ? "/admin-mypage" : "/shop")}
@@ -76,8 +80,9 @@ function AppContent() {
       {/* ===== 랜딩/공용 ===== */}
       <Route path="/" element={<ScrollContainer />} />
       <Route path="/shop" element={<ShopPage />} />
-      <Route path="/shop/:id" element={<ProductDetail />} /> {/* ✅ 구매자 상품 상세 */}
+      <Route path="/shop/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/order/complete" element={<OrderComplete />} /> {/* ✅ 주문 완료 */}
 
       {/* ===== 인증 ===== */}
       <Route path="/signup" element={<SignupPage />} />
@@ -86,7 +91,13 @@ function AppContent() {
       {/* ===== 마이페이지 ===== */}
       <Route
         path="/mypage"
-        element={<RoleElement buyer={<MyPage />} seller={<AdminMyPage />} />}
+        element={
+          <RoleElement
+            buyer={<MyPage />}
+            seller={<AdminMyPage />}
+            fallback={<Navigate to="/login" replace />}
+          />
+        }
       />
       <Route path="/mypage/edit" element={<ProfileEdit />} />
       <Route path="/mypage/orders" element={<OrderList />} />
@@ -172,7 +183,7 @@ function AppContent() {
           <RoleElement
             buyer={<Navigate to="/shop" replace />}
             seller={<Navigate to="/admin-mypage" replace />}
-            fallback={<Navigate to="/shop" replace />}
+            fallback={<Navigate to="/login" replace />}
           />
         }
       />
