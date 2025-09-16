@@ -50,7 +50,7 @@ import BoardWritePage from "./pages/community/BoardWritePage";
 
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
-
+import { Link } from "react-router-dom";
 
 // ✅ 역할 가져오기
 const getRole = () => {

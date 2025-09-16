@@ -5,7 +5,7 @@ import { userApi } from "../../api/user/userApi";
 import { reviewApi } from '../../api/review_/reviewApi';
 import { favoriteApi } from '../../api/favorite/favoriteApi';
 import { postApi } from '../../api/post_/postApi';
-
+import { Link } from "react-router-dom";
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("posts"); // posts | comments
@@ -36,7 +36,6 @@ export default function MyPage() {
 
         const [favCount, revCount, allPosts] = await Promise.all([
           favoriteApi.getUserFavoriteCount(user.userNum),
-          console.log(user.userNum),
           reviewApi.getUserReviewCount(user.userNum),
           postApi.getAllPost(),
         ]);
@@ -88,7 +87,7 @@ export default function MyPage() {
 
               <Link
                 to="/mypage/edit"
-                  style={{
+                style={{
                   display: "inline-block",
                   border: "1px solid #777",
                   borderRadius: "8px",
@@ -148,11 +147,11 @@ export default function MyPage() {
                 marginBottom: "40px",
               }}
             >
-              {[ 
-                { count: 10, label: "주문내역" },
-                { count: 5, label: "찜한 상품" },
-                { count: 12, label: "내가 쓴 리뷰" },
-                { count: 2, label: "내가 올린 게시글" },
+              {[
+                { count: 0, label: "주문내역" }, 
+                { count: favoriteCount, label: "찜한 상품" },
+                { count: reviewCount, label: "내가 쓴 리뷰" },
+                { count: posts.length, label: "내가 올린 게시글" },
 
               ].map((item, idx) => (
                 <div
