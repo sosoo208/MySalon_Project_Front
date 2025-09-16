@@ -26,7 +26,6 @@ import ReviewEditPage from "./pages/user/ReviewEditPage";
 // ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
-import ProductList from "./pages/admin/ProductList";
 import AdminProductDetail from "./pages/admin/AdminProductDetail"; // ✅ 관리자 상품 상세
 import SalesList from "./pages/admin/SalesList";
 import OrderShipping from "./pages/admin/OrderShipping";
@@ -112,14 +111,7 @@ function AppContent() {
           </BlockRole>
         }
       />
-      <Route
-        path="/admin/products/list"
-        element={
-          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
-            <ProductList />
-          </BlockRole>
-        }
-      />
+      
       <Route
         path="/admin/products/sales-list"
         element={
