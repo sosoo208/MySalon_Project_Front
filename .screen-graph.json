@@ -51,13 +51,6 @@
       ]
     },
     {
-      "id": "src/pages/shop/OuterPage.jsx",
-      "label": "OuterPage",
-      "routes": [
-        "/category/아우터"
-      ]
-    },
-    {
       "id": "src/pages/shop/PantsPage.jsx",
       "label": "PantsPage",
       "routes": [
@@ -65,10 +58,45 @@
       ]
     },
     {
+      "id": "src/pages/shop/TopPage.jsx",
+      "label": "TopPage",
+      "routes": [
+        "/category/상의"
+      ]
+    },
+    {
+      "id": "src/pages/shop/MalePage.jsx",
+      "label": "MalePage",
+      "routes": [
+        "/category/남성"
+      ]
+    },
+    {
+      "id": "src/pages/shop/FemalePage.jsx",
+      "label": "FemalePage",
+      "routes": [
+        "/category/여성"
+      ]
+    },
+    {
+      "id": "src/pages/shop/KidsPage.jsx",
+      "label": "KidsPage",
+      "routes": [
+        "/category/키즈"
+      ]
+    },
+    {
+      "id": "src/pages/shop/OuterPage.jsx",
+      "label": "OuterPage",
+      "routes": [
+        "/category/아우터"
+      ]
+    },
+    {
       "id": "src/pages/shop/DressPage.jsx",
       "label": "DressPage",
       "routes": [
-        "/category/원피스"
+        "/category/원피스/스커트"
       ]
     },
     {
