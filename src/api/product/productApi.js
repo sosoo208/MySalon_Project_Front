@@ -11,15 +11,15 @@ export const productApi = {
     }
   },
 
-  createProduct2: async (data) => {
-    try {
-      const response = await apiClient.post('/products/create', data);
-      return response.data;
-    } catch (error) {
-      console.error('상품 생성2 실패:', error);
-      throw error;
-    }
-  },
+  // 상품 등록
+  createProduct2: async (formData) => {
+  const response = await apiClient.post('/products/create', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+},
 
   updateProduct: async (productId, data) => {
     try {
@@ -73,7 +73,7 @@ export const productApi = {
 
   getAllProductsByUser: async (userId) => {
     try {
-      const response = await apiClient.get(`/products/${userId}`);
+      const response = await apiClient.get(`/products/my-products`);
       return response.data;
     } catch (error) {
       console.error('유저별 상품 조회 실패:', error);

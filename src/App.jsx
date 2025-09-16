@@ -11,9 +11,16 @@ import ShopPage from "./pages/shop/ShopPage";
 import OuterPage from "./pages/shop/OuterPage";
 import PantsPage from "./pages/shop/PantsPage";
 import DressPage from "./pages/shop/DressPage";
-import CartPage from "./pages/cart/CartPage";
+import TopPage from "./pages/shop/TopPage";
+import KidsPage from "./pages/shop/KidsPage";
+import MalePage from "./pages/shop/MalePage";
+import FemalePage from "./pages/shop/FemalePage";
+
+// ===== 장바구니 페이지 =====
+import CartPage from "./pages/cart/CartPage";   // ✅ 장바구니 페이지
 import ProductDetail from "./pages/shop/ProductDetail"; 
 import OrderComplete from "./pages/order/OrderComplete"; // ✅ 주문 완료 페이지
+
 
 // ===== 사용자(구매자) 페이지 =====
 import MyPage from "./pages/user/MyPage";
@@ -23,6 +30,7 @@ import FavoriteList from "./pages/user/FavoriteList";
 import MyReviewPage from "./pages/user/MyReviewPage";
 import ReviewWritePage from "./pages/user/ReviewWritePage"; 
 import ReviewEditPage from "./pages/user/ReviewEditPage";   
+
 
 // ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
@@ -43,6 +51,7 @@ import BoardWritePage from "./pages/community/BoardWritePage";
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
 
+
 // ✅ 역할 가져오기
 const getRole = () => {
   const role = localStorage.getItem("role");
@@ -52,10 +61,12 @@ const getRole = () => {
 // ✅ 역할별 렌더링
 function RoleElement({ buyer, seller, fallback = <Navigate to="/login" replace /> }) {
   const role = getRole();
+
   if (role === "SELLER") return seller ?? fallback;
   if (role === "BUYER") return buyer ?? fallback;
   return fallback; // 로그인 안 되어 있으면 fallback으로
 }
+
 
 // ✅ 접근 차단
 function BlockRole({ denied = [], children, redirectTo }) {
@@ -64,6 +75,7 @@ function BlockRole({ denied = [], children, redirectTo }) {
     return <Navigate to="/login" replace />;
   }
   if (denied.includes(role)) {
+
     return (
       <Navigate
         to={redirectTo ?? (role === "SELLER" ? "/admin-mypage" : "/shop")}
@@ -77,16 +89,17 @@ function BlockRole({ denied = [], children, redirectTo }) {
 function AppContent() {
   return (
     <Routes>
-      {/* ===== 랜딩/공용 ===== */}
+      {/* 랜딩/공용 */}
       <Route path="/" element={<ScrollContainer />} />
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/order/complete" element={<OrderComplete />} /> {/* ✅ 주문 완료 */}
 
-      {/* ===== 인증 ===== */}
+      {/* 인증 */}
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
+
 
       {/* ===== 마이페이지 ===== */}
       <Route
@@ -99,6 +112,7 @@ function AppContent() {
           />
         }
       />
+
       <Route path="/mypage/edit" element={<ProfileEdit />} />
       <Route path="/mypage/orders" element={<OrderList />} />
       <Route path="/mypage/favorites" element={<FavoriteList />} />
@@ -106,7 +120,8 @@ function AppContent() {
       <Route path="/mypage/reviews/write/:productId" element={<ReviewWritePage />} />
       <Route path="/mypage/reviews/edit/:reviewId" element={<ReviewEditPage />} />
 
-      {/* ===== 판매자 전용 ===== */}
+
+      {/* 판매자 전용 마이페이지 */}
       <Route
         path="/admin-mypage"
         element={
@@ -115,6 +130,7 @@ function AppContent() {
           </BlockRole>
         }
       />
+      {/* 상품 등록 페이지 */}
       <Route
         path="/admin/products/register"
         element={
@@ -165,18 +181,26 @@ function AppContent() {
       />
 
       {/* ===== 카테고리 ===== */}
-      <Route path="/category/아우터" element={<OuterPage />} />
       <Route path="/category/바지" element={<PantsPage />} />
-      <Route path="/category/원피스" element={<DressPage />} />
+      <Route path="/category/상의" element={<TopPage />} />
+      <Route path="/category/남성" element={<MalePage />} />
+      <Route path="/category/여성" element={<FemalePage />} />
+      <Route path="/category/키즈" element={<KidsPage />} />
 
-      {/* ===== 커뮤니티 ===== */}
+      <Route path="/category/아우터" element={<OuterPage />} />
+      <Route path="/category/원피스/스커트" element={<DressPage />} />
+
+
+      
+
+      {/* 커뮤니티 */}
       <Route path="/community" element={<CommunityPage />} />
       <Route path="/coordi/write" element={<CoordiWritePage />} />
       <Route path="/board" element={<BoardPage />} />
       <Route path="/board/:id" element={<BoardDetailPage />} />
       <Route path="/board/write" element={<BoardWritePage />} />
 
-      {/* ===== 없는 경로 ===== */}
+      {/* 존재하지 않는 경로 */}
       <Route
         path="*"
         element={

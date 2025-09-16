@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SubHeader } from "../../components/SubHeader";
 import AdminNav from "./AdminNav";
+import { productApi } from "../../api/product/productApi";
 
 // 카테고리 맵 (상위/하위 연결)
 const categoryMap = {
@@ -14,25 +15,74 @@ const categoryMap = {
   키즈: ["상의", "하의"],
 };
 
+const categoryMap2 = {
+  전체: "ALL",
+  상의: "TOP",
+  바지: "BOTTOM",
+  아우터: "OUTERWEAR",
+  "원피스/스커트": "DRESS_SKIRT",
+  "ACC/BAG": "ACC_BAG",
+  "홈웨어/속옷": "LOUNGEWEAR_UNDERWEAR",
+  키즈: "KIDS",
+};
+
+const categoryLowMap = {
+  전체: "ALL",
+  반소매: "SHORT_SLEEVE",
+  긴소매: "LONG_SLEEVE",
+  "셔츠/블라우스": "SHIRT_BLOUSE",
+  "니트/스웨터": "KNIT_SWEATER",
+  "맨투맨/후드": "SWEATSHIRT_HOODIE",
+  기타: "OTHER",
+
+  자켓: "JACKET",
+  코트: "COAT",
+  가디건: "CARDIGAN",
+
+  반바지: "SHORTS",
+  청바지: "JEANS",
+  슬랙스: "SLACKS",
+
+  미니: "MINI",
+  미디: "MIDI",
+  롱: "LONG",
+
+  가방: "BAG",
+  악세사리: "ACCESSORY",
+  모자: "HAT",
+
+  잠옷: "PAJAMAS",
+  속옷: "UNDERWEAR",
+  
+  상의: "TOPS",
+  하의: "BOTTOMS",
+
+};
+
 export default function ProductRegister() {
   const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [category, setCategory] = useState("전체");
-  const [subCategory, setSubCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("전체");
   const [form, setForm] = useState({
-    name: "",
-    desc: "",
+    productName: "",
+    description: "",
     price: "",
-    shippingFee: "",
+    deliveryFee: "",
+    gender: "MALE",
   });
 
   const [options, setOptions] = useState([]);
   const [tempColor, setTempColor] = useState("");
   const [tempSize, setTempSize] = useState("");
-  const [tempQty, setTempQty] = useState("");
+  const [tempCount, setTempCount] = useState("");
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file) setImage(URL.createObjectURL(file));
+    if (file) {
+      setImage(URL.createObjectURL(file));
+      setImageFile(file);
+    }
   };
 
   const handleChange = (e) => {
@@ -41,24 +91,49 @@ export default function ProductRegister() {
   };
 
   const addOption = () => {
-    if (!tempColor || !tempSize || !tempQty) {
+    if (!tempColor || !tempSize || !tempCount) {
       alert("색상, 사이즈, 수량을 모두 입력해주세요.");
       return;
     }
-    setOptions((prev) => [...prev, { color: tempColor, size: tempSize, qty: tempQty }]);
+    setOptions((prev) => [...prev, { color: tempColor, size: tempSize, count: tempCount }]);
     setTempColor("");
     setTempSize("");
-    setTempQty("");
+    setTempCount("");
   };
 
   const removeOption = (index) => {
     setOptions((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ ...form, category, subCategory, options });
-    alert("상품이 등록되었습니다!");
+
+    const { productName, description, price, deliveryFee, gender } = form;
+
+    const formData = new FormData();
+    formData.append('mainImageFile', imageFile);
+    formData.append('productName', productName);
+    formData.append('description', description);
+    formData.append('price', price ? parseInt(price, 10) : 0);
+    formData.append('deliveryFee', parseInt(deliveryFee, 10) || 0);
+    formData.append('gender', gender);
+    formData.append('category', categoryMap2[category]);
+    formData.append('categoryLow', categoryLowMap[subCategory]);
+    
+    options.forEach((opt, index) => {
+        formData.append(`productDetails[${index}].size`, opt.size);
+        formData.append(`productDetails[${index}].color`, opt.color);
+        formData.append(`productDetails[${index}].quantity`, parseInt(opt.count, 10));
+      });
+
+    try {
+      await productApi.createProduct2(formData);
+      alert('상품이 성공적으로 등록되었습니다.');
+      // You might want to reset the form or navigate away
+    } catch (error) {
+      console.error('상품 등록 실패:', error);
+      alert('상품 등록에 실패했습니다.');
+    }
   };
 
   return (
@@ -119,19 +194,30 @@ export default function ProductRegister() {
                 </option>
               ))}
             </select>
+            
+            <label className="block font-medium text-sm mb-1">성별</label>
+            <select
+              name="gender"
+              value={form.gender}
+              onChange={handleChange}
+              className="w-full border px-2 py-2 mb-3 text-sm"
+            >
+              <option value="MALE">남성</option>
+              <option value="FEMALE">여성</option>
+            </select>
 
             <label className="block font-medium text-sm mb-1">상품이름</label>
             <input
-              name="name"
-              value={form.name}
+              name="productName"
+              value={form.productName}
               onChange={handleChange}
               className="w-full border px-2 py-2 mb-3 text-sm"
             />
 
             <label className="block font-medium text-sm mb-1">상품설명</label>
             <input
-              name="desc"
-              value={form.desc}
+              name="description"
+              value={form.description}
               onChange={handleChange}
               className="w-full border px-2 py-2 mb-3 text-sm"
             />
@@ -148,8 +234,8 @@ export default function ProductRegister() {
             <label className="block font-medium text-sm mb-1">배송비</label>
             <input
               type="number"
-              name="shippingFee"
-              value={form.shippingFee}
+              name="deliveryFee"
+              value={form.deliveryFee}
               onChange={handleChange}
               className="w-full border px-2 py-2 mb-3 text-sm"
             />
@@ -170,8 +256,8 @@ export default function ProductRegister() {
               />
               <input
                 type="number"
-                value={tempQty}
-                onChange={(e) => setTempQty(e.target.value)}
+                value={tempCount}
+                onChange={(e) => setTempCount(e.target.value)}
                 className="flex-1 border px-2 py-2 text-sm"
                 placeholder="수량 예: 10"
               />
@@ -192,7 +278,7 @@ export default function ProductRegister() {
                     className="border rounded px-2 py-1 text-xs flex items-center gap-1"
                   >
                     <span>
-                      {opt.color} / {opt.size} / {opt.qty}
+                      {opt.color} / {opt.size} / {opt.count}
                     </span>
                     <button
                       type="button"
