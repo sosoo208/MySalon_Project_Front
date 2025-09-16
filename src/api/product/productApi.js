@@ -100,4 +100,24 @@ export const productApi = {
       throw error;
     }
   },
+
+  getAllOrdered: async () => {
+    try {
+      const res = await apiClient.get('/product-details/ordered-products');
+      return res.data;
+    } catch (err) {
+      console.error('주문된 상품 조회 실패:', err);
+      throw err;
+    }
+  },
+
+  getAllSold: async () => {
+    try {
+      const res = await apiClient.get('/product-details/sold-products');
+      return res.data;
+    } catch (err) {
+      console.error('판매한 상품 조회 실패:', err);
+      throw err;
+    }
+  },
 };
