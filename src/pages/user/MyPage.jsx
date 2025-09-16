@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { SubHeader } from "../../components/SubHeader";
 import { userApi } from "../../api/user/userApi";
@@ -55,6 +56,7 @@ export default function MyPage() {
 
   if (loading) return <div>로딩 중...</div>;
 
+
   return (
     <>
       <SubHeader />
@@ -83,9 +85,10 @@ export default function MyPage() {
                   {userInfo.tall}cm / {userInfo.weight}kg
                 </div>
               </div>
-              <a
-                href="/mypage/edit"
-                style={{
+
+              <Link
+                to="/mypage/edit"
+                  style={{
                   display: "inline-block",
                   border: "1px solid #777",
                   borderRadius: "8px",
@@ -99,28 +102,58 @@ export default function MyPage() {
                 }}
               >
                 프로필 수정
-              </a>
+              </Link>
             </div>
 
-            <nav style={{ display: "flex", flexDirection: "column", gap: "14px", fontWeight: "bold" }}>
-              <a href="/mypage/orders">내 주문 내역</a>
-              <a href="/mypage/wishlist">찜한 상품</a>
-              <a href="/cart">장바구니</a>
-              <a href="/mypage/reviews">나의 리뷰</a>
+
+            <nav
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                fontWeight: "bold",
+              }}
+            >
+              <Link to="/mypage/orders">내 주문 내역</Link>
+              <Link to="/mypage/favorites">찜한 상품</Link> {/* ✅ 경로 수정 */}
+              <Link to="/cart">장바구니</Link>
+              <Link to="/mypage/reviews">나의 리뷰</Link>
+
             </nav>
           </div>
 
           {/* 오른쪽 활동 내역 */}
-          <div style={{ flex: 1, background: "#fff", borderRadius: "12px", padding: "50px", boxShadow: "0 3px 10px rgba(0,0,0,0.1)", marginBottom: "60px" }}>
-            <h2 style={{ fontSize: "22px", marginBottom: "25px", textAlign: "left" }}>활동내역</h2>
-            <div style={{ marginBottom: "25px", fontWeight: "500" }}>{userInfo.userName}님의 활동</div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "40px" }}>
-              {[
-                { count: 0, label: "주문내역" },
-                { count: favoriteCount, label: "찜한 상품" },
-                { count: reviewCount, label: "내가 쓴 리뷰" },
-                { count: 0, label: "내가 올린 게시글" },
+          <div
+            style={{
+              flex: 1,
+              background: "#fff",
+              borderRadius: "12px",
+              padding: "50px",
+              boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+              marginBottom: "60px",
+            }}
+          >
+            <h2 style={{ fontSize: "22px", marginBottom: "25px", textAlign: "left" }}>
+              활동내역
+            </h2>
+
+            <div style={{ marginBottom: "25px", fontWeight: "500" }}>홍길동님의 활동</div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "24px",
+                marginBottom: "40px",
+              }}
+            >
+              {[ 
+                { count: 10, label: "주문내역" },
+                { count: 5, label: "찜한 상품" },
+                { count: 12, label: "내가 쓴 리뷰" },
+                { count: 2, label: "내가 올린 게시글" },
+
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -149,8 +182,17 @@ export default function MyPage() {
               ))}
             </div>
 
-            {/* 탭 */}
-            <div style={{ display: "flex", justifyContent: "flex-start", gap: "40px", borderBottom: "1px solid #ccc", marginBottom: "20px" }}>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                gap: "40px",
+                borderBottom: "1px solid #ccc",
+                marginBottom: "20px",
+              }}
+            >
+
               <button
                 onClick={() => setActiveTab("posts")}
                 style={{
@@ -181,7 +223,6 @@ export default function MyPage() {
               </button>
             </div>
 
-            {/* 탭 내용 */}
             {activeTab === "posts" ? (
               <div style={{ textAlign: "left" }}>
                 {posts.length === 0 ? (

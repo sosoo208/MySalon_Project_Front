@@ -171,9 +171,11 @@ const ShopPage = () => {
           <div className="grid grid-cols-4 gap-[91px] max-w-[1201px] mx-auto px-[134px] relative z-20">
             {products.map((product) => (
               <Card
-                key={product.productNum}
-                className="bg-transparent border-none shadow-none cursor-pointer relative"
-                onClick={() => navigate("/screen126", { state: { product } })}
+
+                key={product.id}
+                className="bg-transparent border-none shadow-none cursor-pointer"
+                onClick={() => navigate(`/shop/${product.id}`)} // ✅ 상세 페이지로 이동
+                
               >
                 <CardContent className="p-0">
                   <div className="relative mb-6">
