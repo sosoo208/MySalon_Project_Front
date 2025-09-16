@@ -2,12 +2,9 @@ import React from "react";
 import { CategoryPageTemplate } from "../../components/CategoryPageTemplate";
 import NavHeader from "../../components/NavHeader"; // ✅ NavHeader import
 
-const OuterPage = () => {
+const FemalePage = () => {
   const categoryTabs = [
     { name: "전체", active: true },
-    { name: "가디건", active: false },
-    { name: "자켓", active: false },
-    { name: "코트", active: false },
   ];
 
   return (
@@ -15,10 +12,13 @@ const OuterPage = () => {
       {/* ✅ NavHeader */}
       <NavHeader />
 
-      {/* ✅ CategoryPageTemplate 자체가 레이아웃 처리 */}
-      <CategoryPageTemplate categoryName="아우터" categoryTabs={categoryTabs} />
+      {/* ✅ CategoryPageTemplate 자체가 레이아웃을 처리 */}
+      <CategoryPageTemplate
+        categoryName="여성"
+        categoryTabs={categoryTabs}
+      />
     </div>
   );
 };
 
-export default OuterPage;
+export default FemalePage;
