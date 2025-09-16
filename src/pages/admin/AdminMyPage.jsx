@@ -10,6 +10,7 @@ import { productApi } from "../../api/product/productApi";
 const AdminMyPage = () => {
   const [activeTab, setActiveTab] = useState("product-list");
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,7 +18,12 @@ const AdminMyPage = () => {
         const fetchedProducts = await productApi.getAllProductsByUser();
         setProducts(fetchedProducts);
       } catch (error) {
-        console.error("상품을 불러오는 중 오류가 발생했습니다.", error);
+        if (error.response && error.response.status === 403) {
+          setError("접근 권한이 없습니다. 판매자 계정으로 로그인해주세요.");
+        } else {
+          console.error("상품을 불러오는 중 오류가 발생했습니다.", error);
+          setError("상품을 불러오는 중 오류가 발생했습니다.");
+        }
       }
     };
 
@@ -42,34 +48,35 @@ const AdminMyPage = () => {
           {activeTab === "product-list" && (
             <>
               <h1 className="mb-8 font-bold text-2xl">상품 목록</h1>
-              <div className="space-y-6">
-                {products.map((p) => (
-                  <Card key={p.id} className="border p-4">
-                    <CardContent className="flex gap-6">
-                      
-
-                    <img src={p.mainImage ? `http://localhost:8080/products/images/${p.mainImage}` : "https://via.placeholder.com/120x160"}
-                    alt={p.productName}
-    className="w-[120px] h-[160px] object-cover"
-/>
-
-
-                      <div className="flex-1">
-                        <div className="text-sm text-gray-500">{p.id}</div>
-                        <h3 className="text-lg font-bold">{p.name}</h3>
-                        <p className="text-gray-700">{p.description}</p>
-                        <div className="mt-2 text-lg font-semibold">
-                          {p.price.toLocaleString()} 원
+              {error ? (
+                <div className="text-red-500 text-center">{error}</div>
+              ) : (
+                <div className="space-y-6">
+                  {products.map((p) => (
+                    <Card key={p.id} className="border p-4">
+                      <CardContent className="flex gap-6">
+                        <img
+                          src={p.mainImage ? `http://localhost:8080/products/images/${p.mainImage}` : "https://via.placeholder.com/120x160"}
+                          alt={p.productName}
+                          className="w-[120px] h-[160px] object-cover"
+                        />
+                        <div className="flex-1">
+                          <div className="text-sm text-gray-500">{p.id}</div>
+                          <h3 className="text-lg font-bold">{p.name}</h3>
+                          <p className="text-gray-700">{p.description}</p>
+                          <div className="mt-2 text-lg font-semibold">
+                            {p.price.toLocaleString()} 원
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Button variant="outline">상품페이지</Button>
-                        <Button className="bg-[#828282] text-white">삭제</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                        <div className="flex flex-col gap-2">
+                          <Button variant="outline">상품페이지</Button>
+                          <Button className="bg-[#828282] text-white">삭제</Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </>
           )}
 
