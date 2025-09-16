@@ -6,7 +6,7 @@ export { orderApi } from './order/orderApi.js';
 export { postApi } from './post_/postApi.js';
 export { postLikeApi } from './postlike/postLikeApi.js';
 export { productApi } from './product/productApi.js';
-export { productDetailApi } from './productDetail/productDetailApi.js'; // 이름 일치
+export { productDetailApi } from './productDetail/productDetailApi.js'; 
 export { reviewApi } from './review_/reviewApi.js';
 export { shoppingCartApi } from './shoppingCart/shoppingCartApi.js';
 export { userApi } from './user/userApi.js';

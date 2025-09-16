@@ -43,6 +43,7 @@ const LoginPage = () => {
     const result = await login(loginData.id, loginData.password);
 
     if (result.success) {
+      
       alert('로그인 성공!');
       navigate('/mypage');
     } else {
