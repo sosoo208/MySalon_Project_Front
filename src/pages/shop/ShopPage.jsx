@@ -175,9 +175,9 @@ const ShopPage = () => {
           <div className="grid grid-cols-4 gap-[60px] max-w-[1200px] mx-auto relative z-20">
             {products.map((product) => (
               <Card
-                key={product.id}
-                className="bg-white border shadow-sm hover:shadow-md transition cursor-pointer"
-                onClick={() => navigate(`/shop/${product.id}`)}
+                key={product.productNum}
+                className="bg-transparent border-none shadow-none cursor-pointer"
+                onClick={() => navigate(`/shop/${product.productNum}`)}
               >
                 <CardContent className="p-4">
                   <div className="relative mb-4">
