@@ -1,180 +1,170 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import WhiteHeader from "../../components/WhiteHeader";
 import heartIcon from "../../assets/icons/heart.png";
 import redHeartIcon from "../../assets/icons/redheart.png";
 import orderIcon from "../../assets/icons/order.png";
-import { productApi } from "../../api/product/productApi";
-import { favoriteApi } from "../../api/favorite/favoriteApi";
-import { userApi } from "../../api/user/userApi";
-import { reviewApi } from "../../api/review_/reviewApi";
-import { shoppingCartApi } from "../../api/shoppingCart/shoppingCartApi"; // 장바구니 API
 import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState(null);
-  const [userNum, setUserNum] = useState(null);
-  const [isWished, setIsWished] = useState(false);
-  const [reviews, setReviews] = useState([]);
-  const [avgRating, setAvgRating] = useState(0);
+  // Mock 상품 데이터
+  const mockProduct = {
+    id,
+    name: "여름블루 롱 원피스",
+    description: "상품 설명 줄입니다. 상품 설명 줄입니다. 상품 설명 줄입니다.",
+    price: 50000,
+    shippingFee: 3500,
+    image: "https://via.placeholder.com/400x500",
+  };
 
-  const [selectedColor, setSelectedColor] = useState("");
+  const productOptions = {
+    Black: { sizes: ["S", "M"], qty: 5 },
+    White: { sizes: ["M", "L"], qty: 3 },
+    Red: { sizes: ["S", "M", "L"], qty: 10 },
+  };
+
+  const [selectedColor, setSelectedColor] = useState("Black");
   const [selectedSize, setSelectedSize] = useState("");
   const [count, setCount] = useState(1);
+  const [isWished, setIsWished] = useState(false);
 
-  const [productOptions, setProductOptions] = useState({});
+  const currentOptions = productOptions[selectedColor] || { sizes: [], qty: 0 };
+
+  // 총 가격 계산
+  const totalPrice = useMemo(() => {
+    return mockProduct.price * count;
+  }, [mockProduct.price, count]);
+
+  // 리뷰 mock 데이터
+  const [reviews] = useState([
+    {
+      id: 1,
+      user: "user1",
+      rating: 5,
+      text: "여름에 입기 딱 좋은 원피스에요!",
+      avatar: "https://picsum.photos/60/60?random=1",
+    },
+    {
+      id: 2,
+      user: "user2",
+      rating: 4,
+      text: "핏이 예쁘고 만족합니다!",
+      avatar: "https://picsum.photos/60/60?random=2",
+    },
+  ]);
+
+  // 리뷰 정렬 옵션
   const [sortOption, setSortOption] = useState("latest");
-  const [filterHeight, setFilterHeight] = useState("");
-  const [filterWeight, setFilterWeight] = useState("");
 
-  const totalPrice = useMemo(() => (product ? product.price * count : 0), [product, count]);
-
-  // 유저 정보
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await userApi.getUserInfo();
-        setUserNum(user.userNum);
-      } catch (err) {
-        console.error("유저 정보 불러오기 실패:", err);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  // 상품 정보
-  useEffect(() => {
-    if (!id) return;
-    const fetchProduct = async () => {
-      try {
-        const data = await productApi.getProductById(id);
-        setProduct(data);
-
-        const options = {};
-        data.productDetails.forEach((d) => {
-          if (!options[d.color]) options[d.color] = { sizes: [], stockMap: {} };
-          options[d.color].sizes.push(d.size);
-          options[d.color].stockMap[d.size] = d.count; // ✅ 각 옵션별 재고
-        });
-        setProductOptions(options);
-        if (Object.keys(options).length > 0) setSelectedColor(Object.keys(options)[0]);
-      } catch (err) {
-        console.error("상품 상세 불러오기 실패:", err);
-      }
-    };
-    fetchProduct();
-  }, [id]);
-
-  // 찜/리뷰
-  useEffect(() => {
-    if (!userNum || !product) return;
-
-    const fetchWishAndReview = async () => {
-      try {
-        const favorites = await favoriteApi.getUserFavorites(userNum);
-        setIsWished(favorites.some((f) => f.productNum === product.productNum));
-
-        const avg = await reviewApi.getAverageScore(product.productNum);
-        setAvgRating(avg || 0);
-
-        const reviewList = await reviewApi.getReviewsByProduct(product.productNum);
-        setReviews(reviewList || []);
-      } catch (err) {
-        console.error("찜/리뷰 불러오기 실패:", err);
-      }
-    };
-    fetchWishAndReview();
-  }, [userNum, product]);
-
-  const handleToggleWish = async () => {
-    if (!userNum || !product) return;
-    try {
-      await favoriteApi.addFavorite({ userNum, productNum: product.productNum });
-      setIsWished((prev) => !prev);
-    } catch (err) {
-      console.error("찜 토글 실패:", err);
-    }
-  };
-
-  const currentOptions = productOptions[selectedColor] || { sizes: [], stockMap: {} };
-  const currentStock = selectedSize ? currentOptions.stockMap[selectedSize] || 0 : 0; // ✅ 재고
-
-  // 장바구니 추가
-  const handleAddToCart = async () => {
-    if (!selectedColor || !selectedSize) {
-      alert("색상과 사이즈를 선택해주세요.");
-      return;
-    }
-
-    // 색상+사이즈로 productDetailNum 찾기
-    const detail = product.productDetails.find(
-      (d) => d.color === selectedColor && d.size === selectedSize
-    );
-
-    // ✅ detail 전체 콘솔로 확인
-    console.log("선택된 옵션 detail 객체:", detail);
-
-    if (!detail) {
-      alert("해당 옵션의 상품이 없습니다.");
-      return;
-    }
-
-    console.log("장바구니에 추가할 productDetailNum:", detail.productDetailNum);
-
-    try {
-      await shoppingCartApi.addToCart({
-        productDetailNum: detail.productDetailNum,
-        count,
-        isSelected: true,
-      });
-      navigate("/cart"); // 장바구니 페이지 이동
-    } catch (err) {
-      console.error("장바구니 추가 실패:", err);
-      alert("장바구니 추가에 실패했습니다.");
-    }
-  };
-
-
-  // 리뷰 정렬 + 필터
   const sortedReviews = useMemo(() => {
     let list = [...reviews];
-    if (filterHeight) list = list.filter((r) => r.height === filterHeight);
-    if (filterWeight) list = list.filter((r) => r.weight === filterWeight);
-
-    if (sortOption === "rating") list.sort((a, b) => b.rating - a.rating);
-    else list.sort((a, b) => b.id - a.id);
-
+    if (sortOption === "rating") {
+      list.sort((a, b) => b.rating - a.rating);
+    } else {
+      list.sort((a, b) => b.id - a.id);
+    }
     return list;
-  }, [reviews, sortOption, filterHeight, filterWeight]);
+  }, [reviews, sortOption]);
 
-  if (!product) return <div>로딩 중...</div>;
+  // 평균 별점
+  const avgRating = useMemo(() => {
+    if (reviews.length === 0) return 0;
+    const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+    return (total / reviews.length).toFixed(1);
+  }, [reviews]);
+
+  // ❤️ 찜하기 토글
+  const handleToggleWish = () => {
+    setIsWished((prev) => !prev);
+    if (!isWished) {
+      alert("찜 목록에 추가되었습니다!");
+    } else {
+      alert("찜 목록에서 제거되었습니다!");
+    }
+  };
+
+  // 🛒 장바구니 담기 함수
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert("사이즈를 선택해주세요!");
+      return;
+    }
+
+    const cartItem = {
+      id: mockProduct.id,
+      name: mockProduct.name,
+      image: mockProduct.image,
+      price: mockProduct.price,
+      color: selectedColor,
+      size: selectedSize,
+      quantity: count,
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const index = existingCart.findIndex(
+      (item) =>
+        item.id === cartItem.id &&
+        item.color === cartItem.color &&
+        item.size === cartItem.size
+    );
+
+    if (index > -1) {
+      existingCart[index].quantity += count;
+    } else {
+      existingCart.push(cartItem);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+
+    alert("장바구니에 상품이 담겼습니다!");
+    navigate("/cart");
+  };
+
+  // 🛍 구매하기 → 주문 완료 페이지 이동
+  const handleBuy = () => {
+    if (!selectedSize) {
+      alert("사이즈를 선택해주세요!");
+      return;
+    }
+
+    navigate("/order/complete", {
+      state: {
+        product: { id: mockProduct.id, name: mockProduct.name },
+        buyer: "홍길동", // 로그인 사용자 이름을 넣어주세요
+      },
+    });
+  };
 
   return (
     <>
       <WhiteHeader />
+
       <div className="detail-container">
-        <button onClick={() => navigate(-1)} className="back-btn">← 뒤로가기</button>
+        <button onClick={() => navigate(-1)} className="back-btn">
+          ← 뒤로가기
+        </button>
 
         {/* 상품 상세 */}
         <div className="detail-main">
-          <img
-            src={product.mainImage ? `http://localhost:8080/products/images/${product.mainImage}` : "https://via.placeholder.com/400x500"}
-            alt={product.productName}
-            className="detail-image"
-          />
+          <img src={mockProduct.image} alt={mockProduct.name} className="detail-image" />
 
           <div className="detail-info">
-            <h2 className="detail-title">{product.productName}</h2>
+            <h2 className="detail-title">{mockProduct.name}</h2>
             <hr className="divider" />
-            <p className="detail-desc">{product.description}</p>
+
+            <p className="detail-desc">{mockProduct.description}</p>
 
             <div className="detail-row">
               <span className="label">가격</span>
-              <span className="price">{product.price?.toLocaleString()}원</span>
-              <span className="shipping">배송비 {product.deliveryFee?.toLocaleString()}원</span>
+              <span className="price">
+                {mockProduct.price.toLocaleString()}원
+              </span>
+              <span className="shipping">
+                배송비 {mockProduct.shippingFee.toLocaleString()}원
+              </span>
             </div>
 
             <div className="detail-row">
@@ -183,7 +173,11 @@ export default function ProductDetail() {
                 {Object.keys(productOptions).map((c) => (
                   <button
                     key={c}
-                    onClick={() => { setSelectedColor(c); setSelectedSize(""); setCount(1); }}
+                    onClick={() => {
+                      setSelectedColor(c);
+                      setSelectedSize("");
+                      setCount(1);
+                    }}
                     className={`color-btn ${selectedColor === c ? "active" : ""}`}
                   >
                     {c}
@@ -200,7 +194,9 @@ export default function ProductDetail() {
                 className="size-select"
               >
                 <option value="">사이즈 선택</option>
-                {currentOptions.sizes.map((s) => <option key={s}>{s}</option>)}
+                {currentOptions.sizes.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
               </select>
             </div>
 
@@ -211,7 +207,7 @@ export default function ProductDetail() {
                 <span>{count}</span>
                 <button onClick={() => setCount((prev) => prev + 1)}>+</button>
               </div>
-              <span className="stock">재고: {currentStock}개</span> {/* ✅ 재고 수정 */}
+              <span className="stock">재고: {currentOptions.qty}개</span>
             </div>
 
             <hr className="divider" />
@@ -228,7 +224,7 @@ export default function ProductDetail() {
               <button className="icon-btn" onClick={handleAddToCart}>
                 <img src={orderIcon} alt="장바구니" className="icon" />
               </button>
-              <button className="buy-btn" onClick={() => alert("구매하기 기능")}>구매하기</button>
+              <button className="buy-btn" onClick={handleBuy}>구매하기</button>
             </div>
           </div>
         </div>
@@ -238,46 +234,64 @@ export default function ProductDetail() {
           <div className="review-header">
             <h3 className="review-title">REVIEW</h3>
             <div className="review-filters">
-              <button className={`filter-btn ${sortOption === "latest" ? "active" : ""}`} onClick={() => setSortOption("latest")}>최신순</button>
-              <button className={`filter-btn ${sortOption === "rating" ? "active" : ""}`} onClick={() => setSortOption("rating")}>별점순</button>
-              <select className="filter-select" value={filterHeight} onChange={(e) => setFilterHeight(e.target.value)}>
-                <option value="">키</option>
-                <option value="150cm">150cm</option>
-                <option value="160cm">160cm</option>
-                <option value="170cm">170cm</option>
+              <button
+                className={`filter-btn ${sortOption === "latest" ? "active" : ""}`}
+                onClick={() => setSortOption("latest")}
+              >
+                최신순
+              </button>
+              <button
+                className={`filter-btn ${sortOption === "rating" ? "active" : ""}`}
+                onClick={() => setSortOption("rating")}
+              >
+                별점순
+              </button>
+              <select className="filter-select">
+                <option>키</option>
+                <option>150cm</option>
+                <option>160cm</option>
+                <option>170cm</option>
               </select>
-              <select className="filter-select" value={filterWeight} onChange={(e) => setFilterWeight(e.target.value)}>
-                <option value="">몸무게</option>
-                <option value="50kg">50kg</option>
-                <option value="60kg">60kg</option>
-                <option value="70kg">70kg</option>
+              <select className="filter-select">
+                <option>몸무게</option>
+                <option>50kg</option>
+                <option>60kg</option>
+                <option>70kg</option>
               </select>
             </div>
           </div>
 
-          <div className="review-summary">
-            <div className="big-star">★</div>
-            <div className="score">{avgRating.toFixed(1)}</div>
-            <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
-            <button className="write-btn" onClick={() => navigate(`/mypage/reviews/write/${product.productNum}`)}>리뷰 작성하기</button>
-          </div>
+          <div className="review-body">
+            <div className="review-summary">
+              <div className="big-star">★</div>
+              <div className="score">{avgRating}</div>
+              <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
+              <button
+                className="write-btn"
+                onClick={() => navigate(`/mypage/reviews/write/${mockProduct.id}`)}
+              >
+                리뷰 작성하기
+              </button>
+            </div>
 
-          <div className="review-list">
-            {sortedReviews.map((r) => (
-              <div key={r.id} className="review-card">
-                <div className="review-profile">
-                  <img src={r.avatar} alt={`${r.user} 프로필`} />
-                </div>
-                <div className="review-content">
-                  <div className="review-top">
-                    <div className="stars">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
-                    <span className="review-label">{r.user}</span>
+            <div className="review-list">
+              {sortedReviews.map((r) => (
+                <div key={r.id} className="review-card">
+                  <div className="review-profile">
+                    <img src={r.avatar} alt={`${r.user} 프로필`} />
                   </div>
-                  <p className="review-text">{r.text}</p>
-                  <span className="review-meta">{r.height || "-"} / {r.weight || "-"} / {r.date || "-"}</span>
+                  <div className="review-content">
+                    <div className="review-top">
+                      <div className="stars">
+                        {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
+                      </div>
+                      <span className="review-label">{r.user}</span>
+                    </div>
+                    <p className="review-text">{r.text}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
