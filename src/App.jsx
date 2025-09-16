@@ -173,7 +173,7 @@ function AppContent() {
         }
       />
 
-      {/* ===== 카테고리 ===== */}
+      {/* ===== 카테고리(악세사리 제외) ===== */}
       <Route path="/category/바지" element={<PantsPage />} />
       <Route path="/category/상의" element={<TopPage />} />
       <Route path="/category/남성" element={<MalePage />} />
