@@ -58,6 +58,27 @@
       ]
     },
     {
+      "id": "src/pages/user/MyReviewPage.jsx",
+      "label": "MyReviewPage",
+      "routes": [
+        "/mypage/reviews"
+      ]
+    },
+    {
+      "id": "src/pages/user/ReviewWritePage.jsx",
+      "label": "ReviewWritePage",
+      "routes": [
+        "/mypage/reviews/write/:productId"
+      ]
+    },
+    {
+      "id": "src/pages/user/ReviewEditPage.jsx",
+      "label": "ReviewEditPage",
+      "routes": [
+        "/mypage/reviews/edit/:reviewId"
+      ]
+    },
+    {
       "id": "src/pages/shop/OuterPage.jsx",
       "label": "OuterPage",
       "routes": [
@@ -83,6 +104,34 @@
       "label": "CommunityPage",
       "routes": [
         "/community"
+      ]
+    },
+    {
+      "id": "src/pages/community/CoordiWritePage.jsx",
+      "label": "CoordiWritePage",
+      "routes": [
+        "/coordi/write"
+      ]
+    },
+    {
+      "id": "src/pages/community/BoardPage.jsx",
+      "label": "BoardPage",
+      "routes": [
+        "/board"
+      ]
+    },
+    {
+      "id": "src/pages/community/BoardDetailPage.jsx",
+      "label": "BoardDetailPage",
+      "routes": [
+        "/board/:id"
+      ]
+    },
+    {
+      "id": "src/pages/community/BoardWritePage.jsx",
+      "label": "BoardWritePage",
+      "routes": [
+        "/board/write"
       ]
     }
   ],
@@ -728,82 +777,706 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:109:34-to-src\\pages\\auth\\LoginPage.jsx",
-      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
       "target": "src\\pages\\auth\\LoginPage.jsx",
       "data": {
         "viaRoute": "/login",
         "trigger": {
-          "element": "navigate(\"/login\")",
-          "line": 109,
-          "endLine": 109,
-          "column": 34,
-          "endColumn": 52,
-          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
         }
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:110:35-to-src\\pages\\auth\\SignupPage.jsx",
-      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
       "target": "src\\pages\\auth\\SignupPage.jsx",
       "data": {
         "viaRoute": "/signup",
         "trigger": {
-          "element": "navigate(\"/signup\")",
-          "line": 110,
-          "endLine": 110,
-          "column": 35,
-          "endColumn": 54,
-          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
         }
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:111:35-to-src\\pages\\cart\\CartPage.jsx",
-      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
       "target": "src\\pages\\cart\\CartPage.jsx",
       "data": {
         "viaRoute": "/cart",
         "trigger": {
-          "element": "navigate(\"/cart\")",
-          "line": 111,
-          "endLine": 111,
-          "column": 35,
-          "endColumn": 52,
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\ReviewForm.jsx:22:4-to-src\\pages\\user\\MyReviewPage.jsx",
+      "source": "src\\pages\\user\\ReviewWritePage.jsx",
+      "target": "src\\pages\\user\\MyReviewPage.jsx",
+      "data": {
+        "viaRoute": "/mypage/reviews",
+        "trigger": {
+          "element": "navigate(\"/mypage/reviews\")",
+          "line": 22,
+          "endLine": 22,
+          "column": 4,
+          "endColumn": 31,
+          "sourceFile": "src\\components\\ReviewForm.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\ReviewForm.jsx:91:29-to-src\\pages\\user\\MyReviewPage.jsx",
+      "source": "src\\pages\\user\\ReviewWritePage.jsx",
+      "target": "src\\pages\\user\\MyReviewPage.jsx",
+      "data": {
+        "viaRoute": "/mypage/reviews",
+        "trigger": {
+          "element": "navigate(\"/mypage/reviews\")",
+          "line": 91,
+          "endLine": 91,
+          "column": 29,
+          "endColumn": 56,
+          "sourceFile": "src\\components\\ReviewForm.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\ReviewForm.jsx:22:4-to-src\\pages\\user\\MyReviewPage.jsx",
+      "source": "src\\pages\\user\\ReviewWritePage.jsx",
+      "target": "src\\pages\\user\\MyReviewPage.jsx",
+      "data": {
+        "viaRoute": "/mypage/reviews",
+        "trigger": {
+          "element": "navigate(\"/mypage/reviews\")",
+          "line": 22,
+          "endLine": 22,
+          "column": 4,
+          "endColumn": 31,
+          "sourceFile": "src\\components\\ReviewForm.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\ReviewForm.jsx:91:29-to-src\\pages\\user\\MyReviewPage.jsx",
+      "source": "src\\pages\\user\\ReviewWritePage.jsx",
+      "target": "src\\pages\\user\\MyReviewPage.jsx",
+      "data": {
+        "viaRoute": "/mypage/reviews",
+        "trigger": {
+          "element": "navigate(\"/mypage/reviews\")",
+          "line": 91,
+          "endLine": 91,
+          "column": 29,
+          "endColumn": 56,
+          "sourceFile": "src\\components\\ReviewForm.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CommunityPage.jsx:83:10-to-src\\pages\\community\\BoardPage.jsx",
+      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\community\\BoardPage.jsx",
+      "data": {
+        "viaRoute": "/board",
+        "trigger": {
+          "element": "<Link to=\"/board\" className=\"text-2xl text-black\">\r\n            게시판\r\n          </Link>",
+          "line": 83,
+          "endLine": 85,
+          "column": 10,
+          "endColumn": 17,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
         }
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:113:35-to-src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:142:10-to-src\\pages\\community\\CoordiWritePage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
+      "target": "src\\pages\\community\\CoordiWritePage.jsx",
+      "data": {
+        "viaRoute": "/coordi/write",
+        "trigger": {
+          "element": "<Link\r\n            to=\"/coordi/write\"\r\n            className=\"px-6 py-2 border border-black bg-white hover:bg-gray-50\"\r\n          >\r\n            나의 코디 등록하기\r\n          </Link>",
+          "line": 142,
+          "endLine": 147,
+          "column": 10,
+          "endColumn": 17,
+          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\CoordiWritePage.jsx:24:4-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\community\\CoordiWritePage.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
       "data": {
         "viaRoute": "/community",
         "trigger": {
           "element": "navigate(\"/community\")",
-          "line": 113,
-          "endLine": 113,
-          "column": 35,
-          "endColumn": 57,
-          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+          "line": 24,
+          "endLine": 24,
+          "column": 4,
+          "endColumn": 26,
+          "sourceFile": "src\\pages\\community\\CoordiWritePage.jsx"
         }
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:188:12-to-src\\pages\\community\\CommunityPage.jsx",
-      "source": "src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\pages\\community\\CoordiWritePage.jsx:118:31-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\community\\CoordiWritePage.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
       "data": {
         "viaRoute": "/community",
         "trigger": {
-          "element": "<Link to=\"/community\">\r\n              <h2 className={`text-2xl ${activeTab === \"today\" ? \"font-bold text-[#a40303]\" : \"text-black\"}`}>\r\n                오늘의 코디\r\n              </h2>\r\n            </Link>",
-          "line": 188,
-          "endLine": 192,
-          "column": 12,
-          "endColumn": 19,
-          "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
+          "element": "navigate(\"/community\")",
+          "line": 118,
+          "endLine": 118,
+          "column": 31,
+          "endColumn": 53,
+          "sourceFile": "src\\pages\\community\\CoordiWritePage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\BoardPage.jsx:47:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\community\\BoardPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\" className=\"text-2xl text-black\">\r\n            오늘의 코디\r\n          </Link>",
+          "line": 47,
+          "endLine": 49,
+          "column": 10,
+          "endColumn": 17,
+          "sourceFile": "src\\pages\\community\\BoardPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\BoardPage.jsx:61:27-to-src\\pages\\community\\BoardWritePage.jsx",
+      "source": "src\\pages\\community\\BoardPage.jsx",
+      "target": "src\\pages\\community\\BoardWritePage.jsx",
+      "data": {
+        "viaRoute": "/board/write",
+        "trigger": {
+          "element": "navigate(\"/board/write\")",
+          "line": 61,
+          "endLine": 61,
+          "column": 27,
+          "endColumn": 51,
+          "sourceFile": "src\\pages\\community\\BoardPage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\BoardWritePage.jsx:22:4-to-src\\pages\\community\\BoardPage.jsx",
+      "source": "src\\pages\\community\\BoardWritePage.jsx",
+      "target": "src\\pages\\community\\BoardPage.jsx",
+      "data": {
+        "viaRoute": "/board",
+        "trigger": {
+          "element": "navigate(\"/board\")",
+          "line": 22,
+          "endLine": 22,
+          "column": 4,
+          "endColumn": 22,
+          "sourceFile": "src\\pages\\community\\BoardWritePage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\pages\\community\\BoardWritePage.jsx:77:31-to-src\\pages\\community\\BoardPage.jsx",
+      "source": "src\\pages\\community\\BoardWritePage.jsx",
+      "target": "src\\pages\\community\\BoardPage.jsx",
+      "data": {
+        "viaRoute": "/board",
+        "trigger": {
+          "element": "navigate(\"/board\")",
+          "line": 77,
+          "endLine": 77,
+          "column": 31,
+          "endColumn": 49,
+          "sourceFile": "src\\pages\\community\\BoardWritePage.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\LoginPage.jsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link to=\"/login\">로그인</Link>",
+          "line": 41,
+          "endLine": 41,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\auth\\SignupPage.jsx",
+      "data": {
+        "viaRoute": "/signup",
+        "trigger": {
+          "element": "<Link to=\"/signup\">회원가입</Link>",
+          "line": 42,
+          "endLine": 42,
+          "column": 10,
+          "endColumn": 40,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\cart\\CartPage.jsx",
+      "data": {
+        "viaRoute": "/cart",
+        "trigger": {
+          "element": "<Link to=\"/cart\">장바구니</Link>",
+          "line": 43,
+          "endLine": 43,
+          "column": 10,
+          "endColumn": 38,
+          "sourceFile": "src\\components\\SubHeader.jsx"
+        }
+      }
+    },
+    {
+      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "source": "src\\pages\\cart\\CartPage.jsx",
+      "target": "src\\pages\\community\\CommunityPage.jsx",
+      "data": {
+        "viaRoute": "/community",
+        "trigger": {
+          "element": "<Link to=\"/community\">커뮤니티</Link>",
+          "line": 45,
+          "endLine": 45,
+          "column": 10,
+          "endColumn": 43,
+          "sourceFile": "src\\components\\SubHeader.jsx"
         }
       }
     }
