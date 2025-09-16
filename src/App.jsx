@@ -18,6 +18,9 @@ import MyPage from "./pages/user/MyPage";
 import ProfileEdit from "./pages/user/ProfileEdit";
 import OrderList from "./pages/user/OrderList";
 import FavoriteList from "./pages/user/FavoriteList";
+import MyReviewPage from "./pages/user/MyReviewPage";
+import ReviewWritePage from "./pages/user/ReviewWritePage"; // ✅ 리뷰 작성
+import ReviewEditPage from "./pages/user/ReviewEditPage";   // ✅ 리뷰 수정
 
 // ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
@@ -30,6 +33,10 @@ import Sales from "./pages/admin/Sales";
 
 // ===== 커뮤니티 페이지 =====
 import CommunityPage from "./pages/community/CommunityPage";
+import CoordiWritePage from "./pages/community/CoordiWritePage";
+import BoardPage from "./pages/community/BoardPage";
+import BoardDetailPage from "./pages/community/BoardDetailPage";
+import BoardWritePage from "./pages/community/BoardWritePage";
 
 // ===== 기타 컴포넌트 =====
 import { ScrollContainer } from "./components/ScrollContainer";
@@ -37,7 +44,7 @@ import { ScrollContainer } from "./components/ScrollContainer";
 // ✅ 역할 가져오기
 const getRole = () => {
   const role = localStorage.getItem("role");
-  return role ? role.toUpperCase() : null; // "BUYER" | "SELLER" | null
+  return role ? role.toUpperCase() : null;
 };
 
 // ✅ 역할별 렌더링
@@ -74,14 +81,17 @@ function AppContent() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
 
-      {/* ===== 마이페이지 (구매자/판매자 공용) ===== */}
+      {/* ===== 마이페이지 ===== */}
       <Route
         path="/mypage"
         element={<RoleElement buyer={<MyPage />} seller={<AdminMyPage />} />}
       />
       <Route path="/mypage/edit" element={<ProfileEdit />} />
       <Route path="/mypage/orders" element={<OrderList />} />
-      <Route path="/mypage/favorites" element={<FavoriteList />} /> {/* ✅ 찜 목록 */}
+      <Route path="/mypage/favorites" element={<FavoriteList />} />
+      <Route path="/mypage/reviews" element={<MyReviewPage />} />
+      <Route path="/mypage/reviews/write/:productId" element={<ReviewWritePage />} /> {/* ✅ 리뷰 작성 */}
+      <Route path="/mypage/reviews/edit/:reviewId" element={<ReviewEditPage />} />   {/* ✅ 리뷰 수정 */}
 
       {/* ===== 판매자 전용 ===== */}
       <Route
@@ -148,6 +158,10 @@ function AppContent() {
 
       {/* ===== 커뮤니티 ===== */}
       <Route path="/community" element={<CommunityPage />} />
+      <Route path="/coordi/write" element={<CoordiWritePage />} />
+      <Route path="/board" element={<BoardPage />} />
+      <Route path="/board/:id" element={<BoardDetailPage />} />
+      <Route path="/board/write" element={<BoardWritePage />} />
 
       {/* ===== 없는 경로 ===== */}
       <Route
