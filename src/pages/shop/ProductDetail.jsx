@@ -31,7 +31,10 @@ export default function ProductDetail() {
   const [filterHeight, setFilterHeight] = useState("");
   const [filterWeight, setFilterWeight] = useState("");
 
-  const totalPrice = useMemo(() => (product ? product.price * count : 0), [product, count]);
+  const totalPrice = useMemo(
+    () => (product ? product.price * count : 0),
+    [product, count]
+  );
 
   // 유저 정보
   useEffect(() => {
@@ -101,7 +104,7 @@ export default function ProductDetail() {
   };
 
   const currentOptions = productOptions[selectedColor] || { sizes: [], stockMap: {} };
-  const currentStock = selectedSize ? currentOptions.stockMap[selectedSize] || 0 : 0; // ✅ 재고
+  const currentStock = selectedSize ? currentOptions.stockMap[selectedSize] || 0 : 0;
 
   // 장바구니 추가
   const handleAddToCart = async () => {
@@ -110,20 +113,14 @@ export default function ProductDetail() {
       return;
     }
 
-    // 색상+사이즈로 productDetailNum 찾기
     const detail = product.productDetails.find(
       (d) => d.color === selectedColor && d.size === selectedSize
     );
-
-    // ✅ detail 전체 콘솔로 확인
-    console.log("선택된 옵션 detail 객체:", detail);
 
     if (!detail) {
       alert("해당 옵션의 상품이 없습니다.");
       return;
     }
-
-    console.log("장바구니에 추가할 productDetailNum:", detail.productDetailNum);
 
     try {
       await shoppingCartApi.addToCart({
@@ -131,21 +128,20 @@ export default function ProductDetail() {
         count,
         isSelected: true,
       });
-      navigate("/cart"); // 장바구니 페이지 이동
+      navigate("/cart");
     } catch (err) {
       console.error("장바구니 추가 실패:", err);
       alert("장바구니 추가에 실패했습니다.");
     }
   };
 
-  // 구매하기
+  // ✅ 구매하기
   const handleBuyNow = async () => {
     if (!selectedColor || !selectedSize) {
       alert("색상과 사이즈를 선택해주세요.");
       return;
     }
 
-    // productDetailNum 찾기
     const detail = product.productDetails.find(
       (d) => d.color === selectedColor && d.size === selectedSize
     );
@@ -156,23 +152,33 @@ export default function ProductDetail() {
     }
 
     try {
-      // 백엔드 API 요청
       const response = await orderApi.createOrder2({
         orderItems: [
           {
             productDetailNum: detail.productDetailNum,
-            count: count,
+            count,
           },
         ],
       });
 
-      console.log("주문 성공:", response);
-      alert(`주문이 완료되었습니다! 주문번호: ${response.orderNum}`);
+      console.log("주문 성공:", response.data);
 
-      // 주문 완료 후 이동 (예: 주문 내역 페이지)
-      navigate("/mypage/orders");
+      navigate("/order/complete", {
+        state: {
+          orderNum: response.orderNum,              // ✅ response.data 사용
+          productName: product.productName,
+          buyerName: response.userName,             // ✅ userName 필드
+          orderDate: response.orderedAt.split("T")[0], // ✅ 날짜 추출
+          count,
+          totalPrice,
+        },
+      });
     } catch (err) {
-      console.error("주문 실패:", err);
+      if (err.response) {
+        console.error("서버 응답 에러:", err.response.data);
+      } else {
+        console.error("주문 실패:", err);
+      }
       alert("주문 처리에 실패했습니다.");
     }
   };
@@ -200,7 +206,11 @@ export default function ProductDetail() {
         {/* 상품 상세 */}
         <div className="detail-main">
           <img
-            src={product.mainImage ? `http://localhost:8080/products/images/${product.mainImage}` : "https://via.placeholder.com/400x500"}
+            src={
+              product.mainImage
+                ? `http://localhost:8080/products/images/${product.mainImage}`
+                : "https://via.placeholder.com/400x500"
+            }
             alt={product.productName}
             className="detail-image"
           />
@@ -222,7 +232,11 @@ export default function ProductDetail() {
                 {Object.keys(productOptions).map((c) => (
                   <button
                     key={c}
-                    onClick={() => { setSelectedColor(c); setSelectedSize(""); setCount(1); }}
+                    onClick={() => {
+                      setSelectedColor(c);
+                      setSelectedSize("");
+                      setCount(1);
+                    }}
                     className={`color-btn ${selectedColor === c ? "active" : ""}`}
                   >
                     {c}
@@ -239,7 +253,9 @@ export default function ProductDetail() {
                 className="size-select"
               >
                 <option value="">사이즈 선택</option>
-                {currentOptions.sizes.map((s) => <option key={s}>{s}</option>)}
+                {currentOptions.sizes.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
               </select>
             </div>
 
@@ -250,7 +266,7 @@ export default function ProductDetail() {
                 <span>{count}</span>
                 <button onClick={() => setCount((prev) => prev + 1)}>+</button>
               </div>
-              <span className="stock">재고: {currentStock}개</span> {/* ✅ 재고 수정 */}
+              <span className="stock">재고: {currentStock}개</span>
             </div>
 
             <hr className="divider" />
@@ -262,30 +278,54 @@ export default function ProductDetail() {
 
             <div className="action-buttons">
               <button className="icon-btn" onClick={handleToggleWish}>
-                <img src={isWished ? redHeartIcon : heartIcon} alt="찜하기" className="icon" />
+                <img
+                  src={isWished ? redHeartIcon : heartIcon}
+                  alt="찜하기"
+                  className="icon"
+                />
               </button>
               <button className="icon-btn" onClick={handleAddToCart}>
                 <img src={orderIcon} alt="장바구니" className="icon" />
               </button>
-              <button className="buy-btn" onClick={handleBuyNow}>구매하기</button>
+              <button className="buy-btn" onClick={handleBuyNow}>
+                구매하기
+              </button>
             </div>
           </div>
         </div>
-                
+
         {/* 리뷰 영역 */}
         <div className="review-section">
           <div className="review-header">
             <h3 className="review-title">REVIEW</h3>
             <div className="review-filters">
-              <button className={`filter-btn ${sortOption === "latest" ? "active" : ""}`} onClick={() => setSortOption("latest")}>최신순</button>
-              <button className={`filter-btn ${sortOption === "rating" ? "active" : ""}`} onClick={() => setSortOption("rating")}>별점순</button>
-              <select className="filter-select" value={filterHeight} onChange={(e) => setFilterHeight(e.target.value)}>
+              <button
+                className={`filter-btn ${sortOption === "latest" ? "active" : ""}`}
+                onClick={() => setSortOption("latest")}
+              >
+                최신순
+              </button>
+              <button
+                className={`filter-btn ${sortOption === "rating" ? "active" : ""}`}
+                onClick={() => setSortOption("rating")}
+              >
+                별점순
+              </button>
+              <select
+                className="filter-select"
+                value={filterHeight}
+                onChange={(e) => setFilterHeight(e.target.value)}
+              >
                 <option value="">키</option>
                 <option value="150cm">150cm</option>
                 <option value="160cm">160cm</option>
                 <option value="170cm">170cm</option>
               </select>
-              <select className="filter-select" value={filterWeight} onChange={(e) => setFilterWeight(e.target.value)}>
+              <select
+                className="filter-select"
+                value={filterWeight}
+                onChange={(e) => setFilterWeight(e.target.value)}
+              >
                 <option value="">몸무게</option>
                 <option value="50kg">50kg</option>
                 <option value="60kg">60kg</option>
@@ -298,7 +338,12 @@ export default function ProductDetail() {
             <div className="big-star">★</div>
             <div className="score">{avgRating.toFixed(1)}</div>
             <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
-            <button className="write-btn" onClick={() => navigate(`/mypage/reviews/write/${product.productNum}`)}>리뷰 작성하기</button>
+            <button
+              className="write-btn"
+              onClick={() => navigate(`/mypage/reviews/write/${product.productNum}`)}
+            >
+              리뷰 작성하기
+            </button>
           </div>
 
           <div className="review-list">
@@ -309,11 +354,16 @@ export default function ProductDetail() {
                 </div>
                 <div className="review-content">
                   <div className="review-top">
-                    <div className="stars">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
+                    <div className="stars">
+                      {"★".repeat(r.rating)}
+                      {"☆".repeat(5 - r.rating)}
+                    </div>
                     <span className="review-label">{r.user}</span>
                   </div>
                   <p className="review-text">{r.text}</p>
-                  <span className="review-meta">{r.height || "-"} / {r.weight || "-"} / {r.date || "-"}</span>
+                  <span className="review-meta">
+                    {r.height || "-"} / {r.weight || "-"} / {r.date || "-"}
+                  </span>
                 </div>
               </div>
             ))}

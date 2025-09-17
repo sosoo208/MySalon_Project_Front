@@ -746,6 +746,22 @@
       }
     },
     {
+      "id": "src\\pages\\auth\\LoginPage.jsx:48:6-to-src\\pages\\shop\\ShopPage.jsx",
+      "source": "src\\pages\\auth\\LoginPage.jsx",
+      "target": "src\\pages\\shop\\ShopPage.jsx",
+      "data": {
+        "viaRoute": "/shop",
+        "trigger": {
+          "element": "navigate('/shop')",
+          "line": 48,
+          "endLine": 48,
+          "column": 6,
+          "endColumn": 23,
+          "sourceFile": "src\\pages\\auth\\LoginPage.jsx"
+        }
+      }
+    },
+    {
       "id": "src\\pages\\auth\\LoginPage.jsx:181:24-to-src\\pages\\auth\\SignupPage.jsx",
       "source": "src\\pages\\auth\\LoginPage.jsx",
       "target": "src\\pages\\auth\\SignupPage.jsx",

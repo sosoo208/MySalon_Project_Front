@@ -45,7 +45,7 @@ const LoginPage = () => {
     if (result.success) {
       
       alert('로그인 성공!');
-      navigate('/mypage');
+      navigate('/shop');
     } else {
       setError(result.message || '아이디 또는 비밀번호가 틀렸습니다.');
     }
