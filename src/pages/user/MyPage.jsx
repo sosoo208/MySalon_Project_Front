@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { SubHeader } from "../../components/SubHeader";
 import { userApi } from "../../api/user/userApi";
 import { reviewApi } from '../../api/review_/reviewApi';
 import { favoriteApi } from '../../api/favorite/favoriteApi';
 import { postApi } from '../../api/post_/postApi';
+import { orderApi } from '../../api/order/orderApi'; // ✅ 주문 API import
 import { Link } from "react-router-dom";
 
 export default function MyPage() {
@@ -18,6 +18,7 @@ export default function MyPage() {
   });
   const [favoriteCount, setFavoriteCount] = useState(0);
   const [reviewCount, setReviewCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0); // ✅ 주문 개수 상태
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,15 +35,18 @@ export default function MyPage() {
           userNum: user.userNum,
         });
 
-        const [favCount, revCount, allPosts] = await Promise.all([
+        const [favCount, revCount, allPosts, allOrders] = await Promise.all([
           favoriteApi.getUserFavoriteCount(user.userNum),
           reviewApi.getUserReviewCount(user.userNum),
           postApi.getAllPost(),
+          orderApi.getAllOrdersByUser(), // ✅ 주문 API 호출
         ]);
 
         setFavoriteCount(favCount || 0);
         setReviewCount(revCount || 0);
+        setOrderCount(allOrders.length || 0); // ✅ 주문 개수 업데이트
         // 내가 올린 게시글만 필터링
+        setPosts(allPosts.filter(p => p.userNum === user.userNum));
 
       } catch (err) {
         console.error("유저 활동 내역 불러오기 실패:", err);
@@ -148,7 +152,7 @@ export default function MyPage() {
               }}
             >
               {[
-                { count: 0, label: "주문내역" }, 
+                { count: orderCount, label: "주문내역" }, // ✅ 주문개수 표시
                 { count: favoriteCount, label: "찜한 상품" },
                 { count: reviewCount, label: "내가 쓴 리뷰" },
                 { count: posts.length, label: "내가 올린 게시글" },

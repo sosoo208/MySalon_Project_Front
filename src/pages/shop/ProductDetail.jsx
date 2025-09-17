@@ -61,7 +61,7 @@ export default function ProductDetail() {
         data.productDetails.forEach((d) => {
           if (!options[d.color]) options[d.color] = { sizes: [], stockMap: {} };
           options[d.color].sizes.push(d.size);
-          options[d.color].stockMap[d.size] = d.count; // ✅ 각 옵션별 재고
+          options[d.color].stockMap[d.size] = d.count;
         });
         setProductOptions(options);
         if (Object.keys(options).length > 0) setSelectedColor(Object.keys(options)[0]);
@@ -85,7 +85,19 @@ export default function ProductDetail() {
         setAvgRating(avg || 0);
 
         const reviewList = await reviewApi.getReviewsByProduct(product.productNum);
-        setReviews(reviewList || []);
+
+        const formattedReviews = reviewList.map(r => ({
+          reviewNum: r.reviewNum,
+          text: r.text,
+          rating: r.score,
+          color: r.color,
+          size: r.size,
+          reviewImage: r.reviewImage,
+          tall: r.tall,
+          weight: r.weight,
+        }));
+
+        setReviews(formattedReviews);
       } catch (err) {
         console.error("찜/리뷰 불러오기 실패:", err);
       }
@@ -106,28 +118,27 @@ export default function ProductDetail() {
   const currentOptions = productOptions[selectedColor] || { sizes: [], stockMap: {} };
   const currentStock = selectedSize ? currentOptions.stockMap[selectedSize] || 0 : 0;
 
+
   // 장바구니 추가
   const handleAddToCart = async () => {
     if (!selectedColor || !selectedSize) {
       alert("색상과 사이즈를 선택해주세요.");
       return;
     }
-
     const detail = product.productDetails.find(
       (d) => d.color === selectedColor && d.size === selectedSize
     );
-
     if (!detail) {
       alert("해당 옵션의 상품이 없습니다.");
       return;
     }
-
     try {
       await shoppingCartApi.addToCart({
         productDetailNum: detail.productDetailNum,
         count,
         isSelected: true,
       });
+      navigate("/cart");
       navigate("/cart");
     } catch (err) {
       console.error("장바구니 추가 실패:", err);
@@ -141,25 +152,19 @@ export default function ProductDetail() {
       alert("색상과 사이즈를 선택해주세요.");
       return;
     }
-
     const detail = product.productDetails.find(
       (d) => d.color === selectedColor && d.size === selectedSize
     );
-
     if (!detail) {
       alert("해당 옵션의 상품이 없습니다.");
       return;
     }
-
     try {
       const response = await orderApi.createOrder2({
-        orderItems: [
-          {
-            productDetailNum: detail.productDetailNum,
-            count,
-          },
-        ],
+        orderItems: [{ productDetailNum: detail.productDetailNum, count }],
       });
+      alert(`주문이 완료되었습니다! 주문번호: ${response.orderNum}`);
+      navigate("/mypage/orders");
 
       console.log("주문 성공:", response.data);
 
@@ -183,14 +188,20 @@ export default function ProductDetail() {
     }
   };
 
-  // 리뷰 정렬 + 필터
+  // 리뷰 정렬 + 필터 (±5 오차 적용)
   const sortedReviews = useMemo(() => {
     let list = [...reviews];
-    if (filterHeight) list = list.filter((r) => r.height === filterHeight);
-    if (filterWeight) list = list.filter((r) => r.weight === filterWeight);
+    if (filterHeight) {
+      const h = parseInt(filterHeight);
+      list = list.filter((r) => r.tall && r.tall >= h - 5 && r.tall <= h + 5);
+    }
+    if (filterWeight) {
+      const w = parseInt(filterWeight);
+      list = list.filter((r) => r.weight && r.weight >= w - 5 && r.weight <= w + 5);
+    }
 
     if (sortOption === "rating") list.sort((a, b) => b.rating - a.rating);
-    else list.sort((a, b) => b.id - a.id);
+    else list.sort((a, b) => b.reviewNum - a.reviewNum);
 
     return list;
   }, [reviews, sortOption, filterHeight, filterWeight]);
@@ -214,7 +225,6 @@ export default function ProductDetail() {
             alt={product.productName}
             className="detail-image"
           />
-
           <div className="detail-info">
             <h2 className="detail-title">{product.productName}</h2>
             <hr className="divider" />
@@ -267,10 +277,10 @@ export default function ProductDetail() {
                 <button onClick={() => setCount((prev) => prev + 1)}>+</button>
               </div>
               <span className="stock">재고: {currentStock}개</span>
+              <span className="stock">재고: {currentStock}개</span>
             </div>
 
             <hr className="divider" />
-
             <div className="total-row">
               <span className="label">TOTAL</span>
               <span className="total-price">{totalPrice.toLocaleString()}원</span>
@@ -294,11 +304,28 @@ export default function ProductDetail() {
           </div>
         </div>
 
+
         {/* 리뷰 영역 */}
         <div className="review-section">
+          <div className="review-write-card">
+            <h3 className="review-title">REVIEW 작성하기</h3>
+            <div className="review-summary">
+              <div className="big-star">★</div>
+              <div className="score">{avgRating.toFixed(1)}</div>
+              <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
+              <button className="write-btn" onClick={() => navigate(`/mypage/reviews/write/${product.productNum}`)}>
+                리뷰 작성하기
+              </button>
+            </div>
+          </div>
+
+          {/* 리뷰 정렬 + 필터 */}
           <div className="review-header">
             <h3 className="review-title">REVIEW</h3>
             <div className="review-filters">
+              {/* 탐색 범위 문구 추가 */}
+              <span className="filter-range-text">탐색범위: 키(±5cm) / 몸무게(±5kg)</span>
+              
               <button
                 className={`filter-btn ${sortOption === "latest" ? "active" : ""}`}
                 onClick={() => setSortOption("latest")}
@@ -311,62 +338,63 @@ export default function ProductDetail() {
               >
                 별점순
               </button>
+
+
+
               <select
                 className="filter-select"
                 value={filterHeight}
                 onChange={(e) => setFilterHeight(e.target.value)}
               >
                 <option value="">키</option>
-                <option value="150cm">150cm</option>
-                <option value="160cm">160cm</option>
-                <option value="170cm">170cm</option>
+                {Array.from({ length: 6 }, (_, i) => 150 + i * 10).map((h) => (
+                  <option key={h} value={h}>{h}cm</option>
+                ))}
               </select>
+
               <select
                 className="filter-select"
                 value={filterWeight}
                 onChange={(e) => setFilterWeight(e.target.value)}
               >
                 <option value="">몸무게</option>
-                <option value="50kg">50kg</option>
-                <option value="60kg">60kg</option>
-                <option value="70kg">70kg</option>
+                {Array.from({ length: 7 }, (_, i) => 40 + i * 10).map((w) => (
+                  <option key={w} value={w}>{w}kg</option>
+                ))}
               </select>
             </div>
           </div>
 
-          <div className="review-summary">
-            <div className="big-star">★</div>
-            <div className="score">{avgRating.toFixed(1)}</div>
-            <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
-            <button
-              className="write-btn"
-              onClick={() => navigate(`/mypage/reviews/write/${product.productNum}`)}
-            >
-              리뷰 작성하기
-            </button>
-          </div>
 
+          {/* 리뷰 목록 */}
           <div className="review-list">
-            {sortedReviews.map((r) => (
-              <div key={r.id} className="review-card">
-                <div className="review-profile">
-                  <img src={r.avatar} alt={`${r.user} 프로필`} />
-                </div>
-                <div className="review-content">
-                  <div className="review-top">
-                    <div className="stars">
-                      {"★".repeat(r.rating)}
-                      {"☆".repeat(5 - r.rating)}
-                    </div>
-                    <span className="review-label">{r.user}</span>
+            {sortedReviews.map((r) => {
+              const reviewImageUrl = r.reviewImage
+                ? `http://localhost:8080/reviews/images/${r.reviewNum}/${r.reviewImage}`
+                : product.mainImage
+                  ? `http://localhost:8080/products/images/${product.mainImage}`
+                  : "https://via.placeholder.com/120x160";
+
+              return (
+                <div key={r.reviewNum} className="review-card">
+                  <div className="review-image">
+                    <img src={reviewImageUrl} alt="리뷰 이미지" />
                   </div>
-                  <p className="review-text">{r.text}</p>
-                  <span className="review-meta">
-                    {r.height || "-"} / {r.weight || "-"} / {r.date || "-"}
-                  </span>
+                  <div className="review-content">
+                    <div className="review-top">
+                      <div className="stars">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
+                    </div>
+                    <p className="review-text">{r.text}</p>
+                    <div className="review-meta">
+                      색상: {r.color} / 사이즈: {r.size}
+                    </div>
+                    <div className="review-meta">
+                      키: {r.tall ? r.tall + "cm" : "-"} / 몸무게: {r.weight ? r.weight + "kg" : "-"}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

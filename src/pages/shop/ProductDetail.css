@@ -318,3 +318,83 @@
   color: #444;
   line-height: 1.5;
 }
+
+.review-card {
+  display: flex;
+  padding: 12px;               /* 리뷰 내부 여백 */
+  margin-bottom: 16px;         /* 리뷰 카드 간 간격 */
+  border: 1px solid #ddd;      /* 테두리로 구분 */
+  border-radius: 8px;          /* 모서리 둥글게 */
+  background-color: #fff;      /* 배경 흰색 */
+  gap: 12px;                   /* 이미지와 텍스트 사이 간격 */
+}
+
+.review-image img {
+  width: 200px;                /* 이미지 가로 크기 */
+  height: 160px;               /* 이미지 세로 크기 */
+  object-fit: cover;           /* 이미지 비율 유지하면서 잘림 */
+  border-radius: 8px;          /* 이미지 모서리 둥글게 */
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;                    /* 별점, 텍스트, 옵션 간 간격 */
+}
+
+.review-top .stars {
+  font-size: 16px;             /* 별점 크기 */
+  color: #f5c518;              /* 노란색 별 */
+}
+
+.review-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.review-meta {
+  font-size: 13px;       /* 기존 12px → 조금 키움 */
+  color: #555;           /* 조금 더 진한 색 */
+  margin-top: 4px;
+}
+
+
+/* 리뷰 작성 영역 카드 */
+.review-write-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 리뷰 목록 내부 카드 간격과 그림자 조정 */
+.review-list {
+  gap: 20px; /* 기존 16px에서 조금 더 넓게 */
+}
+
+.review-card {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* 카드에 살짝 그림자 추가 */
+}
+
+/* 리뷰 작성 버튼 강조 */
+.review-write-card .write-btn {
+  background-color: #111; 
+  color: #fff; 
+  padding: 10px 18px; 
+  font-size: 15px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.review-write-card .write-btn:hover {
+  background-color: #333;
+}
+.filter-range-text {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
+}
+

@@ -5,18 +5,17 @@ import "./AdminProductDetail.css";
 import { productApi } from "../../api/product/productApi";
 
 export default function AdminProductDetail() {
-  // ✅ id → num 으로 변경
-  const { num } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [product, setProduct] = useState(location.state || null);
 
   useEffect(() => {
-    if (!product && num) {
+    if (!product && id) {
       const fetchProduct = async () => {
         try {
-          const data = await productApi.getProductById(num); // ✅ num 사용
+          const data = await productApi.getProductById(id); // ✅ num 사용
           setProduct(data);
           setFormData({
             name: data.productName || "",
@@ -30,7 +29,7 @@ export default function AdminProductDetail() {
       };
       fetchProduct();
     }
-  }, [num, product]);
+  }, [id, product]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -57,7 +56,7 @@ export default function AdminProductDetail() {
         price: formData.price,
         deliveryFee: formData.shippingFee,
       };
-      await productApi.updateProduct(num, updated); // ✅ num 사용
+      await productApi.updateProduct(id, updated); // ✅ num 사용
       alert("상품이 수정되었습니다.");
       setProduct(updated);
       navigate(-1);
