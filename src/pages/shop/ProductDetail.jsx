@@ -8,6 +8,7 @@ import { productApi } from "../../api/product/productApi";
 import { favoriteApi } from "../../api/favorite/favoriteApi";
 import { userApi } from "../../api/user/userApi";
 import { reviewApi } from "../../api/review_/reviewApi";
+import { orderApi } from "../../api/order/orderApi"; // 주문 API
 import { shoppingCartApi } from "../../api/shoppingCart/shoppingCartApi"; // 장바구니 API
 import "./ProductDetail.css";
 
@@ -137,6 +138,44 @@ export default function ProductDetail() {
     }
   };
 
+  // 구매하기
+  const handleBuyNow = async () => {
+    if (!selectedColor || !selectedSize) {
+      alert("색상과 사이즈를 선택해주세요.");
+      return;
+    }
+
+    // productDetailNum 찾기
+    const detail = product.productDetails.find(
+      (d) => d.color === selectedColor && d.size === selectedSize
+    );
+
+    if (!detail) {
+      alert("해당 옵션의 상품이 없습니다.");
+      return;
+    }
+
+    try {
+      // 백엔드 API 요청
+      const response = await orderApi.createOrder2({
+        orderItems: [
+          {
+            productDetailNum: detail.productDetailNum,
+            count: count,
+          },
+        ],
+      });
+
+      console.log("주문 성공:", response);
+      alert(`주문이 완료되었습니다! 주문번호: ${response.orderNum}`);
+
+      // 주문 완료 후 이동 (예: 주문 내역 페이지)
+      navigate("/mypage/orders");
+    } catch (err) {
+      console.error("주문 실패:", err);
+      alert("주문 처리에 실패했습니다.");
+    }
+  };
 
   // 리뷰 정렬 + 필터
   const sortedReviews = useMemo(() => {
@@ -228,11 +267,11 @@ export default function ProductDetail() {
               <button className="icon-btn" onClick={handleAddToCart}>
                 <img src={orderIcon} alt="장바구니" className="icon" />
               </button>
-              <button className="buy-btn" onClick={() => alert("구매하기 기능")}>구매하기</button>
+              <button className="buy-btn" onClick={handleBuyNow}>구매하기</button>
             </div>
           </div>
         </div>
-
+                
         {/* 리뷰 영역 */}
         <div className="review-section">
           <div className="review-header">

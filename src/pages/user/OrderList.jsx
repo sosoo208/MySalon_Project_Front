@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { SubHeader } from "../../components/SubHeader";
-import orderIcon from "../../assets/icons/order.png"; // ✅ 흑백/단색 아이콘 (assets에 넣어주세요)
+import orderIcon from "../../assets/icons/order.png";
+import { orderApi } from "../../api/order/orderApi"; // ✅ 주문 API import
 
 export default function OrderList() {
   const [orders, setOrders] = useState([]);
 
-  // ✅ 나중에 백엔드 API 연동 (예: GET /api/orders)
+  // ✅ 유저 주문 내역 불러오기
   useEffect(() => {
     async function fetchOrders() {
       try {
-        // const res = await apiClient.get("/orders");
-        // setOrders(res.data);
-        setOrders([]); // 지금은 빈 배열 (임시 데이터 없음)
+        const res = await orderApi.getAllOrdersByUser();
+        setOrders(res); // ✅ OrderResponse2 배열 세팅
       } catch (err) {
         console.error("주문 내역 불러오기 실패:", err);
       }
@@ -59,101 +59,118 @@ export default function OrderList() {
               주문 내역이 없습니다.
             </div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              {orders.map((order) => (
-                <div
-                  key={order.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    borderBottom: "1px solid #eee",
-                    paddingBottom: "20px",
-                  }}
-                >
-                  {/* 상품 이미지 + 정보 */}
-                  <div style={{ display: "flex", gap: "16px", flex: 1 }}>
-                    <img
-                      src={order.imageUrl}
-                      alt={order.name}
-                      style={{
-                        width: "120px",
-                        height: "160px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                        border: "1px solid #ddd",
-                      }}
-                    />
+            <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+              {orders.map((order, idx) => (
+                <div key={idx}>
+                  {order.orderDetails.map((item) => (
                     <div
+                      key={item.orderDetailNum}
                       style={{
                         display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "20px",
+                        marginBottom: "20px",
                       }}
                     >
+                      {/* 상품 이미지 + 정보 */}
+                      <div style={{ display: "flex", gap: "16px", flex: 1 }}>
+                        <img
+                          src={
+                            item.mainImage
+                              ? `http://localhost:8080/products/images/${item.mainImage}`
+                              : "https://via.placeholder.com/120x160"
+                          }
+                          alt={item.productName}
+                          style={{
+                            width: "120px",
+                            height: "160px",
+                            objectFit: "cover",
+                            borderRadius: "8px",
+                            border: "1px solid #ddd",
+                          }}
+                        />
+
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: "13px",
+                              color: "#555",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            주문번호: {item.orderNum}
+                          </div>
+
+                          {/* 상품명 + 사이즈/컬러 */}
+                          <div style={{ fontWeight: "bold", marginBottom: "6px" }}>
+                            {item.productName}
+                            <span style={{ fontSize: "13px", color: "#777", marginLeft: "8px" }}>
+                              [{item.color} / {item.size}]
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "14px",
+                              color: "#666",
+                              marginBottom: "8px",
+                            }}
+                          >
+                            {item.description}
+                          </div>
+                          <div style={{ fontWeight: "bold", fontSize: "15px" }}>
+                            {item.price?.toLocaleString()} 원
+                          </div>
+                        </div>
+
+                      </div>
+
+                      {/* 버튼 영역 */}
                       <div
                         style={{
-                          fontSize: "13px",
-                          color: "#555",
-                          marginBottom: "4px",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                          minWidth: "100px",
+                          alignItems: "flex-end",
                         }}
                       >
-                        {order.id}
-                      </div>
-                      <div style={{ fontWeight: "bold", marginBottom: "6px" }}>
-                        {order.name}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "14px",
-                          color: "#666",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        {order.description}
-                      </div>
-                      <div style={{ fontWeight: "bold", fontSize: "15px" }}>
-                        {order.price?.toLocaleString()} 원
+                        <button
+                          style={{
+                            border: "1px solid #aaa",
+                            borderRadius: "6px",
+                            padding: "6px 12px",
+                            background: "#fff",
+                            cursor: "pointer",
+                            fontSize: "13px",
+                          }}
+                        >
+                          리뷰작성
+                        </button>
+                        <button
+                          style={{
+                            border: "none",
+                            borderRadius: "6px",
+                            padding: "6px 12px",
+                            background: "#535050",
+                            color: "#fff",
+                            cursor: "pointer",
+                            fontSize: "13px",
+                          }}
+                        >
+                          배송확인
+                        </button>
                       </div>
                     </div>
-                  </div>
-
-                  {/* 버튼 영역 */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                      minWidth: "100px",
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <button
-                      style={{
-                        border: "1px solid #aaa",
-                        borderRadius: "6px",
-                        padding: "6px 12px",
-                        background: "#fff",
-                        cursor: "pointer",
-                        fontSize: "13px",
-                      }}
-                    >
-                      리뷰작성
-                    </button>
-                    <button
-                      style={{
-                        border: "none",
-                        borderRadius: "6px",
-                        padding: "6px 12px",
-                        background: "#535050",
-                        color: "#fff",
-                        cursor: "pointer",
-                        fontSize: "13px",
-                      }}
-                    >
-                      배송확인
-                    </button>
-                  </div>
+                  ))}
                 </div>
               ))}
             </div>

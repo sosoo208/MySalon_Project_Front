@@ -46,12 +46,12 @@ const AdminMyPage = () => {
                 {products.map((p) => (
                   <Card key={p.id} className="border p-4">
                     <CardContent className="flex gap-6">
-                      
 
-                    <img src={p.mainImage ? `http://localhost:8080/products/images/${p.mainImage}` : "https://via.placeholder.com/120x160"}
-                    alt={p.productName}
-    className="w-[120px] h-[160px] object-cover"
-/>
+
+                      <img src={p.mainImage ? `http://localhost:8080/products/images/${p.mainImage}` : "https://via.placeholder.com/120x160"}
+                        alt={p.productName}
+                        className="w-[120px] h-[160px] object-cover"
+                      />
 
 
                       <div className="flex-1">

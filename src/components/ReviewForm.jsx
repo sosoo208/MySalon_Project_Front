@@ -1,26 +1,61 @@
 // src/components/ReviewForm.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import starIcon from "../assets/icons/star.png";
 import redStarIcon from "../assets/icons/redstar.png";
 
-export default function ReviewForm({ mode = "write", product }) {
+export default function ReviewForm({ mode = "write", product, review, onSubmit }) {
   const navigate = useNavigate();
-  const [rating, setRating] = useState(0);
-  const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
+
+  // ⭐ 초기값: 리뷰가 있으면 불러오기
+  const [rating, setRating] = useState(review?.score || 0);
+  const [text, setText] = useState(review?.text || "");
+  const [image, setImage] = useState(null); // 새로 업로드하는 이미지
+  const [previewImage, setPreviewImage] = useState(""); // 화면에 띄울 이미지
+
+  // ✅ 수정 모드일 때 기존 리뷰 이미지 세팅
+  useEffect(() => {
+    if (mode === "edit" && review?.reviewImage) {
+      setPreviewImage(
+        `http://localhost:8080/reviews/images/${review.reviewNum}/${review.reviewImage}`
+      );
+    }
+  }, [mode, review]);
 
   const handleStarClick = (index) => {
     setRating(index + 1);
   };
 
+  // ⭐ 상위 onSubmit으로 데이터 전달
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(
-      mode === "write" ? "리뷰가 등록되었습니다!" : "리뷰가 수정되었습니다!"
-    );
-    navigate("/mypage/reviews");
+    if (onSubmit) {
+      onSubmit({
+        score: rating,
+        text: text,
+        reviewImage: image, // 새 파일 있으면 업로드, 없으면 기존 유지
+      });
+    }
   };
+
+  // 이미지 선택 시 previewImage 업데이트
+  const handleImageChange = (file) => {
+    if (file) {
+      setImage(file); // 새로 업로드한 파일 state에 저장
+      const reader = new FileReader();
+      reader.onloadend = () => setPreviewImage(reader.result); // 화면에 새 이미지 미리보기
+      reader.readAsDataURL(file);
+    } else {
+      setImage(null);
+      // 새 파일 없으면 기존 리뷰 이미지 유지
+      if (mode === "edit" && review?.reviewImage) {
+        setPreviewImage(`http://localhost:8080/reviews/images/${review.reviewNum}/${review.reviewImage}`);
+      } else {
+        setPreviewImage(""); // 없으면 placeholder
+      }
+    }
+  };
+
 
   return (
     <div className="bg-[#E3E3E3] min-h-screen w-full">
@@ -33,13 +68,18 @@ export default function ReviewForm({ mode = "write", product }) {
           {/* 상품 정보 */}
           <div className="flex gap-6 mb-6">
             <img
-              src={product?.image || "https://via.placeholder.com/120x150"}
-              alt="상품"
+              src={previewImage || "https://via.placeholder.com/120x150"}
+              alt="리뷰 이미지"
               className="w-[120px] h-[150px] object-cover rounded"
             />
             <div>
               <p className="text-sm text-gray-500">{product?.id}</p>
-              <p className="font-bold">{product?.name || "상품명"}</p>
+              <p className="font-bold">
+                {product?.name || "상품명"}{" "}
+                <span className="text-gray-500 text-sm ml-2">
+                  [{product?.color || "-"} / {product?.size || "-"}]
+                </span>
+              </p>
               <p className="text-gray-900 font-bold mt-1">
                 {product?.price?.toLocaleString() || "0"}원
               </p>
@@ -75,7 +115,7 @@ export default function ReviewForm({ mode = "write", product }) {
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e) => handleImageChange(e.target.files[0])}
               />
             </label>
             {image && (

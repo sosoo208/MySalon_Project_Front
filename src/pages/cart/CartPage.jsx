@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { SubHeader } from "../../components/SubHeader";
-import { shoppingCartApi } from "../../api/shoppingCart/shoppingCartApi"; // ✅ API 연결
+import { shoppingCartApi } from "../../api/shoppingCart/shoppingCartApi";
+import { orderApi } from "../../api/order/orderApi"; // 주문 API
 
 export default function CartPage() {
   const [items, setItems] = useState([]);
@@ -8,7 +9,7 @@ export default function CartPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 장바구니 불러오기 및 정규화 (server 필드명이 'selected'일 수 있으므로 isSelected로 통일)
+
   useEffect(() => {
     const fetchCart = async () => {
       setLoading(true);
@@ -24,7 +25,7 @@ export default function CartPage() {
           color: it.color,
           size: it.size,
           count: typeof it.count === "number" ? it.count : Number(it.count || 1),
-          // 서버가 'selected'로 주는 경우 대비 (또는 isSelected로 주는 경우)
+
           isSelected: !!(it.isSelected ?? it.selected),
           userNum: it.userNum,
         }));
@@ -117,19 +118,40 @@ export default function CartPage() {
   };
 
   // -----------------------
-  // 결제 (샘플)
+  // 결제 (선택된 항목 기준, 주문 생성 후 장바구니 삭제)
   // -----------------------
   const handleCheckout = async () => {
-    if (!items.some((it) => !!it.isSelected)) {
+    const selectedItems = items.filter((it) => !!it.isSelected);
+    if (selectedItems.length === 0) {
       setMessage("선택된 상품이 없습니다.");
       return;
     }
+
     setPlacing(true);
     setMessage("");
+
     try {
-      // 실제 주문 API 연동 필요
+      // 1️⃣ 주문 DTO 생성
+      const orderRequest = {
+        orderItems: selectedItems.map((it) => ({
+          productDetailNum: it.productDetailNum,
+          count: it.count,
+        })),
+      };
+
+      // 2️⃣ 주문 생성 (createOrder2 사용)
+      const orderRes = await orderApi.createOrder2(orderRequest);
+      console.log("주문 완료:", orderRes);
+
+      // 3️⃣ 장바구니에서 선택된 상품 삭제
+      for (const item of selectedItems) {
+        await shoppingCartApi.removeFromCart({ productDetailNum: item.productDetailNum });
+      }
+
+      // 4️⃣ UI 업데이트: 주문된 상품 제거
+      setItems((prev) => prev.filter((it) => !it.isSelected));
+
       setMessage("주문이 완료되었습니다 ✅");
-      setItems([]);
     } catch (err) {
       console.error(err);
       setMessage("주문 처리 중 오류 ❌");
@@ -137,6 +159,7 @@ export default function CartPage() {
       setPlacing(false);
     }
   };
+
 
   if (loading) {
     return (
