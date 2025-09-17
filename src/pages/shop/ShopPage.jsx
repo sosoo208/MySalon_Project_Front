@@ -175,11 +175,17 @@ const ShopPage = () => {
           <div className="grid grid-cols-4 gap-[60px] max-w-[1200px] mx-auto relative z-20">
             {products.map((product) => (
               <Card
+<<<<<<< HEAD
 
                 key={product.productNum}
                 className="bg-transparent border-none shadow-none cursor-pointer"
                 onClick={() => navigate(`/shop/${product.productNum}`)} // ✅ 상세 페이지로 이동
                 
+=======
+                key={product.productNum}
+                className="bg-transparent border-none shadow-none cursor-pointer"
+                onClick={() => navigate(`/shop/${product.productNum}`)}
+>>>>>>> origin/order
               >
                 <CardContent className="p-4">
                   <div className="relative mb-4">
