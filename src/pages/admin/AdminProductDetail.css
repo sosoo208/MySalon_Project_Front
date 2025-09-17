@@ -29,6 +29,26 @@
   flex: 1;
 }
 
+/* ✅ input/textarea 공통 스타일 */
+.input-field {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #111;
+}
+
+textarea.input-field {
+  min-height: 80px;
+  resize: vertical;
+}
+
 .detail-title {
   font-size: 24px;
   font-weight: bold;
@@ -173,7 +193,6 @@
   margin-top: 60px;
 }
 
-/* 제목 + 필터 */
 .review-header {
   display: flex;
   justify-content: space-between;
@@ -214,14 +233,13 @@
   border-radius: 4px;
 }
 
-/* 본문 */
 .review-body {
   display: flex;
   gap: 60px;
 }
 
 .review-summary {
-  flex: 0 0 280px; /* 별점 요약 영역 넓힘 */
+  flex: 0 0 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -312,4 +330,20 @@
   font-size: 14px;
   color: #444;
   line-height: 1.4;
+}
+
+/* ✅ 리뷰 삭제 버튼 */
+.delete-btn {
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: #eee;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.delete-btn:hover {
+  background: #ddd;
 }

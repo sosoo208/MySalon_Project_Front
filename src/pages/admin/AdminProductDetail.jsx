@@ -1,36 +1,75 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { SubHeader } from "../../components/SubHeader"; // ✅ SubHeader 적용
+import { SubHeader } from "../../components/SubHeader";
 import "./AdminProductDetail.css";
-import { productApi } from "../../api/product/productApi"; // ✅ 실제 API
+import { productApi } from "../../api/product/productApi";
 
 export default function AdminProductDetail() {
-  const { id } = useParams();
+  // ✅ id → num 으로 변경
+  const { num } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // state로 넘어온 상품 데이터 우선
   const [product, setProduct] = useState(location.state || null);
 
-  // state가 없으면 API 호출
   useEffect(() => {
-    if (!product) {
+    if (!product && num) {
       const fetchProduct = async () => {
         try {
-          const data = await productApi.getProductById(id);
+          const data = await productApi.getProductById(num); // ✅ num 사용
           setProduct(data);
+          setFormData({
+            name: data.productName || "",
+            description: data.description || "",
+            price: data.price ?? 0,
+            shippingFee: data.deliveryFee ?? 0,
+          });
         } catch (err) {
           console.error("상품 불러오기 실패:", err);
         }
       };
       fetchProduct();
     }
-  }, [id, product]);
+  }, [num, product]);
 
-  // 상품 없으면 에러 표시
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: 0,
+    shippingFee: 0,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "price" || name === "shippingFee" ? Number(value) : value,
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      const updated = {
+        ...product,
+        productName: formData.name,
+        description: formData.description,
+        price: formData.price,
+        deliveryFee: formData.shippingFee,
+      };
+      await productApi.updateProduct(num, updated); // ✅ num 사용
+      alert("상품이 수정되었습니다.");
+      setProduct(updated);
+      navigate(-1);
+    } catch (err) {
+      console.error("상품 수정 실패:", err);
+      alert("상품 수정에 실패했습니다.");
+    }
+  };
+
   if (!product) return <div>상품 정보를 불러올 수 없습니다.</div>;
 
-  // 옵션 (임시 더미)
+  // 더미 옵션 (실제에선 product.productDetails 활용 가능)
   const productOptions = {
     Black: { sizes: ["S", "M"], qty: 5 },
     White: { sizes: ["M", "L"], qty: 3 },
@@ -43,16 +82,27 @@ export default function AdminProductDetail() {
 
   const currentOptions = productOptions[selectedColor] || { sizes: [], qty: 0 };
 
-  // 총 가격 계산 (안전 처리)
-  const totalPrice = useMemo(() => {
-    const price = product?.price ?? product?.productPrice ?? 0;
-    return price * count;
-  }, [product, count]);
+  const totalPrice = useMemo(
+    () => formData.price * count,
+    [formData.price, count]
+  );
 
-  // 리뷰 mock 데이터
+  // ✅ 리뷰 mock 데이터
   const [reviews, setReviews] = useState([
-    { id: 1, user: "user1", rating: 5, text: "옷이 너무 예쁘고 편해요!", avatar: "https://picsum.photos/60/60?random=1" },
-    { id: 2, user: "user2", rating: 4, text: "핏이 좋아요. 다만 배송이 조금 느렸습니다.", avatar: "https://picsum.photos/60/60?random=2" },
+    {
+      id: 1,
+      user: "user1",
+      rating: 5,
+      text: "옷이 너무 예쁘고 편해요!",
+      avatar: "https://picsum.photos/60/60?random=1",
+    },
+    {
+      id: 2,
+      user: "user2",
+      rating: 4,
+      text: "핏이 좋아요. 다만 배송이 조금 느렸습니다.",
+      avatar: "https://picsum.photos/60/60?random=2",
+    },
   ]);
 
   const [sortOption, setSortOption] = useState("latest");
@@ -73,49 +123,70 @@ export default function AdminProductDetail() {
     return (total / reviews.length).toFixed(1);
   }, [reviews]);
 
-  // ✅ 리뷰 삭제 함수
+  // ✅ 리뷰 삭제
   const handleDeleteReview = (id) => {
     setReviews((prev) => prev.filter((r) => r.id !== id));
   };
 
   return (
     <>
-      {/* ✅ SubHeader 적용 */}
       <SubHeader title="상품 상세 (관리자)" />
 
       <div className="detail-container">
-        <button onClick={() => navigate(-1)} className="back-btn">← 뒤로가기</button>
+        <button onClick={() => navigate(-1)} className="back-btn">
+          ← 뒤로가기
+        </button>
 
         {/* 상품 상세 */}
         <div className="detail-main">
           <img
             src={
-              product?.image ||
-              (product?.mainImage
+              product?.mainImage
                 ? `http://localhost:8080/products/images/${product.mainImage}`
-                : "https://via.placeholder.com/400x500")
+                : "https://via.placeholder.com/400x500"
             }
-            alt={product?.name || product?.productName}
+            alt={formData.name}
             className="detail-image"
           />
 
           <div className="detail-info">
-            <h2 className="detail-title">{product?.name || product?.productName}</h2>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="input-field text-xl font-bold"
+              placeholder="상품명"
+            />
 
-            <p className="detail-desc">{product?.description || product?.productDescription}</p>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="input-field h-24 mt-2"
+              placeholder="상품 설명"
+            />
 
             <div className="detail-row">
               <span className="label">가격</span>
-              <span className="price">
-                {(product?.price ?? product?.productPrice ?? 0).toLocaleString()}원
-              </span>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                className="input-field w-40"
+              />
             </div>
 
             <div className="detail-row">
               <span className="label">배송비</span>
-              <span className="shipping">
-                {(product?.shippingFee ?? product?.deliveryFee ?? 0).toLocaleString()}원
-              </span>
+              <input
+                type="number"
+                name="shippingFee"
+                value={formData.shippingFee}
+                onChange={handleChange}
+                className="input-field w-40"
+              />
             </div>
 
             <div className="detail-row">
@@ -129,7 +200,9 @@ export default function AdminProductDetail() {
                       setSelectedSize("");
                       setCount(1);
                     }}
-                    className={`color-btn ${selectedColor === c ? "active" : ""}`}
+                    className={`color-btn ${
+                      selectedColor === c ? "active" : ""
+                    }`}
                   >
                     {c}
                   </button>
@@ -154,7 +227,11 @@ export default function AdminProductDetail() {
             <div className="detail-row">
               <span className="label">수량</span>
               <div className="qty-box">
-                <button onClick={() => setCount((prev) => Math.max(1, prev - 1))}>-</button>
+                <button
+                  onClick={() => setCount((prev) => Math.max(1, prev - 1))}
+                >
+                  -
+                </button>
                 <span>{count}</span>
                 <button onClick={() => setCount((prev) => prev + 1)}>+</button>
               </div>
@@ -165,45 +242,40 @@ export default function AdminProductDetail() {
 
             <div className="total-row">
               <span className="label">TOTAL</span>
-              <span className="total-price">{totalPrice.toLocaleString()}원</span>
+              <span className="total-price">
+                {totalPrice.toLocaleString()}원
+              </span>
             </div>
 
-            {/* ✅ 수정하기 버튼만 남김 */}
             <div className="action-buttons">
-              <button className="buy-btn">수정하기</button>
+              <button className="buy-btn" onClick={handleSave}>
+                수정하기
+              </button>
             </div>
           </div>
         </div>
 
-        {/* 리뷰 */}
+        {/* 리뷰 영역 */}
         <div className="review-section">
           <div className="review-header">
             <h3 className="review-title">REVIEW</h3>
             <div className="review-filters">
               <button
-                className={`filter-btn ${sortOption === "latest" ? "active" : ""}`}
+                className={`filter-btn ${
+                  sortOption === "latest" ? "active" : ""
+                }`}
                 onClick={() => setSortOption("latest")}
               >
                 최신순
               </button>
               <button
-                className={`filter-btn ${sortOption === "rating" ? "active" : ""}`}
+                className={`filter-btn ${
+                  sortOption === "rating" ? "active" : ""
+                }`}
                 onClick={() => setSortOption("rating")}
               >
                 별점순
               </button>
-              <select className="filter-select">
-                <option>키</option>
-                <option>150cm</option>
-                <option>160cm</option>
-                <option>170cm</option>
-              </select>
-              <select className="filter-select">
-                <option>몸무게</option>
-                <option>50kg</option>
-                <option>60kg</option>
-                <option>70kg</option>
-              </select>
             </div>
           </div>
 
@@ -211,7 +283,9 @@ export default function AdminProductDetail() {
             <div className="review-summary">
               <div className="big-star">★</div>
               <div className="score">{avgRating}</div>
-              <p className="summary-text">{reviews.length}개의 리뷰가 작성되었습니다.</p>
+              <p className="summary-text">
+                {reviews.length}개의 리뷰가 작성되었습니다.
+              </p>
             </div>
 
             <div className="review-list">
@@ -229,7 +303,6 @@ export default function AdminProductDetail() {
                       <span className="review-label">{r.user}</span>
                     </div>
                     <p className="review-text">{r.text}</p>
-                    {/* ✅ 삭제 버튼 추가 */}
                     <button
                       className="delete-btn"
                       onClick={() => handleDeleteReview(r.id)}
