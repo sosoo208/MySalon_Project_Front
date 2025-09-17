@@ -25,34 +25,36 @@ const categoryLowMap =
 {
   전체: null,
   반소매: "SHORT_SLEEVE",
-  긴소매: "LONG_SLEEVE", 
+  긴소매: "LONG_SLEEVE",
   "셔츠/블라우스":
-    "SHIRT_BLOUSE", 
-    "니트/스웨터": "KNIT_SWEATER",
+    "SHIRT_BLOUSE",
+  "니트/스웨터": "KNIT_SWEATER",
   "맨투맨/후드": "SWEATSHIRT_HOODIE",
   기타: "OTHER",
   자켓: "JACKET",
-  코트: "COAT", 
-  가디건: "CARDIGAN", 
-  반바지: "SHORTS", 
-  청바지: "JEANS", 
-  슬랙스: "SLACKS", 
-  미니: "MINI", 
-  미디: "MIDI", 
-  롱: "LONG", 
-  가방: "BAG", 
-  악세사리: "ACCESSORY", 
-  모자: "HAT", 
-  잠옷: "PAJAMAS", 
-  속옷: "UNDERWEAR", 
-  상의: "TOPS", 
+  코트: "COAT",
+  가디건: "CARDIGAN",
+  반바지: "SHORTS",
+  청바지: "JEANS",
+  슬랙스: "SLACKS",
+  미니: "MINI",
+  미디: "MIDI",
+  롱: "LONG",
+  가방: "BAG",
+  악세사리: "ACCESSORY",
+  모자: "HAT",
+  잠옷: "PAJAMAS",
+  속옷: "UNDERWEAR",
+  상의: "TOPS",
   하의: "BOTTOMS"
 };
-const genderMap = 
-{ 남자: "MALE", 
-  여자: "FEMALE", 
-  공용: "UNISEX", 
-  전체: null };
+const genderMap =
+{
+  남자: "MALE",
+  여자: "FEMALE",
+  공용: "UNISEX",
+  전체: null
+};
 
 export const CategoryPageTemplate = ({ categoryName, categoryTabs }) => {
   const navigate = useNavigate();
@@ -172,7 +174,11 @@ export const CategoryPageTemplate = ({ categoryName, categoryTabs }) => {
           {/* 제품 그리드 */}
           <div className="grid grid-cols-4 gap-x-[91px] gap-y-[125px]">
             {products.map(product => (
-              <Card key={product.productNum} className="w-[232px] border-0 shadow-none bg-transparent cursor-pointer" onClick={() => navigate("/screen126", { state: { product } })}>
+              <Card
+                key={product.productNum}
+                className="w-[232px] border-0 shadow-none bg-transparent cursor-pointer"
+                onClick={() => navigate(`/shop/${product.productNum}`)} // ✅ 상세페이지로 이동
+              >
                 <CardContent className="p-0 relative">
                   {/* 이미지 */}
                   <img
@@ -219,6 +225,7 @@ export const CategoryPageTemplate = ({ categoryName, categoryTabs }) => {
               </Card>
             ))}
           </div>
+
         </main>
       </div>
     </div>
