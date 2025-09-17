@@ -20,7 +20,6 @@ import MalePage from "./pages/shop/MalePage";
 import FemalePage from "./pages/shop/FemalePage";
 import HomewearPage from "./pages/shop/HomewearPage";
 
-// ===== 장바구니 페이지 =====
 import CartPage from "./pages/cart/CartPage";   
 import ProductDetail from "./pages/shop/ProductDetail"; 
 import OrderComplete from "./pages/order/OrderComplete"; 
@@ -37,7 +36,6 @@ import ReviewEditPage from "./pages/user/ReviewEditPage";
 // ===== 판매자(Admin) 페이지 =====
 import AdminMyPage from "./pages/admin/AdminMyPage";
 import ProductRegister from "./pages/admin/ProductRegister";
-import ProductList from "./pages/admin/ProductList";
 import AdminProductDetail from "./pages/admin/AdminProductDetail"; 
 import SalesList from "./pages/admin/SalesList";
 import OrderShipping from "./pages/admin/OrderShipping";
@@ -91,7 +89,7 @@ function AppContent() {
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartPage />} />
-      <Route path="/order/complete" element={<OrderComplete />} />
+      <Route path="/order/complete" element={<OrderComplete />} />  {/* ✅ 주문 완료 페이지 */}
 
       {/* ===== 인증 ===== */}
       <Route path="/signup" element={<SignupPage />} />
@@ -133,14 +131,6 @@ function AppContent() {
         }
       />
       <Route
-        path="/admin/products/list"
-        element={
-          <BlockRole denied={["BUYER"]} redirectTo="/mypage">
-            <ProductList />
-          </BlockRole>
-        }
-      />
-      <Route
         path="/admin/products/sales-list"
         element={
           <BlockRole denied={["BUYER"]} redirectTo="/mypage">
@@ -173,7 +163,7 @@ function AppContent() {
         }
       />
 
-      {/* ===== 카테고리(악세사리 제외) ===== */}
+      {/* ===== 카테고리 ===== */}
       <Route path="/category/바지" element={<PantsPage />} />
       <Route path="/category/상의" element={<TopPage />} />
       <Route path="/category/남성" element={<MalePage />} />

@@ -12,11 +12,11 @@ import { favoriteApi } from "../../api/favorite/favoriteApi";
 import { userApi } from "../../api/user/userApi";
 import { reviewApi } from "../../api/review_/reviewApi";
 
-// ✅ 아이콘 이미지 불러오기
+// ✅ 카테고리 아이콘 불러오기
 import upIcon from "../../assets/images/up.png";
-import downIcon from "../../assets/images/down.png";
-import manIcon from "../../assets/images/man.png";
-import womanIcon from "../../assets/images/woman.png";
+import pantsIcon from "../../assets/images/pants.png";
+import outerIcon from "../../assets/images/outer.png";
+import dressIcon from "../../assets/images/dress.png";
 import kidsIcon from "../../assets/images/kids.png";
 
 const ShopPage = () => {
@@ -31,9 +31,9 @@ const ShopPage = () => {
   // ✅ 카테고리 아이콘 적용
   const categoryItems = [
     { name: "상의", path: "/category/상의", icon: upIcon },
-    { name: "바지", path: "/category/바지", icon: downIcon },
-    { name: "남성", path: "/category/남성", icon: manIcon },
-    { name: "여성", path: "/category/여성", icon: womanIcon },
+    { name: "바지", path: "/category/바지", icon: pantsIcon },
+    { name: "아우터", path: "/category/아우터", icon: outerIcon },
+    { name: "원피스/스커트", path: "/category/원피스/스커트", icon: dressIcon },
     { name: "키즈", path: "/category/키즈", icon: kidsIcon },
   ];
 
@@ -138,7 +138,7 @@ const ShopPage = () => {
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full h-[50px] pl-12 pr-12 bg-[#f5f5f5] border rounded-full text-[17px] placeholder:text-[#999999]"
+              className="w-full h-[50px] pl-12 pr-12 bg-white border rounded-full text-[17px] placeholder:text-[#999999] shadow-sm"
             />
             <MicIcon className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#999999]" />
           </div>
@@ -146,23 +146,25 @@ const ShopPage = () => {
 
         {/* Shop By My Salon */}
         <section className="text-center">
-          <h2 className="text-black text-xl mb-[77px]">SHOP BY MY SALON</h2>
+          <h2 className="text-black text-xl mb-[77px] font-semibold">
+            SHOP BY MY SALON
+          </h2>
           <div className="flex justify-center items-center gap-[73px] mb-[91px]">
             {categoryItems.map((category, index) => (
               <div
                 key={index}
-                className="text-center cursor-pointer"
+                className="text-center cursor-pointer group"
                 onClick={() => navigate(category.path)}
               >
                 {/* ✅ 카테고리 아이콘 */}
-                <div className="w-[78px] h-[78px] rounded-full mb-4 mx-auto flex items-center justify-center bg-white shadow">
+                <div className="w-[78px] h-[78px] rounded-full mb-4 mx-auto flex items-center justify-center bg-white shadow-md group-hover:scale-110 transition">
                   <img
                     src={category.icon}
                     alt={category.name}
                     className="w-[50px] h-[50px] object-contain"
                   />
                 </div>
-                <div className="text-xl text-black">{category.name}</div>
+                <div className="text-lg text-black">{category.name}</div>
               </div>
             ))}
           </div>
@@ -170,17 +172,20 @@ const ShopPage = () => {
 
         {/* Recommended Products */}
         <section className="text-center mb-[103px]">
-          <h2 className="text-black text-xl mb-[67px]">당신을 위한 추천상품</h2>
+          <h2 className="text-black text-xl mb-[67px] font-semibold">
+            당신을 위한 추천상품
+          </h2>
 
-          <div className="grid grid-cols-4 gap-[60px] max-w-[1200px] mx-auto relative z-20">
+          <div className="grid grid-cols-4 gap-[40px] max-w-[1200px] mx-auto relative z-20">
             {products.map((product) => (
               <Card
-                key={product.id}
-                className="bg-white border shadow-sm hover:shadow-md transition cursor-pointer"
-                onClick={() => navigate(`/shop/${product.id}`)}
+                key={product.productNum}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer overflow-hidden"
+                onClick={() => navigate(`/shop/${product.productNum}`)}
               >
-                <CardContent className="p-4">
-                  <div className="relative mb-4">
+                <CardContent className="p-0">
+                  {/* 상품 이미지 */}
+                  <div className="relative group">
                     <img
                       src={
                         product.mainImage
@@ -188,18 +193,19 @@ const ShopPage = () => {
                           : "https://via.placeholder.com/232x348"
                       }
                       alt={product.productName}
-                      className="w-full h-[280px] object-cover rounded-md"
+                      className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                     />
 
+                    {/* 하트 버튼 */}
                     <div
-                      className="absolute top-2 right-2 cursor-pointer"
+                      className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-gray-100"
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleLike(product.productNum);
                       }}
                     >
                       <Heart
-                        className={`w-6 h-6 ${
+                        className={`w-5 h-5 ${
                           likedProducts[product.productNum]
                             ? "fill-red-500 text-red-500"
                             : "text-gray-400"
@@ -208,9 +214,13 @@ const ShopPage = () => {
                     </div>
                   </div>
 
-                  <div className="text-left">
-                    <div className="flex items-center gap-4 mb-2">
-                      <Badge variant="secondary" className="text-xs text-gray-500 bg-transparent border-none p-0">
+                  {/* 상품 정보 */}
+                  <div className="p-4 text-left">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Badge
+                        variant="secondary"
+                        className="text-xs text-gray-500 bg-gray-100"
+                      >
                         {product.gender}
                       </Badge>
                       <div className="flex items-center gap-1 text-sm text-gray-600">
@@ -221,10 +231,11 @@ const ShopPage = () => {
                         </span>
                       </div>
                     </div>
-                    <h3 className="text-black text-base mb-1">
+
+                    <h3 className="text-black text-sm font-medium mb-1 line-clamp-2">
                       {product.productName}
                     </h3>
-                    <p className="text-black font-medium">
+                    <p className="text-lg font-semibold text-gray-900">
                       {product.price?.toLocaleString()}원
                     </p>
                   </div>
@@ -233,7 +244,7 @@ const ShopPage = () => {
             ))}
           </div>
 
-          <Button className="mt-[53px] w-[100px] h-9 bg-[#333] rounded-full hover:opacity-80 text-white">
+          <Button className="mt-[53px] w-[120px] h-10 bg-[#333] rounded-full hover:opacity-80 text-white font-medium">
             더보기
           </Button>
         </section>

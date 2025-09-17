@@ -3,6 +3,8 @@ import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import AdminNav from "./AdminNav";
 import { productApi } from "../../api/product/productApi";
+import { useNavigate } from "react-router-dom";
+import { SubHeader } from "../../components/SubHeader";// ✅ SubHeader 추가
 
 /** ================================
  *  판매자 마이페이지
@@ -10,6 +12,7 @@ import { productApi } from "../../api/product/productApi";
 const AdminMyPage = () => {
   const [activeTab, setActiveTab] = useState("product-list");
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,10 +32,8 @@ const AdminMyPage = () => {
   return (
     <div className="bg-white min-h-screen w-full">
       <div className="max-w-[1440px] mx-auto bg-white">
-        {/* 상단 헤더 */}
-        <header className="bg-[#d9d9d9] h-[120px] flex items-center justify-center text-2xl font-bold">
-          판매자 마이페이지
-        </header>
+        {/* ✅ SubHeader 적용 */}
+        <SubHeader title="판매자 마이페이지" />
 
         {/* 공통 네비게이션 */}
         <AdminNav activeTab={activeTab} />
@@ -46,13 +47,15 @@ const AdminMyPage = () => {
                 {products.map((p) => (
                   <Card key={p.id} className="border p-4">
                     <CardContent className="flex gap-6">
-                      
-
-                    <img src={p.mainImage ? `http://localhost:8080/products/images/${p.mainImage}` : "https://via.placeholder.com/120x160"}
-                    alt={p.productName}
-    className="w-[120px] h-[160px] object-cover"
-/>
-
+                      <img
+                        src={
+                          p.mainImage
+                            ? `http://localhost:8080/products/images/${p.mainImage}`
+                            : "https://via.placeholder.com/120x160"
+                        }
+                        alt={p.productName}
+                        className="w-[120px] h-[160px] object-cover"
+                      />
 
                       <div className="flex-1">
                         <div className="text-sm text-gray-500">{p.id}</div>
@@ -62,8 +65,17 @@ const AdminMyPage = () => {
                           {p.price.toLocaleString()} 원
                         </div>
                       </div>
-                      <div className="flex flex-col gap-2">
-                        <Button variant="outline">상품페이지</Button>
+
+                      {/* ✅ 버튼 영역 중앙 정렬 + 상세페이지 연결 */}
+                      <div className="flex flex-col gap-2 justify-center">
+                        <Button
+                          variant="outline"
+                          onClick={() =>
+                            navigate(`/admin/products/${p.id}`, { state: p }) // ✅ AdminProductDetail로 이동
+                          }
+                        >
+                          상품페이지
+                        </Button>
                         <Button className="bg-[#828282] text-white">삭제</Button>
                       </div>
                     </CardContent>
