@@ -25,7 +25,7 @@ const INITIAL_POSTS = [
   {
     id: "1",
     title: "이 옷에 어울리는 바지 추천해주세요!",
-    author: "홍길동",
+    author: "김민성",
     createdAt: now - 1 * 60 * 60 * 1000, // 1시간 전
     time: "1시간 전",
     image: `${BASE}board/toptop.jpg`, // 흰 셔츠

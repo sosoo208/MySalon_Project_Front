@@ -1858,15 +1858,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:68:10-to-src\\pages\\community\\BoardPage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:48:10-to-src\\pages\\community\\BoardPage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\community\\BoardPage.jsx",
       "data": {
         "viaRoute": "/board",
         "trigger": {
           "element": "<Link to=\"/board\" className=\"text-2xl text-black\">\n            게시판\n          </Link>",
-          "line": 68,
-          "endLine": 70,
+          "line": 48,
+          "endLine": 50,
           "column": 10,
           "endColumn": 17,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
@@ -1874,15 +1874,15 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CommunityPage.jsx:144:10-to-src\\pages\\community\\CoordiWritePage.jsx",
+      "id": "src\\pages\\community\\CommunityPage.jsx:109:10-to-src\\pages\\community\\CoordiWritePage.jsx",
       "source": "src\\pages\\community\\CommunityPage.jsx",
       "target": "src\\pages\\community\\CoordiWritePage.jsx",
       "data": {
         "viaRoute": "/coordi/write",
         "trigger": {
-          "element": "<Link\n            to=\"/coordi/write\"\n            className=\"px-6 py-2 border border-black bg-white hover:bg-gray-50\"\n          >\n            나의 코디 등록하기\n          </Link>",
-          "line": 144,
-          "endLine": 149,
+          "element": "<Link to=\"/coordi/write\" className=\"px-6 py-2 border border-black bg-white hover:bg-gray-50\">\n            나의 코디 등록하기\n          </Link>",
+          "line": 109,
+          "endLine": 111,
           "column": 10,
           "endColumn": 17,
           "sourceFile": "src\\pages\\community\\CommunityPage.jsx"
@@ -2098,98 +2098,34 @@
       }
     },
     {
-      "id": "src\\pages\\community\\CoordiWritePage.jsx:46:6-to-src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\pages\\community\\CoordiWritePage.jsx:41:4-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\pages\\community\\CoordiWritePage.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
       "data": {
         "viaRoute": "/community",
         "trigger": {
           "element": "navigate(\"/community\", { replace: true })",
-          "line": 46,
-          "endLine": 46,
-          "column": 6,
-          "endColumn": 47,
+          "line": 41,
+          "endLine": 41,
+          "column": 4,
+          "endColumn": 45,
           "sourceFile": "src\\pages\\community\\CoordiWritePage.jsx"
         }
       }
     },
     {
-      "id": "src\\pages\\community\\CoordiWritePage.jsx:109:10-to-src\\pages\\community\\CommunityPage.jsx",
+      "id": "src\\pages\\community\\CoordiWritePage.jsx:154:31-to-src\\pages\\community\\CommunityPage.jsx",
       "source": "src\\pages\\community\\CoordiWritePage.jsx",
       "target": "src\\pages\\community\\CommunityPage.jsx",
       "data": {
         "viaRoute": "/community",
         "trigger": {
-          "element": "<Link to=\"/community\" className=\"px-4 py-2 border hover:bg-gray-50\">\n            목록으로\n          </Link>",
-          "line": 109,
-          "endLine": 111,
-          "column": 10,
-          "endColumn": 17,
+          "element": "navigate(\"/community\")",
+          "line": 154,
+          "endLine": 154,
+          "column": 31,
+          "endColumn": 53,
           "sourceFile": "src\\pages\\community\\CoordiWritePage.jsx"
-        }
-      }
-    },
-    {
-      "id": "src\\components\\SubHeader.jsx:41:10-to-src\\pages\\auth\\LoginPage.jsx",
-      "source": "src\\pages\\cart\\CartPage.jsx",
-      "target": "src\\pages\\auth\\LoginPage.jsx",
-      "data": {
-        "viaRoute": "/login",
-        "trigger": {
-          "element": "<Link to=\"/login\">로그인</Link>",
-          "line": 41,
-          "endLine": 41,
-          "column": 10,
-          "endColumn": 38,
-          "sourceFile": "src\\components\\SubHeader.jsx"
-        }
-      }
-    },
-    {
-      "id": "src\\components\\SubHeader.jsx:42:10-to-src\\pages\\auth\\SignupPage.jsx",
-      "source": "src\\pages\\cart\\CartPage.jsx",
-      "target": "src\\pages\\auth\\SignupPage.jsx",
-      "data": {
-        "viaRoute": "/signup",
-        "trigger": {
-          "element": "<Link to=\"/signup\">회원가입</Link>",
-          "line": 42,
-          "endLine": 42,
-          "column": 10,
-          "endColumn": 40,
-          "sourceFile": "src\\components\\SubHeader.jsx"
-        }
-      }
-    },
-    {
-      "id": "src\\components\\SubHeader.jsx:43:10-to-src\\pages\\cart\\CartPage.jsx",
-      "source": "src\\pages\\cart\\CartPage.jsx",
-      "target": "src\\pages\\cart\\CartPage.jsx",
-      "data": {
-        "viaRoute": "/cart",
-        "trigger": {
-          "element": "<Link to=\"/cart\">장바구니</Link>",
-          "line": 43,
-          "endLine": 43,
-          "column": 10,
-          "endColumn": 38,
-          "sourceFile": "src\\components\\SubHeader.jsx"
-        }
-      }
-    },
-    {
-      "id": "src\\components\\SubHeader.jsx:45:10-to-src\\pages\\community\\CommunityPage.jsx",
-      "source": "src\\pages\\cart\\CartPage.jsx",
-      "target": "src\\pages\\community\\CommunityPage.jsx",
-      "data": {
-        "viaRoute": "/community",
-        "trigger": {
-          "element": "<Link to=\"/community\">커뮤니티</Link>",
-          "line": 45,
-          "endLine": 45,
-          "column": 10,
-          "endColumn": 43,
-          "sourceFile": "src\\components\\SubHeader.jsx"
         }
       }
     },
