@@ -1018,15 +1018,15 @@
       }
     },
     {
-      "id": "src\\pages\\user\\ReviewWritePage.jsx:49:6-to-src\\pages\\user\\MyReviewPage.jsx",
+      "id": "src\\pages\\user\\ReviewWritePage.jsx:50:6-to-src\\pages\\user\\MyReviewPage.jsx",
       "source": "src\\pages\\user\\ReviewWritePage.jsx",
       "target": "src\\pages\\user\\MyReviewPage.jsx",
       "data": {
         "viaRoute": "/mypage/reviews",
         "trigger": {
           "element": "navigate(\"/mypage/reviews\")",
-          "line": 49,
-          "endLine": 49,
+          "line": 50,
+          "endLine": 50,
           "column": 6,
           "endColumn": 33,
           "sourceFile": "src\\pages\\user\\ReviewWritePage.jsx"
@@ -1098,34 +1098,34 @@
       }
     },
     {
-      "id": "src\\components\\ReviewForm.jsx:22:4-to-src\\pages\\user\\MyReviewPage.jsx",
+      "id": "src\\components\\ReviewForm.jsx:131:29-to-src\\pages\\user\\MyReviewPage.jsx",
       "source": "src\\pages\\user\\ReviewWritePage.jsx",
       "target": "src\\pages\\user\\MyReviewPage.jsx",
       "data": {
         "viaRoute": "/mypage/reviews",
         "trigger": {
           "element": "navigate(\"/mypage/reviews\")",
-          "line": 22,
-          "endLine": 22,
-          "column": 4,
-          "endColumn": 31,
+          "line": 131,
+          "endLine": 131,
+          "column": 29,
+          "endColumn": 56,
           "sourceFile": "src\\components\\ReviewForm.jsx"
         }
       }
     },
     {
-      "id": "src\\components\\ReviewForm.jsx:91:29-to-src\\pages\\user\\MyReviewPage.jsx",
-      "source": "src\\pages\\user\\ReviewWritePage.jsx",
+      "id": "src\\pages\\user\\ReviewEditPage.jsx:85:6-to-src\\pages\\user\\MyReviewPage.jsx",
+      "source": "src\\pages\\user\\ReviewEditPage.jsx",
       "target": "src\\pages\\user\\MyReviewPage.jsx",
       "data": {
         "viaRoute": "/mypage/reviews",
         "trigger": {
           "element": "navigate(\"/mypage/reviews\")",
-          "line": 91,
-          "endLine": 91,
-          "column": 29,
-          "endColumn": 56,
-          "sourceFile": "src\\components\\ReviewForm.jsx"
+          "line": 85,
+          "endLine": 85,
+          "column": 6,
+          "endColumn": 33,
+          "sourceFile": "src\\pages\\user\\ReviewEditPage.jsx"
         }
       }
     },
@@ -1194,31 +1194,15 @@
       }
     },
     {
-      "id": "src\\components\\ReviewForm.jsx:22:4-to-src\\pages\\user\\MyReviewPage.jsx",
+      "id": "src\\components\\ReviewForm.jsx:131:29-to-src\\pages\\user\\MyReviewPage.jsx",
       "source": "src\\pages\\user\\ReviewWritePage.jsx",
       "target": "src\\pages\\user\\MyReviewPage.jsx",
       "data": {
         "viaRoute": "/mypage/reviews",
         "trigger": {
           "element": "navigate(\"/mypage/reviews\")",
-          "line": 22,
-          "endLine": 22,
-          "column": 4,
-          "endColumn": 31,
-          "sourceFile": "src\\components\\ReviewForm.jsx"
-        }
-      }
-    },
-    {
-      "id": "src\\components\\ReviewForm.jsx:91:29-to-src\\pages\\user\\MyReviewPage.jsx",
-      "source": "src\\pages\\user\\ReviewWritePage.jsx",
-      "target": "src\\pages\\user\\MyReviewPage.jsx",
-      "data": {
-        "viaRoute": "/mypage/reviews",
-        "trigger": {
-          "element": "navigate(\"/mypage/reviews\")",
-          "line": 91,
-          "endLine": 91,
+          "line": 131,
+          "endLine": 131,
           "column": 29,
           "endColumn": 56,
           "sourceFile": "src\\components\\ReviewForm.jsx"
