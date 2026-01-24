@@ -81,14 +81,13 @@
 - `src/assets/*`  
   이미지 및 정적 리소스
 
----
-
 ## 페이지 라우팅 맵
 
 ### 메인 / 시작
 - 메인 페이지: `src/components/ScrollContainer.jsx`
 - 시작 페이지: `src/routes/Screen34/screens/Screen.jsx`
-  
+- 
+---<img width="1687" height="1211" alt="스크린샷 2026-01-24 213900" src="https://github.com/user-attachments/assets/1dc174df-9437-458b-bd5a-5e1e19234a30" />
 
 ### 인증(Auth)
 - 로그인 페이지: `src/routes/Screen113/screens/Screen.jsx`
@@ -104,6 +103,8 @@
 - 주문 완료 페이지: `src/routes/Screen133/screens/Screen.jsx`
 - 주문 내역 페이지: `src/routes/OrderHistory/screens/Screen.jsx`
 
+<img width="2541" height="1381" alt="스크린샷 2026-01-24 214058" src="https://github.com/user-attachments/assets/3ee2f108-bf70-43ec-a0bb-8e5c4bb63547" />
+
 ### 마이페이지(MyPage)
 - 마이페이지 대시보드: `src/routes/MyPage/screens/Screen.jsx`
 - 찜 목록 페이지: `src/routes/WishlistPage/screens/Screen.jsx`
@@ -111,6 +112,8 @@
 - 리뷰 작성 페이지: `src/routes/ReviewPage/screens/Screen.jsx`
 - 리뷰 수정 페이지: `src/routes/Screen145/screens/Screen.jsx`
 - 프로필 수정 페이지: `src/routes/Screen94/screens/Screen.jsx`
+
+<img width="2513" height="1379" alt="스크린샷 2026-01-24 214110" src="https://github.com/user-attachments/assets/5e2b2fab-09b8-4bf6-ad98-c7957bc2a9ce" />
 
 ### 커뮤니티(Community)
 - 오늘의 코디 메인: `src/routes/CommunityPage/screens/Screen.jsx`
@@ -142,6 +145,7 @@ npm start
 
 ---
 
+### 배운점
 - 단순히 화면을 구현하는 것이 아니라 **사용자 흐름을 기준으로 기능을 설계하는 중요성**을 경험
 - 커머스와 커뮤니티라는 서로 다른 도메인을 하나의 서비스로 연결하는 구조 설계 경험
 - 규모가 있는 프론트엔드 프로젝트에서 **폴더 구조와 컴포넌트 설계가 유지보수에 미치는 영향**을 체감
